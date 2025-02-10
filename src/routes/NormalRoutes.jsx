@@ -13,9 +13,37 @@ import TrackOrders from "../pages/ordertracking/TrackOrders";
 import Reviews from "../pages/reviews/Reviews";
 import Profile from "../pages/settings/Profile";
 import EditProfilePage from "../pages/settings/EditProfilePage";
+import Chat from "../pages/chat/Chat";
+import ProfileCompletion from "../pages/onboarding/ProfileCompletion";
+import Packages from "../pages/subscription/Packages";
+import RequestSuccessScreen from "../pages/onboarding/RequestSuccessScreen";
+import AddCard from "../pages/subscription/AddCard";
 
 
 export const normalRoutes = [
+    {
+    title:"Profile Completion",
+    url:"/profile-completion",
+    page: <ProfileCompletion />
+    },
+    {
+      title:"Request Success",
+      url:"/req-success",
+      page: <RequestSuccessScreen />
+      },
+
+    {
+      title:"Packages",
+      url:"/packages",
+      page: <Packages />
+      },
+
+      {
+        title:"Add Card",
+        url:"/add-card",
+        page: <AddCard />
+        },
+
     {
         title: "Dashboard",
         url: "/dashboard",
@@ -28,10 +56,16 @@ export const normalRoutes = [
         page: <GlobalLayout page={<OrderDetailsPage />} />,
       },
 
+      // {
+      //   title: "Chat List",
+      //   url: "/chat",
+      //   page: <GlobalLayout page={<ChatList />} />,
+      // },
+
       {
         title: "Chat List",
         url: "/chat",
-        page: <GlobalLayout page={<ChatList />} />,
+        page: <GlobalLayout page={<Chat />} />,
       },
 
       {
@@ -54,7 +88,7 @@ export const normalRoutes = [
    
       {
         title: "Item Details",
-        url: "/item-details",
+        url: "/item-details/:orderId",
         page: <GlobalLayout page={<ItemDetails />} />,
       },
 

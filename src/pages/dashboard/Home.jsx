@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import DashboardStats from "../../components/dashboard/DashboardStats";
 import OrdersTable from "../../components/orders/OrdersTable";
 import ReviewSection from "../../components/dashboard/ReviewSection";
+import DashboardOrders from "../../components/dashboard/DashboardOrders";
 
 const Home = () => {
   return (
@@ -13,10 +14,16 @@ const Home = () => {
         <div className="w-full flex flex-col lg:flex-row gap-6">
           <DashboardStats />
         </div>
-        <h1 className="text-black text-3xl font-bold">Orders</h1>
+        {/* <h1 className="text-black text-3xl font-bold">Orders</h1>
         <div className="w-full flex flex-col lg:flex-row gap-6">
 
           <OrdersTable />
+        </div> */}
+
+        <h1 className="text-black text-3xl font-bold">Orders</h1>
+        <div className="w-full flex flex-col lg:flex-row gap-6">
+
+          <DashboardOrders />
         </div>
 
         {/* <h1 className="text-black text-3xl font-bold">Reviews</h1> */}
@@ -25,25 +32,8 @@ const Home = () => {
           <ReviewSection />
         </div>
 
-        {/* Charts Section (Two charts side by side) */}
-        {/* <div className="w-full flex flex-col lg:flex-row gap-6">
-          <div className="w-full lg:w-1/2">
-            <RevenueChart />
-          </div>
-          <div className="w-full lg:w-1/2">
-            <PostsChart />
-          </div>
-          
-        </div>
-
-        <div className="w-full flex flex-col lg:flex-row gap-6">
-        <div className="w-full lg:w-1/2">
-            <UsersChart />
-          </div>
-          <div className="w-full lg:w-1/2">
-            <SalesChart />
-          </div>
-        </div> */}
+        
+      
       </div>
     </>
   );

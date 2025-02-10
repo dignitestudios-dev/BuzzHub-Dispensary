@@ -1,12 +1,10 @@
 import { Route, Routes } from "react-router-dom";
-// import "./App.css";
-// import Splash from "./pages/onboarding/Splash";
+import "./App.css";
 import { AuthenticationRoutes } from "./routes/AuthenticationRoutes";
 import { normalRoutes } from "./routes/NormalRoutes";
 function App() {
   return (
     <Routes>
-      {/* <Route path="/" exact element={<Splash />} /> */}
       {AuthenticationRoutes.map((route) => {
         return (
           <Route path={route?.url} element={route?.page} key={route?.title} />

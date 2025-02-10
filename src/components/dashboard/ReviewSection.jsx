@@ -1,54 +1,43 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FaStar, FaRegStar } from "react-icons/fa";
+import axios from "../../axios"; // Assuming axios is configured
 
 const ReviewSection = () => {
-  const reviews = [
-    {
-      id: 1,
-      user: "Mike Smith",
-      rating: 4,
-      comment:
-        "Amazing product. I booked on Monday and I got my order on the next day. I'm highly impressed with their services. Highly recommended!",
-      location: "Toronto, Canada",
-      price: "$40.00",
-      item: "Item name",
-      image: "https://i.pravatar.cc/?img=12",
-      userImage: "https://i.pravatar.cc/?img=14",
-    },
-    {
-      id: 2,
-      user: "Jane Doe",
-      rating: 5,
-      comment:
-        "Fantastic quality! I was pleasantly surprised by how quickly my order arrived.",
-      location: "New York, USA",
-      price: "$35.99",
-      item: "Premium Product",
-      image: "https://i.pravatar.cc/?img=14",
-      userImage: "https://i.pravatar.cc/?img=15",
-    },
-    {
-      id: 3,
-      user: "John Carter",
-      rating: 3,
-      comment:
-        "Good but could be better. Delivery was slightly delayed, but the product itself is fine.",
-      location: "Los Angeles, USA",
-      price: "$50.00",
-      item: "Limited Edition",
-      image: "https://i.pravatar.cc/?img=16",
-      userImage: "https://i.pravatar.cc/?img=18",
-    },
-  ];
-
+  const [reviews, setReviews] = useState([]); // Store reviews data
+  const [loading, setLoading] = useState(true); // Loading state
   const [currentIndex, setCurrentIndex] = useState(0);
   const startX = useRef(0);
   const isDragging = useRef(false);
 
-  // Function to move to the next review
+  // Fetch reviews from API
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await axios.get("dispensary/get-item-reviews"); // Adjust the API endpoint as needed
+        if (response.data.success) {
+          setReviews(response.data.data.reviews); // Setting the reviews data
+        }
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      } finally {
+        setLoading(false); // Set loading to false when done
+      }
+    };
+
+    fetchReviews();
+  }, []);
+
+  // Function to move to the next review (3 at a time)
   const nextReview = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === reviews.length - 1 ? 0 : prevIndex + 1
+      prevIndex + 3 >= reviews.length ? 0 : prevIndex + 3
+    );
+  };
+
+  // Function to move to the previous review (3 at a time)
+  const prevReview = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex - 3 < 0 ? reviews.length - 3 : prevIndex - 3
     );
   };
 
@@ -66,8 +55,6 @@ const ReviewSection = () => {
   // Auto slide every 3 seconds
   useEffect(() => {
     const interval = setInterval(nextReview, 3000); // Change review every 3 seconds
-
-    // Clean up the interval on component unmount
     return () => clearInterval(interval);
   }, []);
 
@@ -85,9 +72,7 @@ const ReviewSection = () => {
       nextReview();
       isDragging.current = false;
     } else if (distance < -100) {
-      setCurrentIndex((prevIndex) =>
-        prevIndex === 0 ? reviews.length - 1 : prevIndex - 1
-      );
+      prevReview();
       isDragging.current = false;
     }
   };
@@ -111,9 +96,7 @@ const ReviewSection = () => {
       nextReview();
       isDragging.current = false;
     } else if (distance < -100) {
-      setCurrentIndex((prevIndex) =>
-        prevIndex === 0 ? reviews.length - 1 : prevIndex - 1
-      );
+      prevReview();
       isDragging.current = false;
     }
   };
@@ -123,19 +106,28 @@ const ReviewSection = () => {
     isDragging.current = false;
   };
 
+  // Loading Spinner or Reviews Display
+  if (loading) {
+    return (
+      <div className="w-full p-4 text-center">
+        <div className="spinner"></div> {/* Loading spinner */}
+      </div>
+    );
+  }
+
   return (
-    <div className="w-full ">
+    <div className="w-full">
       {/* Header */}
-      <div className="w-full flex justify-between items-center mb-2">
-      <h1 className="text-black text-3xl font-bold mb-3">Reviews</h1>
-      <button className="text-green-600 font-medium hover:underline">
+      <div className="w-full flex justify-between items-center mb-4">
+        <h1 className="text-black text-3xl font-bold ml-2">Reviews</h1>
+        <button className="text-green-600 font-medium hover:underline">
           See all
         </button>
       </div>
 
       {/* Review Card Slider */}
       <div
-        className="flex justify-center items-center w-full"
+        className="relative overflow-hidden"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -143,51 +135,61 @@ const ReviewSection = () => {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <div className="relative w-full border bg-white p-6 rounded-lg  flex flex-col space-y-6 transition-all duration-500 ease-in-out mx-auto">
-          {/* Product Info */}
-          <div className="flex items-center space-x-4">
-            <img
-              src={reviews[currentIndex].image}
-              alt="Product"
-              className="w-14 h-14 rounded-lg object-cover"
-            />
-            <div className="flex-1">
-              <h3 className="text-lg font-semibold text-black">{reviews[currentIndex].item}</h3>
-              <p className="text-xs text-gray-500">{reviews[currentIndex].location}</p>
+        <div
+          className="flex transition-transform duration-500 ease-in-out"
+          style={{ transform: `translateX(-${currentIndex * 33.3333}%)` }}
+        >
+          {/* Render Three Reviews */}
+          {reviews.map((review) => (
+            <div
+              key={review._id}
+              className="flex-shrink-0 w-1/3 px-2"
+            >
+              <div className="bg-white p-6 rounded-lg border space-y-4">
+                {/* Product Info */}
+                <div className="flex items-center space-x-4">
+                  <img
+                    src={review.productImage[0]} // Using the first product image
+                    alt="Product"
+                    className="w-14 h-14 rounded-lg object-cover"
+                  />
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-black">{review.productName}</h3>
+                    <p className="text-xs text-gray-500">{`${review.city}, ${review.state}`}</p>
+                  </div>
+                  <span className="text-green-600 font-semibold text-lg">
+                    ${review.productPrice}
+                  </span>
+                </div>
+
+                {/* Star Rating */}
+                <div className="flex">{renderStars(review.ratingNumber)}</div>
+
+                <div className="flex items-center space-x-3">
+                  <img
+                    src={review.userProfilePicture} // User profile picture
+                    alt="User"
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                  <span className="text-sm font-medium text-black">{review.userFullName}</span>
+                </div>
+
+                {/* Review Text */}
+                <p className="text-sm text-gray-700">{review.review}</p>
+              </div>
             </div>
-            <span className="text-green-600 font-semibold text-lg">
-              {reviews[currentIndex].price}
-            </span>
-          </div>
-
-           {/* Star Rating */}
-           <div className="flex">{renderStars(reviews[currentIndex].rating)}</div>
-          <div className="flex items-center space-x-3">
-            <img
-              src={reviews[currentIndex].userImage}
-              alt="User"
-              className="w-10 h-10 rounded-full object-cover"
-            />
-            <span className="text-sm font-medium text-black">{reviews[currentIndex].user}</span>
-          </div>
-
-         
-
-          {/* Review Text */}
-          <p className="text-sm text-gray-700 ">{reviews[currentIndex].comment}</p>
-
-          
+          ))}
         </div>
       </div>
 
       {/* Dots Navigation */}
-      <div className="flex justify-center space-x-3 mt-2">
-        {reviews.map((_, index) => (
+      <div className="flex justify-center space-x-3 mt-4">
+        {Array.from({ length: Math.ceil(reviews.length / 3) }).map((_, index) => (
           <div
             key={index}
-            onClick={() => setCurrentIndex(index)}
+            onClick={() => setCurrentIndex(index * 3)}
             className={`w-4 h-4 rounded-full cursor-pointer transition-all duration-300 transform ${
-              index === currentIndex
+              index * 3 === currentIndex
                 ? "bg-green-600 scale-110"
                 : "bg-gray-300"
             }`}

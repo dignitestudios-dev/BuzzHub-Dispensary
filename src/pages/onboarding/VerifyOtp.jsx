@@ -1,91 +1,186 @@
-import React, { useContext } from "react";
+import React, { useRef, useState } from "react";
+import CountDown from "../../components/onboarding/CountDown";
+import { useLocation, useNavigate } from "react-router-dom";
+import { ErrorToast, SuccessToast } from "../../components/global/Toaster";
+import axios from "../../axios";
+import { FiLoader } from "react-icons/fi";
 import AuthSubmitBtn from "../../components/onboarding/AuthSubmitBtn";
-import { GlobalContext } from "../../contexts/GlobalContext";
-import { BiArrowBack } from "react-icons/bi";
-import { Logo } from "../../assets/export";
-import { useNavigate } from "react-router-dom";
 
 const VerifyOtp = () => {
+  const navigate = useNavigate();
+  const { state } = useLocation();
 
-  const navigate = useNavigate(); // Directly using useNavigate hook
+  const [otp, setOtp] = useState(Array(4).fill(""));
+  const [isActive, setIsActive] = useState(true);
+  const [seconds, setSeconds] = useState(30);
 
-  const arr = [1, 2, 3, 4];
+  const [loading, setLoading] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
+
+  const inputs = useRef([]);
+  const otpEmail = sessionStorage.getItem("email");
+
+  const handleChange = (e, index) => {
+    const { value } = e.target;
+
+    if (/^\d$/.test(value)) {
+      const newOtp = [...otp];
+      newOtp[index] = value;
+      setOtp(newOtp);
+
+      if (index < otp.length - 1) {
+        inputs.current[index + 1].focus();
+      }
+    }
+  };
+
+  const handleKeyDown = (e, index) => {
+    if (e.key === "Backspace") {
+      const newOtp = [...otp];
+      newOtp[index] = "";
+      setOtp(newOtp);
+
+      if (index > 0) {
+        inputs.current[index - 1].focus();
+      }
+    }
+  };
+
+  const getOtpValue = () => {
+    return otp.join("");
+  };
+
+  const isOtpFilled = otp.every((digit) => digit !== "");
+
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault()
+    if (!isOtpFilled) return;
+
+    setLoading(true);
+    try {
+      let obj = { email: otpEmail, code: getOtpValue() };
+
+      const response = await axios.post("/auth/validate-otp", obj);
+      if (response?.status === 200) {
+        console.log(response.data)
+        sessionStorage.setItem("token", response?.data?.token);
+        localStorage.setItem('token', response?.data?.token);
+        setLoading(false);
+        // navigate("/verify-success");
+        navigate("/profile-completion");
+      }
+    } catch (err) {
+      console.log("🚀 ~ createAccount ~ err:", err);
+      ErrorToast(err?.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    try {
+      setResendLoading(true);
+      let obj = { email: otpEmail };
+      const response = await axios.post("auth/send-otp", obj);
+
+      if (response.status === 200) {
+        SuccessToast("Otp has been sent to your email");
+        setResendLoading(false);
+        setOtp(Array(4).fill("")); // Reset OTP fields
+        handleRestart();
+      }
+    } catch (err) {
+      ErrorToast(err?.response?.data?.message);
+    } finally {
+      setResendLoading(false);
+    }
+  };
+
+  const handleRestart = () => {
+    setSeconds(30);
+    setIsActive(true);
+  };
+
+  // Custom Button specifically for the verification page
+  // const VerifyButton = ({ text, handleClick, loading, disabled }) => {
+  //   return (
+  //     <button
+  //       onClick={handleClick}
+  //       disabled={disabled}
+  //       className={`w-full h-[50px] rounded-[12px] text-white font-medium flex justify-center items-center text-[14px] ${
+  //         disabled ? "bg-gray-400 opacity-50 cursor-not-allowed" : "bg-primary"
+  //       }`}
+  //     >
+  //       <div className="flex items-center">
+  //         <span className="mr-2">{text}</span>
+  //         {loading && (
+  //           <FiLoader className="animate-spin text-lg mx-auto mt-1" />
+  //         )}
+  //       </div>
+  //     </button>
+  //   );
+  // };
+
   return (
-    <div className="w-screen h-screen flex items-start justify-start bg-gray-50">
-      <form
-        onSubmit={() => navigate("/update-password")}
-        className="w-full lg:w-1/2 h-full bg-white px-4 py-8 lg:p-20 z-10 flex flex-col overflow-y-auto justify-start items-center gap-8"
-      >
-        <button
-          onClick={() => navigate(-1)}
-          className="w-full flex justify-start items-start flex-col button" 
-        >
-          <BiArrowBack className="text-3xl text-black " />
-        </button>
-
-        <div className="w-full flex justify-start items-start flex-col">
-          <h1 className="text-[48px] font-bold text-black leading-[64.8px] tracking-[-1.2px]">
-            Verification
-          </h1>
-          <p className="font-normal text-[16px] text-black leading-[21.6px] tracking-[-1.2px]">
-            Please enter the code that we sent to your email to reset your password.
-          </p>
-        </div>
-
-        <div className="w-full h-auto flex justify-start items-center gap-2 my-2 flex-wrap">
-          {arr.map((item) => (
-            <input
-              key={item}
-              className="flex-1 min-w-[50px] max-w-[66px] h-[60px] rounded-xl bg-transparent outline-none text-center border border-[#074F57] text-3xl focus:bg-[#D0FCB333] focus-within:border-[#074F57]"
-              maxLength={1} 
-            />
-          ))}
-        </div>
-
-        <div className="w-full h-auto flex -mt-8 flex-col gap-1 justify-start items-start">
-          <div className="w-full lg:w-[434px] flex gap-1 justify-start items-center">
-            <span className="text-[13px] font-medium text-[#C2C6CB]">
-              Didn't receive a code?
-            </span>
-            <button className="outline-none text-[13px] border-none text-black font-bold">
-              Resend now
-            </button>
+    <div className="flex justify-center items-center h-full w-full">
+      <div className="flex justify-center items-center w-full">
+        <form onSubmit={handleVerifyOtp} className="bg-white h-full lg:w-[30%] md:w-[50%] w-[90%] p-6 rounded-xl">
+          <div className="w-full flex justify-center items-center flex-col">
+            <h1 className="text-[32px] md:text-[48px] font-bold">
+              Verification
+            </h1>
+            <p className="text-[#8A8A8A] font-normal md:text-[17px] text-[14px]">
+              Enter the OTP sent to your email
+            </p>
           </div>
-        </div>
-        <AuthSubmitBtn text={"Next"} />
-      </form>
-
-      <div className="hidden lg:flex flex-col justify-center items-center w-1/2 h-full relative">
-        {/* <img
-          src={Gradient}
-          alt="auth_mockup"
-          className="absolute inset-25 w-full h-full"
-        />
-
-        <img
-          src={Black}
-          alt="black_overlay"
-          className="absolute inset-25 w-[60%] h-[60%]"
-        /> */}
-
-      <div className="relative flex justify-center items-center h-full">
-                          <img
-                            src={Logo}
-                            alt="login_mockup"
-                            className="relative w-[70%] h-auto mb-20 object-contain rounded-full bg-green-600" 
-                          />
-                        </div>
-
-        <div className="absolute bottom-10 text-[#074F57] text-center z-20">
-                          <div className="flex flex-col items-center space-y-2">
-                            <img src={Logo} alt="pill" className="w-[50px]" />
-                            <h3 className="text-lg font-medium">Verification</h3>
-                            <p className="text-sm">
-                              Verify your OTP to continue
-                            </p>
-                          </div>
-                        </div>
-        </div>
+          <div className="w-full h-auto grid grid-cols-4 justify-center items-center gap-4 mb-6 mt-12">
+            {otp.map((digit, index) => (
+              <input
+                inputMode="numeric"
+                key={index}
+                type="password"
+                maxLength="1"
+                value={digit}
+                onChange={(e) => handleChange(e, index)}
+                onKeyDown={(e) => handleKeyDown(e, index)}
+                ref={(el) => (inputs.current[index] = el)}
+                className="h-[78px] rounded-2xl outline-none text-center bg-light border
+                 md:text-2xl text-xl font-bold focus:bg-[#E8F2EC] focus:text-[#1D7C42] focus-within:border-[#8A8A8A] flex items-center justify-center"
+              />
+            ))}
+          </div>
+          <div className="w-full h-auto flex justify-center lg:flex lg:flex-col mb-10 md:justify-start md:mb-20 gap-1">
+            <div className="w-full lg:w-[434px] flex justify-center items-center lg:justify-center lg:items-center gap-1">
+              <span className="text-[13px] font-medium text-[#8a8a8a]">
+                Didn't receive OTP?
+              </span>
+              {isActive ? (
+                <CountDown
+                  isActive={isActive}
+                  setIsActive={setIsActive}
+                  seconds={seconds}
+                  setSeconds={setSeconds}
+                />
+              ) : (
+                <button
+                  type="button"
+                  disabled={resendLoading}
+                  onClick={handleResendOtp}
+                  className="outline-none text-[13px] border-none font-bold text-primary"
+                >
+                  {resendLoading ? "Resending..." : "Resend"}
+                </button>
+              )}
+            </div>
+          </div>
+          <div>
+            <AuthSubmitBtn
+              text="Verify"
+              loading={loading}
+            />
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

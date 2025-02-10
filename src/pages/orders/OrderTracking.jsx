@@ -38,7 +38,6 @@ const OrderTracking = () => {
   return (
     <div className="h-auto w-full bg-gray-100 flex justify-center items-start p-6 overflow-auto text-black">
       <div className="h-auto w-full  bg-white overflow-auto rounded-xl shadow-xl">
-        {/* Back Button and Heading */}
         <div className="p-6 border-b border-gray-200 flex items-center">
           <FaArrowLeft
             className="text-gray-600 cursor-pointer hover:text-green-600 transition duration-200"

@@ -133,7 +133,7 @@ import { FaEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import axios from "../../axios";
 
-const OrdersTable = () => {
+const DashboardOrders = () => {
   const [orders, setOrders] = useState([]);
   const [filter, setFilter] = useState("Pending");
   const navigate = useNavigate();
@@ -256,4 +256,4 @@ const OrdersTable = () => {
   );
 };
 
-export default OrdersTable;
+export default DashboardOrders;
