@@ -3,11 +3,18 @@ import { FaPlus, FaTimes } from "react-icons/fa";
 import axios from "../../axios"; // Import axios instance
 import { useNavigate } from "react-router-dom";
 
-const allowedSubTypes = [
-  "Northern Lights", "Afghan Kush", "Granddaddy Purple (GDP)", "Bubba Kush", "Hindu Kush",
-  "Durban Poison", "Sour Diesel", "Jack Herer", "Maui Wowie", "Green Crack", 
-  "Blue Dream", "Girl Scout Cookies (GSC)", "OG Kush", "Pineapple Express", "White Widow"
-];
+// Define the types and corresponding subtypes
+const typesAndSubtypes = {
+  "Indica Strains": [
+    "Northern Lights", "Afghan Kush", "Granddaddy Purple (GDP)", "Bubba Kush", "Hindu Kush",
+  ],
+  "Sativa Strains": [
+    "Durban Poison", "Sour Diesel", "Jack Herer", "Maui Wowie", "Green Crack",
+  ],
+  "Hybrid Strains": [
+    "Blue Dream", "Girl Scout Cookies (GSC)", "OG Kush", "Pineapple Express", "White Widow",
+  ],
+};
 
 const AddProductModal = ({ onClose }) => {
   const navigate = useNavigate();
@@ -18,11 +25,11 @@ const AddProductModal = ({ onClose }) => {
   const [expiryDate, setExpiryDate] = useState("");
   const [productDescription, setProductDescription] = useState("");
   const [warningDescription, setWarningDescription] = useState("");
-  const [productType, setProductType] = useState("");
-  const [subTypes, setSubTypes] = useState(""); // User input as a string (comma-separated)
+  const [productType, setProductType] = useState(""); // Store the selected product type
+  const [subTypes, setSubTypes] = useState([]); // Store the selected subtypes as an array
   const [weightQuantity, setWeightQuantity] = useState("");
   const [weightType, setWeightType] = useState("");
-  const [fullfillmentMethod, setFullfillmentMethod] = useState(""); // New field for fulfillment method
+  const [fullfillmentMethod, setFullfillmentMethod] = useState("");
   const [subTypesError, setSubTypesError] = useState("");
 
   const handleImageUpload = (e) => {
@@ -30,16 +37,17 @@ const AddProductModal = ({ onClose }) => {
     setImages([...images, ...files]);
   };
 
+  const handleImageRemove = (index) => {
+    // Remove the image at the specified index
+    setImages(images.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const subTypesArray = subTypes.split(",").map(subType => subType.trim());
-
-    for (const subType of subTypesArray) {
-      if (!allowedSubTypes.includes(subType)) {
-        setSubTypesError(`"${subType}" is not a valid subtype.`);
-        return; 
-      }
+    if (!productType || subTypes.length === 0) {
+      setSubTypesError("Please select a product type and at least one subtype.");
+      return;
     }
 
     const formData = new FormData();
@@ -50,13 +58,14 @@ const AddProductModal = ({ onClose }) => {
     formData.append("warningDescription", warningDescription);
     formData.append("productType", productType);
 
-    subTypesArray.forEach((subType, index) => {
-      formData.append("subTypes[]", subType);
+    // Append each selected subtype to formData
+    subTypes.forEach(subType => {
+      formData.append("subTypes[]", subType); // Append each as an array item
     });
 
     formData.append("weightQuantity", weightQuantity);
     formData.append("weightType", weightType);
-    formData.append("fullfillmentMethod", fullfillmentMethod); 
+    formData.append("fullfillmentMethod", fullfillmentMethod);
 
     images.forEach(image => {
       formData.append("productImage", image);
@@ -65,20 +74,31 @@ const AddProductModal = ({ onClose }) => {
     try {
       const response = await axios.post("dispensary/add-product", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
       if (response.data.success) {
         console.log("Product added successfully:", response.data.data);
         onClose();
-        navigate("/products"); 
+        navigate("/products");
       } else {
         console.error("Failed to add product:", response.data.message);
       }
     } catch (error) {
       console.error("Error adding product:", error);
     }
+  };
+
+  // Handle checkbox selection
+  const handleSubTypeChange = (subtype) => {
+    setSubTypes((prevSubTypes) => {
+      if (prevSubTypes.includes(subtype)) {
+        return prevSubTypes.filter((item) => item !== subtype); // Remove if already selected
+      } else {
+        return [...prevSubTypes, subtype]; // Add if not selected
+      }
+    });
   };
 
   return (
@@ -96,12 +116,29 @@ const AddProductModal = ({ onClose }) => {
           <div className="flex gap-2 mb-4">
             {images.length > 0 && images.map((image, index) => (
               <div key={index} className="w-16 h-16 bg-gray-200 rounded overflow-hidden relative">
-                <img src={URL.createObjectURL(image)} alt="Uploaded" className="w-full h-full object-cover" />
+                <img 
+                  src={URL.createObjectURL(image)} 
+                  alt="Uploaded" 
+                  className="w-full h-full object-cover"
+                />
+                <button 
+                  type="button" 
+                  className="absolute top-0 right-0 text-white bg-black bg-opacity-50 p-1 rounded-full"
+                  onClick={() => handleImageRemove(index)}
+                >
+                  <FaTimes />
+                </button>
               </div>
             ))}
             <label className="w-16 h-16 flex items-center justify-center bg-green-600 text-white rounded cursor-pointer">
               <FaPlus />
-              <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageUpload} />
+              <input 
+                type="file" 
+                accept="image/*" 
+                multiple 
+                className="hidden" 
+                onChange={handleImageUpload} 
+              />
             </label>
           </div>
 
@@ -127,27 +164,45 @@ const AddProductModal = ({ onClose }) => {
               value={expiryDate}
               onChange={(e) => setExpiryDate(e.target.value)} 
             />
-            <input 
-              type="text" 
-              placeholder="Product Type" 
-              className="w-full p-2 border rounded" 
-              value={productType}
-              onChange={(e) => setProductType(e.target.value)} 
-            />
+            {/* Product Type dropdown */}
+            <div>
+              <select 
+                className="w-full p-2 border rounded" 
+                value={productType}
+                onChange={(e) => {
+                  setProductType(e.target.value);
+                  setSubTypes([]); // Reset subtypes when product type changes
+                }}
+              >
+                <option value="">Select Product Type</option>
+                <option value="Indica Strains">Indica Strains</option>
+                <option value="Sativa Strains">Sativa Strains</option>
+                <option value="Hybrid Strains">Hybrid Strains</option>
+              </select>
+            </div>
           </div>
 
-          {/* Subtypes input field */}
-          <div className="mb-4">
-            <input 
-              type="text" 
-              placeholder="Enter Subtypes (comma separated)" 
-              className="w-full p-2 border rounded" 
-              value={subTypes}
-              onChange={(e) => setSubTypes(e.target.value)} 
-            />
-            {subTypesError && <div className="text-red-500 text-sm">{subTypesError}</div>}
-          </div>
+          {/* Subtypes checkboxes */}
+          {productType && (
+            <div className="mb-4">
+              <div className="space-y-3 space-x-1">
+                {typesAndSubtypes[productType]?.map((subtype) => (
+                  <label key={subtype} className="inline-flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      checked={subTypes.includes(subtype)}
+                      onChange={() => handleSubTypeChange(subtype)}
+                      className="h-4 w-5 border rounded"
+                    />
+                    <span>{subtype}</span>
+                  </label>
+                ))}
+              </div>
+              {subTypesError && <div className="text-red-500 text-sm">{subTypesError}</div>}
+            </div>
+          )}
 
+          {/* Weight and Fulfillment */}
           <div className="grid grid-cols-2 gap-4 mb-4">
             <input 
               type="number" 
@@ -181,19 +236,19 @@ const AddProductModal = ({ onClose }) => {
             />
           </div>
 
+          {/* Fulfillment Method */}
           <div className="mb-4">
-  <select 
-    className="w-full p-2 border rounded" 
-    value={fullfillmentMethod}
-    onChange={(e) => setFullfillmentMethod(e.target.value)}
-  >
-    <option value="">Select Fulfillment Method</option>
-    <option value="Self Pickup">Self Pickup</option> {/* Corrected value */}
-    <option value="Deliver at home">Deliver at home</option>
-    <option value="Both">Both</option> {/* Corrected value */}
-  </select>
-</div>
-
+            <select 
+              className="w-full p-2 border rounded" 
+              value={fullfillmentMethod}
+              onChange={(e) => setFullfillmentMethod(e.target.value)}
+            >
+              <option value="">Select Fulfillment Method</option>
+              <option value="Self Pickup">Self Pickup</option>
+              <option value="Deliver at home">Deliver at home</option>
+              <option value="Both">Both</option>
+            </select>
+          </div>
 
           <button type="submit" className="w-full bg-green-600 text-white p-2 rounded">
             Save Product

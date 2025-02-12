@@ -100,11 +100,14 @@ const Reviews = () => {
                 <p className="font-semibold text-green-600">${review.productPrice}</p>
               </div>
             </div>
+
+            {/* Add a fallback for invalid ratingNumber */}
             <div className="mt-2 flex items-center space-x-1 text-yellow-500">
-              {[...Array(review.ratingNumber)].map((_, i) => (
+              {[...Array(Math.max(0, Math.floor(review.ratingNumber)))].map((_, i) => (
                 <FaStar key={i} />
               ))}
             </div>
+
             <p className="text-sm text-gray-700 mt-2">{review.review}</p>
             <div className="mt-2 flex items-center space-x-2">
               <img
