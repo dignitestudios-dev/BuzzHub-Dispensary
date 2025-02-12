@@ -119,6 +119,7 @@ const ProfileCompletion = () => {
   };
 
   return (
+    
     <div className="flex flex-col justify-center bg-[#1d7c42] items-center h-full w-full  ">
       <div className="flex items-center space-x-4 mt-4">
   <img src={Logo} alt="pill" className="w-[60px] bg-green-600 rounded-full border-2" />
@@ -137,7 +138,7 @@ const ProfileCompletion = () => {
             <div className="w-auto flex flex-col items-center gap-2">
               <div className="flex items-center ">
                 <div
-                  className={`md:w-12 md:h-12 w-[28.08px] h-[28.08px]  rounded-full flex items-center justify-center font-bold text-white ${
+                  className={`md:w-12 md:h-12 w-[28.08px] h-[28.08px]  rounded-full flex items-center justify-center font-bold text-black ${
                     index < step - 1
                       ? "bg-white text-primary z-50"
                       : index === step - 1

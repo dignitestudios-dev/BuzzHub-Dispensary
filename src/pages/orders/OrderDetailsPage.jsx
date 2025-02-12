@@ -1,161 +1,302 @@
-import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";
+  import { useLocation, useNavigate } from "react-router-dom"; 
+  import { FaArrowLeft } from "react-icons/fa"; 
+  import { useState } from "react"; 
+  import axios from "../../axios";
+  import TrackOrderModal from "../../components/orders/TrackOrderModal";
 
-const OrderDetailsPage = () => {
-  const { orderId } = useParams();
-  const navigate = useNavigate();
+  const OrderDetailsPage = () => {
+    const location = useLocation(); 
+    const { order } = location.state; // Extract the order from state
+    console.log("order is --? ", order)
+    const navigate = useNavigate();
 
-  // Dummy order data with buyer's profile picture
-  const order = {
-    id: "2151515156",
-    placedOn: "Sun, Jun 7, 2024",
-    time: "11:30 AM",
-    fulfillmentMethod: "Delivery",
-    status: "Pending",
-    buyer: "Mike Smith",
-    buyerImage: "https://i.pravatar.cc/?img=7", // Added profile image of the buyer
-    shippingAddress: "Unit 305, Montford Court, Montford Street, Salford, M50",
-    productDetails: {
-      name: "Item name",
-      weight: "50gms",
-      price: "$40.00",
-      location: "Toronto, Canada",
-      imageUrl: "https://i.pravatar.cc/?img=14", // Replace with actual image path
-    },
-    billing: {
-      subtotal: "$140",
-      platformFees: "$10",
-      total: "$150",
-    },
-  };
+    // State to manage the clicked image
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [loading, setLoading] = useState(false); // For loading state
+    const [error, setError] = useState(null); // For error state
 
-  const handleStatusChange = (newStatus) => {
-    alert(`Order ${order.id} has been ${newStatus}`);
-    navigate("/"); // Go back to the main page after accepting or rejecting
-  };
+    // States for the modals
+    const [showAcceptModal, setShowAcceptModal] = useState(false);
+    const [showRejectModal, setShowRejectModal] = useState(false);
+    const [showTrackOrderModal, setShowTrackOrderModal] = useState(false);
+    const [orderDetails, setOrderDetails] = useState(order); // State to store order details
 
-  return (
-    <div className="h-auto w-full bg-gray-100 flex justify-center p-6 overflow-auto text-black">
-      <div className="w-full bg-white rounded-lg shadow-xl overflow-y-auto">
-        {/* Back Button */}
-        <div className="p-6 border-b border-gray-200 flex items-center">
-          <FaArrowLeft
-            className="text-gray-600 cursor-pointer"
-            onClick={() => navigate(-1)}
-          />
-          <h1 className="ml-4 text-2xl font-semibold text-gray-800">Order Request</h1>
-        </div>
 
-        {/* Scrollable content */}
-        <div className="p-6 space-y-8 overflow-auto">
+
+    // Function to handle accepting the order
+    const handleAcceptOrder = async () => {
+      setLoading(true); // Set loading state
+      setError(null); // Reset any previous errors
+    
+      try {
+        const response = await axios.post('dispensary/manage-order-by-dispensary', {
+          orderId: orderDetails._id, // Using _id to update status
+          status: "Approved",
+        });
+    
+        if (response.status === 200) {
+          // Update the order details state with the new status
+          setOrderDetails((prevOrder) => ({
+            ...prevOrder,
+            orderStatus: "Approved",
+          }));
+    
+          alert(`Order ${orderDetails.orderUvid} has been Approved`);
+          navigate("/orders"); // Navigate to the orders page
+        }
+      } catch (err) {
+        setError("An error occurred while updating the order status.");
+      } finally {
+        setLoading(false); // Stop loading state
+        setShowAcceptModal(false); // Close the accept modal
+      }
+    };
+    
+
+    // Function to handle rejecting the order
+    const handleRejectOrder = async () => {
+      setLoading(true); // Set loading state
+      setError(null); // Reset any previous errors
+    
+      try {
+        const response = await axios.post('dispensary/manage-order-by-dispensary', {
+          orderId: orderDetails._id, // Using _id to update status
+          status: "Rejected",
+        });
+    
+        if (response.status === 200) {
+          // Update the order details state with the new status
+          setOrderDetails((prevOrder) => ({
+            ...prevOrder,
+            orderStatus: "Rejected",
+          }));
+    
+          alert(`Order ${orderDetails.orderUvid} has been Rejected`);
+          navigate("/orders"); // Navigate to the orders page
+        }
+      } catch (err) {
+        setError("An error occurred while updating the order status.");
+      } finally {
+        setLoading(false); // Stop loading state
+        setShowRejectModal(false); // Close the reject modal
+      }
+    };
+    
+    // Handle image click (open modal)
+    const handleImageClick = (imageUrl) => {
+      setSelectedImage(imageUrl); // Set the clicked image in state
+    };
+
+    // Handle modal close
+    const closeModal = () => {
+      setSelectedImage(null); // Close the modal
+    };
+
+    const handleTrackOrder = () => {
+      setShowTrackOrderModal(true);
+    };
+
+    return (
+      <div className="h-auto w-full bg-gray-100 flex justify-center p-6 overflow-auto text-black">
+        <div className="w-full bg-white rounded-lg shadow-xl overflow-y-auto">
+          {/* Back Button */}
+          <div className="p-6 border-b border-gray-200 flex items-center">
+            <FaArrowLeft
+              className="text-gray-600 cursor-pointer"
+              onClick={() => navigate(-1)}
+            />
+            <h1 className="ml-4 text-2xl font-semibold text-gray-800 ">Order Request</h1>
+          </div>
+
           {/* Order Details */}
-          <div>
-            <h2 className="text-2xl font-semibold mb-6">Order Details</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-600">
-              <div className="flex justify-between">
-                <span>Order ID</span>
-                <span className="font-medium">{order.id}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Placed On</span>
-                <span>{order.placedOn}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Time</span>
-                <span>{order.time}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Fulfillment Method</span>
-                <span>{order.fulfillmentMethod}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Status</span>
-                <span className={`font-semibold ${order.status === "Accepted" ? "text-green-600" : order.status === "Rejected" ? "text-red-600" : "text-yellow-500"}`}>
-                  {order.status}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Buyer Details */}
-          <div className="border-t border-gray-200 pt-6">
-            <h2 className="text-2xl font-semibold mb-4">Buyer Details</h2>
-            <div className="flex items-center mb-4 space-x-4">
-              {/* Buyer Profile Image */}
-              <img
-                src={order.buyerImage}
-                alt={order.buyer}
-                className="w-12 h-12 rounded-full object-cover"
-              />
-              <div className="flex flex-col justify-between w-full">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-800 font-semibold">{order.buyer}</span>
-                  <button className="px-4 py-2 bg-green-600 text-white rounded-md shadow hover:bg-green-700 transition-all">
-                    View Medical Card
-                  </button>
+          <div className="p-6 space-y-8 ">
+            <div>
+              <h2 className="text-2xl font-semibold mb-6 ">Order Information</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-600">
+                <div className="flex justify-between">
+                  <span>Order ID</span>
+                  <span className="font-medium">{order.orderUvid}</span>
                 </div>
-                <p className="text-sm text-gray-600">{order.shippingAddress}</p>
+                <div className="flex justify-between">
+                  <span>Placed On</span>
+                  <span>{new Date(order.createdAt).toLocaleDateString()}</span>
+                </div>
+                <div className="flex justify-between">
+  <span>Order Status</span>
+  <span className={`font-semibold ${orderDetails.orderStatus === "Approved" ? "text-green-600" : orderDetails.orderStatus === "Rejected" ? "text-red-600" : "text-yellow-500"}`}>
+    {orderDetails.orderStatus}
+  </span>
+</div>
+
+                <div className="flex justify-between">
+                  <span>Total Amount</span>
+                  <span className="font-medium">${order.totalAmount}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Fulfillment Method</span>
+                  <span>{order.fulfillmentMethod}</span>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Product Details */}
-          <div className="border-t border-gray-200 pt-6">
-            <h2 className="text-2xl font-semibold mb-4">Product Details</h2>
-            <div className="flex items-center mb-6">
-              <img
-                src={order.productDetails.imageUrl}
-                alt={order.productDetails.name}
-                className="w-36 h-36 rounded-lg mr-6"
-              />
+            {/* User Information */}
+            <div className="border-b border-gray-200"></div>
+            <div>
+              <h2 className="text-2xl font-semibold mb-4 ">User Information</h2>
+              <div className="flex items-center mb-6">
+                <img
+                  src={order.OrderBy.profilePicture}
+                  alt={order.OrderBy.Username}
+                  className="w-16 h-16 rounded-full mr-6"
+                />
+                <div>
+                  <p className="text-lg font-semibold">{order.OrderBy.Username}</p>
+                  <p className="text-sm text-gray-600">User ID: {order.OrderBy.uid}</p>
+                  <p className="text-sm text-gray-600">Phone: {order.phoneNumber}</p>
+                </div>
+              </div>
               <div>
-                <p className="text-lg font-semibold">{order.productDetails.name}</p>
-                <p className="text-sm text-gray-600">{order.productDetails.weight}</p>
-                <p className="text-sm text-gray-600">{order.productDetails.location}</p>
+                <h3 className="text-lg font-semibold mb-2">Medical Details</h3>
+                <div className="flex space-x-4">
+                  <img
+                    src={order.OrderBy.medicalCardFront}
+                    alt="Medical Card Front"
+                    className="w-24 h-16 object-cover rounded-md cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
+                    onClick={() => handleImageClick(order.OrderBy.medicalCardFront)} // Open modal on click
+                  />
+                  <img
+                    src={order.OrderBy.medicalCardBack}
+                    alt="Medical Card Back"
+                    className="w-24 h-16 object-cover rounded-md cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
+                    onClick={() => handleImageClick(order.OrderBy.medicalCardBack)} // Open modal on click
+                  />
+                </div>
               </div>
             </div>
-            <p className="text-right text-xl font-semibold">{order.productDetails.price}</p>
-          </div>
 
-          {/* Billing */}
-          <div className="border-t border-gray-200 pt-6">
-            <h2 className="text-2xl font-semibold mb-4">Billing</h2>
-            <div className="space-y-4 text-sm text-gray-600">
-              <div className="flex justify-between">
-                <span>Subtotal</span>
-                <span>{order.billing.subtotal}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Platform Fees</span>
-                <span>{order.billing.platformFees}</span>
-              </div>
-              <div className="flex justify-between font-semibold">
-                <span>Total</span>
-                <span>{order.billing.total}</span>
-              </div>
+            {/* Product Details */}
+            <div className="border-b border-gray-200"></div>
+            <div>
+              <h2 className="text-2xl font-semibold mb-4">Product Details</h2>
+              {order.products.map((product) => (
+                <div key={product.productId} className="flex items-center mb-6">
+                  <img
+                    src={product.productImage[0]} // First product image
+                    alt={product.name}
+                    className="w-36 h-36 rounded-lg mr-6"
+                  />
+                  <div>
+                    <p className="text-lg font-semibold">{product.name}</p>
+                    <p className="text-sm text-gray-600">Type: {product.productType}</p>
+                    <p className="text-sm text-gray-600">Sub-Types: {product.subTypes.join(", ")}</p>
+                    <p className="text-sm text-gray-600">Weight: {product.weightQuantity} {product.weightType}</p>
+                    <p className="text-sm text-gray-600">Price: ${product.price}</p>
+                    <p className="text-sm text-gray-600">{product.productDescription}</p>
+                    <p className="text-sm text-gray-600">{product.warningDescription}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
 
-          {/* Actions */}
-          <div className="border-t border-gray-200 pt-6 gap-2  flex justify-between">
-            <button
-              onClick={() => handleStatusChange("accepted")}
-              className="w-full md:w-1/2 px-6 py-3 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition-all"
-            >
-              Accept
-            </button>
-            <button
-              onClick={() => handleStatusChange("rejected")}
-              className="w-full md:w-1/2 mt-4 md:mt-0 px-6 py-3 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 transition-all"
-            >
-              Decline
-            </button>
+            {/* Shipping Address */}
+            <div>
+              <h2 className="text-2xl font-semibold mb-4">Shipping Address</h2>
+              <p className="text-sm text-gray-600">{order.shippingAddress}</p>
+            </div>
+
+            {/* Conditional Buttons */}
+            {order.orderStatus === "In Process" || order.orderStatus === "Out for Delivery" || order.orderStatus === "Approved"  ? (
+              <div className="w-full">
+              <button
+                onClick={() => handleTrackOrder()} // Add a function to track the order
+                className="w-full py-3 bg-green-600 text-white rounded-lg font-medium" // w-full makes it full width
+              >
+                Track Order
+              </button>
+            </div>
+            ) : (
+              <div className="flex justify-between space-x-4">
+                <button
+                  onClick={() => setShowAcceptModal(true)} // Show Accept Modal
+                  className="w-1/2 py-3 bg-green-600 text-white rounded-lg font-medium"
+                  disabled={loading}
+                >
+                  {loading ? "Updating..." : "Accept Order"}
+                </button>
+                <button
+                  onClick={() => setShowRejectModal(true)} // Show Reject Modal
+                  className="w-1/2 py-3 bg-red-600 text-white rounded-lg font-medium"
+                  disabled={loading}
+                >
+                  {loading ? "Updating..." : "Reject Order"}
+                </button>
+              </div>
+            )}
+            {error && <p className="text-red-600 mt-4">{error}</p>} {/* Show error message */}
           </div>
         </div>
-      </div>
-    </div>
-  );
-};
 
-export default OrderDetailsPage;
+        {/* Confirmation Modals */}
+        {showAcceptModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
+            <div className="bg-white p-8 rounded-lg max-w-sm w-full">
+              <h2 className="text-xl font-semibold mb-4">Are you sure you want to accept this order?</h2>
+              <div className="flex justify-between space-x-4">
+                <button onClick={handleAcceptOrder} className="w-1/2 py-2 bg-green-600 text-white rounded-lg font-medium">
+                  Accept
+                </button>
+                <button onClick={() => setShowAcceptModal(false)} className="w-1/2 py-2 bg-gray-300 text-black rounded-lg font-medium">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {showRejectModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
+            <div className="bg-white p-8 rounded-lg max-w-sm w-full">
+              <h2 className="text-xl font-semibold mb-4">Are you sure you want to reject this order?</h2>
+              <div className="flex justify-between space-x-4">
+                <button onClick={handleRejectOrder} className="w-1/2 py-2 bg-red-600 text-white rounded-lg font-medium">
+                  Reject
+                </button>
+                <button onClick={() => setShowRejectModal(false)} className="w-1/2 py-2 bg-gray-300 text-black rounded-lg font-medium">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Track Order Modal */}
+      <TrackOrderModal
+        showModal={showTrackOrderModal}
+        setShowModal={setShowTrackOrderModal}
+        orderId={order._id}
+        currentStatus={order.orderStatus}
+      />
+
+        {/* Modal to display the clicked image */}
+        {selectedImage && (
+          <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
+            <div className="relative bg-gray-50 p-6 rounded-lg max-w-2xl w-full">
+              <img
+                src={selectedImage}
+                alt="Medical Card"
+                className="w-full h-auto max-h-96 object-contain rounded-lg"
+              />
+              <button
+                onClick={closeModal}
+                className="absolute top-0.5 right-3 text-black rounded-full focus:outline-none transition"
+              >
+                <span className="text-3xl">×</span>
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  export default OrderDetailsPage;

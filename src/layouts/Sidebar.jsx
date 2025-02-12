@@ -38,12 +38,12 @@ const Sidebar = () => {
 
       {/* Sidebar (Drawer) */}
       <div
-        className={`fixed lg:static top-0 left-0 w-[280px] bg-gray-50 border-r border-gray-300 py-4  flex flex-col justify-start items-start transition-transform duration-300 ${
+        className={`fixed lg:static top-0 left-0 w-[280px] bg-gray-50 border-r border-gray-300 py-4 flex flex-col justify-start items-start transition-transform duration-300 ${
           isDrawerOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 z-40 h-screen overflow-y-auto`}
       >
         {/* Logo */}
-        <div className=" flex justify-center items-center w-full">
+        <div className="flex justify-center items-center w-full">
           <Link to="/">
             <img
               src={Logo}
@@ -54,17 +54,21 @@ const Sidebar = () => {
         </div>
 
         {/* Navigation Links */}
-        <div className="w-full flex-grow overflow-y-auto mt-4">
+        <div className="w-full flex-grow mt-4 scrollbar-hide">
           <ul className="w-full space-y-4">
             {sidebarArr.map((link, index) => (
-              <li key={index} className="w-full flex justify-start items-center gap-3 ">
-                <span className={`w-2 h-3 rounded-r-full ${activeLink === link.url ? "bg-[#1D7C42]" : "bg-[#1D7C4230] border border-[#074F57]"} `}>
-
-                </span>
+              <li key={index} className="w-full flex justify-start items-center gap-3">
+                <span
+                  className={`w-2 h-3 rounded-r-full ${
+                    activeLink === link.url
+                      ? "bg-[#1D7C42]"
+                      : "bg-[#1D7C4230] border border-[#074F57]"
+                  }`}
+                ></span>
                 <Link
                   to={link.url}
                   onClick={() => handleLinkClick(link.url)} // Set active on click
-                  className={`flex items-end w-[calc(100%-1.9rem)] gap-2 px-8 py-3 rounded-md transition-all  relative ${
+                  className={`flex items-end w-[calc(100%-1.9rem)] gap-2 px-8 py-3 rounded-md transition-all relative ${
                     activeLink === link.url
                       ? "bg-[#1D7C42] text-white" // Active background color
                       : "bg-[#1D7C4230] border border-[#074F57] text-[#074F57] hover:bg-[#1D7C42]  hover:text-white" // Hover background color
@@ -78,21 +82,19 @@ const Sidebar = () => {
                 </Link>
               </li>
             ))}
+            
+            {/* Logout Button as a List Item */}
+            <li className="w-full flex justify-start items-center gap-3">
+              <span className="w-2 h-3 rounded-r-full bg-[#074F5730] border border-[#074F57]"></span>
+              <button
+                onClick={() => alert("Logged out")}
+                className="flex items-center gap-3 px-8 py-3 bg-[#1D7C4230] border border-[#074F57] text-[#074F57] hover:bg-[#1D7C42]  hover:text-white rounded-md transition-all w-[calc(100%-1.9rem)]"
+              >
+                <RiLogoutCircleLine className="text-xl" />
+                <span className="text-sm font-medium">Logout</span>
+              </button>
+            </li>
           </ul>
-        </div>
-
-        {/* Footer */}
-        <div className="pt-2 w-full group flex justify-start items-center gap-3">
-        <span className={`w-2 h-3 rounded-r-full group-hover:bg-[#074F57] hover:text-white bg-[#074F5730] border border-[#074F57] `}>
-
-</span>
-          <button
-            onClick={() => alert("Logged out")}
-            className="flex items-center gap-3 px-6 py-3 bg-[#1D7C4230] border border-[#074F57] text-[#074F57] hover:bg-[#1D7C42]  hover:text-white rounded-md transition-all w-[calc(100%-1.9rem)]  "
-          >
-            <RiLogoutCircleLine className="text-xl" />
-            <span className="text-sm font-medium">Logout</span>
-          </button>
         </div>
       </div>
 

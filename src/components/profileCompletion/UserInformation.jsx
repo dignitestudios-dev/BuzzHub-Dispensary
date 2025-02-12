@@ -109,7 +109,7 @@ const UserInformation = ({
         );
       })}
 
-      <div className="w-full h-auto flex flex-col justify-start items-start my-4">
+      <div className="lg:w-[80%] h-auto flex flex-col justify-start items-start my-4">
         <SelectField
           value={selectedState}
           handleChange={handleStateChange}
@@ -120,7 +120,7 @@ const UserInformation = ({
           disabled={false}
         />
       </div>
-      <div className="w-full h-auto flex flex-col justify-start items-start my-4">
+      <div className="lg:w-[80%] h-auto flex flex-col justify-start items-start my-4">
         <SelectField
           value={city}
           handleChange={(e) => setCity(e.target.value)}

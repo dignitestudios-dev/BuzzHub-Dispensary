@@ -18,6 +18,9 @@ import ProfileCompletion from "../pages/onboarding/ProfileCompletion";
 import Packages from "../pages/subscription/Packages";
 import RequestSuccessScreen from "../pages/onboarding/RequestSuccessScreen";
 import AddCard from "../pages/subscription/AddCard";
+import Verification from "../pages/onboarding/Verification";
+import UpdatePassword from "../pages/onboarding/UpdatePassword";
+import Wallet from "../pages/wallet/Wallet";
 
 
 export const normalRoutes = [
@@ -32,6 +35,22 @@ export const normalRoutes = [
       page: <RequestSuccessScreen />
       },
 
+      {
+        title:"Verification",
+        url:"/verification",
+        page: <Verification />
+        },
+
+        {
+          title:"Update Password",
+          url:"/update-password",
+          page: <UpdatePassword />
+          },
+
+          
+
+
+        
     {
       title:"Packages",
       url:"/packages",
@@ -52,8 +71,15 @@ export const normalRoutes = [
 
       {
         title: "Dashboard",
-        url: "/order-details/:orderId",
+        url: "/order-details",
         page: <GlobalLayout page={<OrderDetailsPage />} />,
+      },
+
+
+      {
+        title: "Wallet",
+        url: "/wallet",
+        page: <GlobalLayout page={<Wallet />} />,
       },
 
       // {

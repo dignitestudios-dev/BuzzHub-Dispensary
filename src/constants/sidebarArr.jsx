@@ -14,6 +14,7 @@ import { BsCartCheck } from "react-icons/bs";
 import { FaRegStar } from "react-icons/fa";
 import { IoSettingsOutline } from "react-icons/io5";
 
+import { IoWalletOutline } from "react-icons/io5";
 
 
 
@@ -69,6 +70,13 @@ export const sidebarArr = [
     title: "Reviews",
     url: "/reviews",
     icon: <FaRegStar />,
+  },
+
+  
+  {
+    title: "Wallet",
+    url: "/wallet",
+    icon: <IoWalletOutline />,
   },
 
   {
