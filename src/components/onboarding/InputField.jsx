@@ -1,30 +1,34 @@
-  import React, { useEffect, useRef, useState } from "react";
-  import { BsEye, BsEyeSlash } from "react-icons/bs";
+import React, { useEffect, useRef, useState } from "react";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
 import Map from "../global/Map";
-import { Autocomplete, useLoadScript } from "@react-google-maps/api";
+import {
+  Autocomplete,
+  useJsApiLoader,
+  useLoadScript,
+} from "@react-google-maps/api";
 
-  const InputField = ({
-    placeholder,
-    type,
-    error,
-    register,
-    keyname,
-    index,
-    maxLength,
-    isDisabled = false,
-    onInput,
-    isPhone = false,
-    icon,
-    setCoordinates,
-    coordinatesMessage,
-    setCoordinatesMessage,
-  }) => {
-    const [isPassVisible, setIsPassVisible] = useState(false);
+const InputField = ({
+  placeholder,
+  type,
+  error,
+  register,
+  keyname,
+  index,
+  maxLength,
+  isDisabled = false,
+  onInput,
+  isPhone = false,
+  icon,
+  setCoordinates,
+  coordinatesMessage,
+  setCoordinatesMessage,
+}) => {
+  const [isPassVisible, setIsPassVisible] = useState(false);
 
   const Api_Key = import.meta.env.VITE_APP_GOOGLE_MAP_API_KEY;
 
   const startLocationRef = useRef();
-  const { isLoaded } = useLoadScript({
+  const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: Api_Key,
     libraries: ["places"],
   });
@@ -46,9 +50,8 @@ import { Autocomplete, useLoadScript } from "@react-google-maps/api";
     }
   };
 
-
-    return (
-      <div className="w-full h-auto flex flex-col gap-1 justify-start items-start  ">
+  return (
+    <div className="w-full h-auto flex flex-col gap-1 justify-start items-start  ">
       <div
         className={`w-full h-[56px] focus-within:border-[1px] rounded-[12px] bg-light shadow-sm 
              flex items-center justify-start  ${
@@ -145,7 +148,7 @@ import { Autocomplete, useLoadScript } from "@react-google-maps/api";
         </div>
       )}
     </div>
-    );
-  };
+  );
+};
 
-  export default InputField;
+export default InputField;
