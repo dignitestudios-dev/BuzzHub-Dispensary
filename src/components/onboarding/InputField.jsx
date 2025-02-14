@@ -3,6 +3,7 @@ import { BsEye, BsEyeSlash } from "react-icons/bs";
 import Map from "../global/Map";
 import {
   Autocomplete,
+  LoadScript,
   useJsApiLoader,
   useLoadScript,
 } from "@react-google-maps/api";
@@ -25,13 +26,7 @@ const InputField = ({
 }) => {
   const [isPassVisible, setIsPassVisible] = useState(false);
 
-  const Api_Key = import.meta.env.VITE_APP_GOOGLE_MAP_API_KEY;
-
   const startLocationRef = useRef();
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: Api_Key,
-    libraries: ["places"],
-  });
 
   const [startAddress, setStartAddress] = useState("");
   const [originCoords, setOriginCoords] = useState([30.0444, 31.2357]);
@@ -76,7 +71,10 @@ const InputField = ({
             </div>
           )}
           {keyname == "streetAddress" && index == 1 ? (
-            isLoaded && (
+            <LoadScript
+              googleMapsApiKey={import.meta.env.VITE_APP_GOOGLE_MAP_API_KEY}
+              libraries={["places"]}
+            >
               <Autocomplete
                 className="w-[96%] lg:w-[46%]"
                 onLoad={(autocomplete) =>
@@ -101,7 +99,7 @@ const InputField = ({
                   />
                 </div>
               </Autocomplete>
-            )
+            </LoadScript>
           ) : (
             <input
               disabled={isDisabled}
@@ -139,7 +137,6 @@ const InputField = ({
       {keyname == "streetAddress" && index == 1 && (
         <div className="w-full">
           <Map
-            isLoaded={isLoaded}
             center={{
               lat: originCoords[0],
               lng: originCoords[1],
