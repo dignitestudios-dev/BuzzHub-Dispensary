@@ -1,20 +1,207 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiMail, FiPhone, FiClock, FiMapPin } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import moment from "moment"
+import axios from "../../axios";
+import { ErrorToast, SuccessToast } from "../../components/global/Toaster";
 
 const EditProfilePage = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    name: "Dispensary Name",
-    phone: "+1 834 0570 746",
-    address: "Toronto, Canada",
-    bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    openingHour: "09:00 AM",
-    closingHour: "09:00 PM",
-  });
+  const [startingTime, setStartingTime] = useState('');
+  
+    const [timeValue, setTimeValue] = useState('');
+    const [closingTime, setClosingTime] = useState('');
+    const [closingTimeValue, setClosingTimeValue] = useState('');
+      const [pickupType, setPickupType] = useState("");
+      const [loading,setLoading] = useState(false)
+
+      const [fileNames, setFileNames] = useState({
+          front: "",
+          back: "",
+          left: "",
+          right: "",
+        });
+
+        const [fileUpload, setFileUpload] = useState({
+          front: "",
+          back: "",
+          left: "",
+          right: "",
+        });
+
+          const [profileImg, setProfileImg] = useState("");
+          const [profileFile, setProfileFile] = useState("");
+          
+        
+    
+
+  const [formData, setFormData] = useState({  });
+  console.log("fileNames 00--", fileNames)
+
+
+  useEffect(() => {
+    // Retrieve userData from localStorage
+    const userData = JSON.parse(localStorage.getItem("userData"));
+
+    // Check if userData exists before setting the state
+    if (userData) {
+
+      const openingTime = moment(userData.openingHourTime).format('HH:mm');
+      const closingTime = moment(userData.closingHourTime).format('HH:mm');
+      setTimeValue(openingTime);
+      setClosingTimeValue(closingTime);
+
+      const formattedOpeningTimeWithDate = moment()
+      .set({
+        hour: moment(openingTime, 'HH:mm').hour(),
+        minute: moment(openingTime, 'HH:mm').minute(),
+        second: 0,
+      })
+      .toISOString();
+    setStartingTime(formattedOpeningTimeWithDate);
+
+    const formattedClosingTimeWithDate = moment()
+      .set({
+        hour: moment(closingTime, 'HH:mm').hour(),
+        minute: moment(closingTime, 'HH:mm').minute(),
+        second: 0,
+      })
+      .toISOString();
+    setClosingTime(formattedClosingTimeWithDate);
+  
+      setFormData({
+        dispensaryName: userData.dispensaryName || "Dispensary Name",  // Fallback to default if undefined
+        phoneNumber: `+1 ${userData.phoneNumber || "8340570746"}`,  // Fallback phone format
+        streetAddress: `${userData.streetAddress || "Toronto"}`, 
+        bio: userData.bio || "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+
+        // openingHour: new Date(userData.openingHourTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),  // Format time
+        // closingHour: new Date(userData.closingHourTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),  // Format time
+        city: userData.city || "City Name",  // Fallback to default if undefined
+        state: userData.state || "state",  // Fallback to default if undefined
+        deliveryRadius: userData.deliveryRadius || "deliveryRadius",  // Fallback to default if undefined
+        zipCode: userData.zipCode || "zipCode",  // Fallback to default if undefined
+
+      });
+
+      setPickupType(userData?.fulfillmentMethod)
+      setProfileImg(userData?.profilePicture)
+      setFileNames({back:userData.licenseBack, front:userData.licenseFront, left:userData.registrationLicenseFront, right:userData.registrationLicenseBack})
+    }
+  }, []);
+
+  const handleOpeningTimeChange = (e) => {
+    const formattedTimeWithDate = moment()
+      .set({
+        hour: moment(e.target.value, 'HH:mm').hour(),
+        minute: moment(e.target.value, 'HH:mm').minute(),
+        second: 0,
+      })
+      .toISOString();
+    setStartingTime(formattedTimeWithDate);
+    setTimeValue(e.target.value);
+  };
+
+  const handleClosingTimeChange = (e) => {
+    const formattedTimeWithDate = moment()
+      .set({
+        hour: moment(e.target.value, 'HH:mm').hour(),
+        minute: moment(e.target.value, 'HH:mm').minute(),
+        second: 0,
+      })
+      .toISOString();
+    setClosingTime(formattedTimeWithDate);
+    setClosingTimeValue(e.target.value);
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleCheckboxChange = (type) => {
+    if (pickupType === type) {
+      setPickupType("");
+    } else {
+      setPickupType(type);
+    }
+  };
+
+  const handleApiCall = async () => {
+    setLoading(true);
+    try {
+      // data
+      const data = new FormData();
+      data.append("dispensaryName", formData.dispensaryName);
+      data.append("bio", formData.bio);
+      data.append("city", formData?.city);
+      data.append("country", "USA");
+      data.append("deliveryRadius", formData.deliveryRadius);
+      data.append("closingHourTime", closingTime);
+      data.append("openingHourTime", startingTime);
+      data.append("fulfillmentMethod", pickupType);
+      // data.append("pickupType", JSON.stringify(formData.pickupType)); // assuming it's an array
+      data.append("state", formData.state);
+      data.append("streetAddress", formData.streetAddress);
+      data.append("zipCode", formData.zipCode);
+      data.append(
+        "location[coordinates]",
+        JSON.stringify([
+            -74.0059413,
+            40.7127837,
+        ])
+      );
+      // data.append("location[type]", "Point");
+
+      // Append file data (if exists)
+      if (profileFile) {
+        data.append("profilePicture", profileFile);
+      }
+      if (fileUpload.front) {
+        data.append("licenseFront", fileUpload.front);
+      }
+      if (fileUpload.back) {
+        data.append("licenseBack", fileUpload.back);
+      }
+      if (fileUpload.left) {
+        data.append("registrationLicenseFront", fileUpload.left);
+      }
+      if (fileUpload.right) {
+        data.append("registrationLicenseBack", fileUpload.right);
+      }
+
+      const response = await axios.post(
+        "dispensary/dispensary-complete-profile",
+        data
+      );
+      if (response.status === 200) {
+        setLoading(false);
+        localStorage.setItem('userData', JSON.stringify(response.data.data));
+        SuccessToast("Information Submitted");
+        navigate("/profile")
+      }
+    } catch (err) {
+      console.log("🚀 ~ handleApiCall ~ err:", err);
+      ErrorToast(err?.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleFileChange = (e, position) => {
+    const file = e.target.files[0];
+    // const error = validateFile(file);
+    
+      setFileUpload((prevFileNames) => ({
+        ...prevFileNames,
+        [position]: file,
+      }));
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProfileFile(file);
+    }
   };
 
   return (
@@ -24,14 +211,31 @@ const EditProfilePage = () => {
       {/* Profile Section (Image and Name) */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-2xl font-semibold">{formData.name}</h2>
+          <h2 className="text-2xl font-semibold">{formData.dispensaryName}</h2>
           <p className="text-gray-500 text-sm mt-1">Dispensary</p>
         </div>
-        <img
-          src="https://i.pravatar.cc/?img=12"
-          alt="Profile"
-          className="w-24 h-24 rounded-full object-cover border-4 border-gray-300"
-        />
+        <div
+          className="relative flex items-center justify-center w-[88px] h-[88px] mb-4  mt-4 border-2
+         border-primary border-dashed bg-[#F6F6F6] rounded-full"
+        >
+          
+            <img
+              src={
+                profileFile
+                  ? URL.createObjectURL(profileFile)
+                  : profileImg
+              }
+              alt="Uploaded Preview"
+              className="w-full h-full object-cover rounded-full"
+            />
+          
+          <input
+            type="file"
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer my-1"
+            accept=".jpg,.jpeg,.png"
+            onChange={(e) => handleImageChange(e)}
+          />
+        </div>
       </div>
 
       {/* Form Fields */}
@@ -40,30 +244,31 @@ const EditProfilePage = () => {
           <FiMail className="text-gray-500" />
           <input
             type="text"
-            name="name"
-            value={formData.name}
+            name="dispensaryName"
+            value={formData.dispensaryName}
             onChange={handleChange}
             className="ml-2 w-full p-2 outline-none"
             placeholder="Dispensary Name"
           />
         </div>
-        <div className="flex items-center border-b border-gray-300 py-2">
+        {/* <div className="flex items-center border-b border-gray-300 py-2">
           <FiPhone className="text-gray-500" />
           <input
             type="text"
-            name="phone"
-            value={formData.phone}
+            name="phoneNumber"
+            maxLength={11}
+            value={formData.phoneNumber}
             onChange={handleChange}
             className="ml-2 w-full p-2 outline-none"
             placeholder="Phone Number"
           />
-        </div>
+        </div> */}
         <div className="flex items-center border-b border-gray-300 py-2">
           <FiMapPin className="text-gray-500" />
           <input
             type="text"
-            name="address"
-            value={formData.address}
+            name="streetAddress"
+            value={formData.streetAddress}
             onChange={handleChange}
             className="ml-2 w-full p-2 outline-none"
             placeholder="Address"
@@ -83,36 +288,190 @@ const EditProfilePage = () => {
         {/* Opening and Closing Hours */}
         <div className="flex space-x-4 mt-4">
           <div className="flex items-center border-b border-gray-300 py-2 w-1/2">
-            <FiClock className="text-gray-500" />
-            <input
-              type="text"
-              name="openingHour"
-              value={formData.openingHour}
-              onChange={handleChange}
-              className="ml-2 w-full p-2 outline-none"
-              placeholder="Opening Hour"
-            />
+
+     <input
+        type="time"
+        value={timeValue}
+        onChange={handleOpeningTimeChange}
+        className="w-[98%] text-sm text-[#1D7C42] placeholder:font-normal h-[56px] font-medium 
+                px-4 lg:py-3 md:py-2 py-3 my-1 rounded-xl outline-none bg-light shadow-sm"
+      />
           </div>
           <div className="flex items-center border-b border-gray-300 py-2 w-1/2">
-            <FiClock className="text-gray-500" />
             <input
-              type="text"
-              name="closingHour"
-              value={formData.closingHour}
-              onChange={handleChange}
-              className="ml-2 w-full p-2 outline-none"
-              placeholder="Closing Hour"
-            />
+        type="time"
+        value={closingTimeValue}
+        onChange={handleClosingTimeChange}
+        className="w-[98%] text-sm text-[#1D7C42] placeholder:font-normal h-[56px] font-medium 
+                px-4 lg:py-3 md:py-2 py-3 my-1 rounded-xl outline-none bg-light shadow-sm"
+      />
           </div>
         </div>
+
+        <div className="mt-4 mx-1">
+        <p className="text-[13px] font-[600]">Fulfillment Method</p>
+        <div className="flex items-center my-2">
+          <input
+            type="checkbox"
+            className="w-[16px] h-[16px] accent-primary"
+            checked={pickupType === "Pickup"}
+            onChange={() => handleCheckboxChange("Pickup")}
+          />
+          <label className="text-[13px] ml-1">Self Pickup</label>
+        </div>
+
+        <div className="flex items-center my-2">
+          <input
+            type="checkbox"
+            className="w-[16px] h-[16px] accent-primary"
+            checked={pickupType === "Deliver at home"}
+            onChange={() => handleCheckboxChange("Deliver at home")}
+          />
+          <label className="text-[13px] ml-1">Deliver at home</label>
+        </div>
+
+        <div className="flex items-center my-2">
+          <input
+            type="checkbox"
+            className="w-[16px] h-[16px] accent-primary"
+            checked={pickupType === "Both"}
+            onChange={() => handleCheckboxChange("Both")}
+          />
+          <label className="text-[13px] ml-1">Both</label>
+        </div>
+
+      </div>
+
+      <div className="pt-2 pb-1">
+        <p className="text-[12px] font-bold text-center justify-center">License</p>
+      </div>
+
+      {/* License Upload Buttons */}
+      <div className="flex justify-center space-x-4">
+        <div
+          className="w-[330px] h-[140px] bg-white border-dashed border-2 border-primary 
+          cursor-pointer rounded-xl flex flex-col gap-0 justify-center items-center relative"
+        >
+          {fileNames.front ? (
+            <img
+              src={fileUpload?.front ? URL.createObjectURL(fileUpload?.front): fileNames.front }
+              className="w-[320px] h-[135px] rounded-lg object-cover"
+              // onLoad={() => URL.revokeObjectURL(fileNames.front)}
+            />
+          ) : (
+            <label className="text-sm text-primary font-medium text-center">
+              Upload Image
+              <br />
+              <span className="text-xs font-[400] text-gray-500">Front</span>
+              <br />
+              <span className="text-xs font-[400]  text-gray-500">
+                Up to 20mb JPG, PNG
+              </span>
+            </label>
+          )}
+          <input
+            type="file"
+            accept=".jpg,.jpeg,.png"
+            onChange={(e) => handleFileChange(e, "front")}
+            className="absolute inset-0 opacity-0 cursor-pointer"
+          />
+        </div>
+
+        <div className="w-[330px] h-[140px] bg-white border-dashed border-2 border-primary cursor-pointer rounded-xl flex flex-col gap-1 justify-center items-center relative">
+          {fileNames.back ? (
+            <img
+              src={fileUpload?.back ? URL.createObjectURL(fileUpload?.back): fileNames.back }
+              className="w-[320px] h-[135px] rounded-lg object-cover"
+              onLoad={() => URL.revokeObjectURL(fileUpload?.back)}
+            />
+          ) : (
+            <label className="text-sm text-primary font-medium text-center">
+              Upload Image
+              <br />
+              <span className="text-xs font-[400] text-gray-500">Back</span>
+              <br />
+              <span className="text-xs font-[400] text-gray-500">
+                Up to 20mb JPG, PNG
+              </span>
+            </label>
+          )}
+          <input
+            type="file"
+            accept=".jpg,.jpeg,.png"
+            onChange={(e) => handleFileChange(e, "back")}
+            className="absolute inset-0 opacity-0 cursor-pointer"
+          />
+        </div>
+      </div>
+
+      <div className="pt-4 pb-1">
+        <p className="text-[12px] font-bold text-center justify-center">Registration</p>
+      </div>
+
+      {/* Registration Upload Buttons */}
+      <div className="flex justify-center space-x-4">
+        <div className="w-[330px] h-[140px] bg-white border-dashed border-2 border-primary cursor-pointer rounded-xl flex flex-col gap-1 justify-center items-center relative">
+          {fileNames.left ? (
+            <img
+            src={fileUpload?.left ? URL.createObjectURL(fileUpload?.left): fileNames.left }
+              className="w-[320px] h-[135px] rounded-lg object-cover"
+              onLoad={() => URL.revokeObjectURL(fileUpload?.left)}
+            />
+          ) : (
+            <label className="text-sm text-primary font-medium text-center">
+              Upload Image
+              <br />
+              <span className="text-xs font-[400] text-gray-500">Left</span>
+              <br />
+              <span className="text-xs font-[400] text-gray-500">
+                Up to 20mb JPG, PNG
+              </span>
+            </label>
+          )}
+          <input
+            type="file"
+            accept=".jpg,.jpeg,.png"
+            onChange={(e) => handleFileChange(e, "left")}
+            className="absolute inset-0 opacity-0 cursor-pointer"
+          />
+        </div>
+
+        <div className="w-[330px] h-[140px] bg-white border-dashed border-2 border-primary cursor-pointer rounded-xl flex flex-col gap-1 justify-center items-center relative">
+          {fileNames.right ? (
+            <img
+            src={fileUpload?.right ? URL.createObjectURL(fileUpload?.right): fileNames.right }
+
+              className="w-[320px] h-[135px] rounded-lg object-cover"
+              onLoad={() => URL.revokeObjectURL(fileUpload?.right)}
+            />
+          ) : (
+            <label className="text-sm text-primary font-medium text-center">
+              Upload Image
+              <br />
+              <span className="text-xs font-[400] text-gray-500">Right</span>
+              <br />
+              <span className="text-xs font-[400] text-gray-500">
+                Up to 20mb JPG, PNG
+              </span>
+            </label>
+          )}
+          <input
+            type="file"
+            accept=".jpg,.jpeg,.png"
+            onChange={(e) => handleFileChange(e, "right")}
+            className="absolute inset-0 opacity-0 cursor-pointer"
+          />
+        </div>
+      </div>
       </div>
 
       {/* Save Button */}
       <button
-        onClick={() => navigate("/profile")}
+      disabled={loading}
+        onClick={handleApiCall}
         className="w-full mt-6 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition duration-300"
       >
-        Save Changes
+       {loading?"Saving...":"Save Changes"} 
       </button>
     </div>
   );

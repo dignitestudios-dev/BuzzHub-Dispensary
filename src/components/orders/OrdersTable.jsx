@@ -36,8 +36,10 @@ const OrdersTable = () => {
         return "bg-yellow-400"; // Yellow for Pending
       case "Approved":
         return "bg-green-600"; // Blue for Approved
+      case "Completed":
+        return "bg-green-600"; // Red for Rejected
       case "Rejected":
-        return "bg-red-500"; // Red for Rejected
+        return "bg-red-500";
       default:
         return "bg-gray-300"; // Default color for other statuses
     }

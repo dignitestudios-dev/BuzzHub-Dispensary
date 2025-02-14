@@ -5,7 +5,7 @@ import axios from "../../axios";
 
 const OrderTrackingTable = () => {
   const [orders, setOrders] = useState([]);
-  const [filter, setFilter] = useState("Pending"); // Default filter is Pending
+  const [filter, setFilter] = useState("All"); // Default filter is Pending
   const navigate = useNavigate();
 
   // Fetch orders from API
@@ -39,14 +39,14 @@ const OrderTrackingTable = () => {
         return "bg-green-600"; // Green for Approved
       case "Rejected":
         return "bg-red-500"; // Red for Rejected
-      case "Completed":
-        return "bg-blue-600"; // Blue for Completed
+        case "Completed":
+        return "bg-green-600"; // Blue for Completed
       case "In Process":
         return "bg-orange-600"; // Orange for In Process
       case "Out for Delivery":
         return "bg-green-600"; // Purple for Out for Delivery
       case "Ready":
-        return "bg-teal-600"; // Teal for Ready
+        return "bg-green-600"; // green for Ready
       default:
         return "bg-gray-300"; // Default color for other statuses
     }

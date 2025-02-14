@@ -1,25 +1,40 @@
 import React, { useState, useEffect } from "react";
 import { FaPlus, FaTimes } from "react-icons/fa";
 import axios from "../../axios"; // Import axios instance
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 // Define the types and corresponding subtypes
 const typesAndSubtypes = {
   "Indica Strains": [
-    "Northern Lights", "Afghan Kush", "Granddaddy Purple (GDP)", "Bubba Kush", "Hindu Kush",
+    "Northern Lights",
+    "Afghan Kush",
+    "Granddaddy Purple (GDP)",
+    "Bubba Kush",
+    "Hindu Kush",
   ],
   "Sativa Strains": [
-    "Durban Poison", "Sour Diesel", "Jack Herer", "Maui Wowie", "Green Crack",
+    "Durban Poison",
+    "Sour Diesel",
+    "Jack Herer",
+    "Maui Wowie",
+    "Green Crack",
   ],
   "Hybrid Strains": [
-    "Blue Dream", "Girl Scout Cookies (GSC)", "OG Kush", "Pineapple Express", "White Widow",
+    "Blue Dream",
+    "Girl Scout Cookies (GSC)",
+    "OG Kush",
+    "Pineapple Express",
+    "White Widow",
   ],
 };
 
-const AddProductModal = ({ onClose }) => {
+const EditProductModal = ({ onClose, productData, orderId }) => {
+  console.log("productData==? ", productData);
   const navigate = useNavigate();
 
   const [images, setImages] = useState([]);
+  console.log("images=== ", images);
+  const [deletedImages, setDeletedImages] = useState([]);
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
@@ -32,32 +47,55 @@ const AddProductModal = ({ onClose }) => {
   const [fullfillmentMethod, setFullfillmentMethod] = useState(""); // Store fulfillment method
   const [subTypesError, setSubTypesError] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     // Retrieve the fulfillment method from localStorage (if exists)
     const userData = JSON.parse(localStorage.getItem("userData"));
     if (userData && userData.fulfillmentMethod) {
       setFullfillmentMethod(userData.fulfillmentMethod); // Set the fulfillment method from localStorage
     }
-  }, []); // Empty dependency array to run once when component mounts
+    if (productData) {
+      setImages(productData.productImage || []);
+      setProductName(productData.productName || "");
+      setProductPrice(productData.productPrice || "");
+      setExpiryDate(productData.expiryDate || "");
+      setProductDescription(productData.productDescription || "");
+      setWarningDescription(productData.warningDescription || "");
+      setProductType(productData.productType || "");
+      setSubTypes(productData.subTypes || []);
+      setWeightQuantity(productData.weightQuantity || "");
+      setWeightType(productData.weightType || "");
+      setFullfillmentMethod(productData.fullfillmentMethod || "");
+    }
+  }, [productData]); // Empty dependency array to run once when component mounts
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
-    setImages([...images, ...files]);
+    if (images.length < 5) {
+      setImages([...images, ...files]);
+    }
   };
 
   const handleImageRemove = (index) => {
+    const removedImage = images[index];
     setImages(images.filter((_, i) => i !== index));
+    setDeletedImages([...deletedImages, removedImage]);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!productType || subTypes.length === 0) {
-      setSubTypesError("Please select a product type and at least one subtype.");
+      setSubTypesError(
+        "Please select a product type and at least one subtype."
+      );
       return;
     }
 
+    setLoading(true);
     const formData = new FormData();
+    formData.append("productId", orderId);
     formData.append("productName", productName);
     formData.append("productPrice", productPrice);
     formData.append("expiryDate", expiryDate);
@@ -74,15 +112,27 @@ const AddProductModal = ({ onClose }) => {
     formData.append("fullfillmentMethod", fullfillmentMethod); // Use stored fulfillment method
 
     images.forEach((image) => {
-      formData.append("productImage", image);
+      if (typeof image !== "string") {
+        formData.append("productImage", image);
+      }
     });
 
-    try {
-      const response = await axios.post("dispensary/add-product", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+    if (deletedImages.length > 0) {
+      deletedImages.forEach((deletedImage) => {
+        formData.append("delete_images", deletedImage);
       });
+    }
+
+    try {
+      const response = await axios.post(
+        "dispensary/update-product-by-id",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       if (response.data.success) {
         console.log("Product added successfully:", response.data.data);
@@ -93,6 +143,8 @@ const AddProductModal = ({ onClose }) => {
       }
     } catch (error) {
       console.error("Error adding product:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -107,9 +159,12 @@ const AddProductModal = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 overflow-auto">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 overflow-auto z-10">
       <div className="bg-white text-black p-6 rounded-lg shadow-lg w-full max-w-2xl relative">
-        <button onClick={onClose} className="absolute top-4 right-4 text-xl text-black hover:text-gray-800">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-xl text-black hover:text-gray-800"
+        >
           <FaTimes />
         </button>
 
@@ -118,8 +173,19 @@ const AddProductModal = ({ onClose }) => {
           <div className="flex gap-2 mb-4">
             {images.length > 0 &&
               images.map((image, index) => (
-                <div key={index} className="w-16 h-16 bg-gray-200 rounded overflow-hidden relative">
-                  <img src={URL.createObjectURL(image)} alt="Uploaded" className="w-full h-full object-cover" />
+                <div
+                  key={index}
+                  className="w-16 h-16 bg-gray-200 rounded overflow-hidden relative"
+                >
+                  <img
+                    src={
+                      typeof image === "string" && image.startsWith("http")
+                        ? image
+                        : URL.createObjectURL(image)
+                    }
+                    alt="Uploaded"
+                    className="w-full h-full object-cover"
+                  />
                   <button
                     type="button"
                     className="absolute top-0 right-0 text-white bg-black bg-opacity-50 p-1 rounded-full"
@@ -131,7 +197,13 @@ const AddProductModal = ({ onClose }) => {
               ))}
             <label className="w-16 h-16 flex items-center justify-center bg-green-600 text-white rounded cursor-pointer">
               <FaPlus />
-              <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageUpload} />
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                className="hidden"
+                onChange={handleImageUpload}
+              />
             </label>
           </div>
 
@@ -177,7 +249,10 @@ const AddProductModal = ({ onClose }) => {
             <div className="mb-4">
               <div className="space-y-3 space-x-1">
                 {typesAndSubtypes[productType]?.map((subtype) => (
-                  <label key={subtype} className="inline-flex items-center space-x-2">
+                  <label
+                    key={subtype}
+                    className="inline-flex items-center space-x-2"
+                  >
                     <input
                       type="checkbox"
                       checked={subTypes.includes(subtype)}
@@ -188,7 +263,9 @@ const AddProductModal = ({ onClose }) => {
                   </label>
                 ))}
               </div>
-              {subTypesError && <div className="text-red-500 text-sm">{subTypesError}</div>}
+              {subTypesError && (
+                <div className="text-red-500 text-sm">{subTypesError}</div>
+              )}
             </div>
           )}
 
@@ -230,16 +307,20 @@ const AddProductModal = ({ onClose }) => {
             {/* Display Fulfillment Method as Text */}
             {fullfillmentMethod ? (
               <p className="w-full p-2">
-                Fullfillment Method <br/>   
-                {fullfillmentMethod} 
+                Fullfillment Method <br />
+                {fullfillmentMethod}
               </p>
             ) : (
-              <p className="text-gray-500">No Fulfillment Method Selected</p> 
+              <p className="text-gray-500">No Fulfillment Method Selected</p>
             )}
           </div>
 
-          <button type="submit" className="w-full bg-green-600 text-white p-2 rounded">
-            Save Product
+          <button
+            disabled={loading}
+            type="submit"
+            className="w-full bg-green-600 text-white p-2 rounded"
+          >
+            {loading ? "Updating..." : "Save Product"}
           </button>
         </form>
       </div>
@@ -247,4 +328,4 @@ const AddProductModal = ({ onClose }) => {
   );
 };
 
-export default AddProductModal;
+export default EditProductModal;

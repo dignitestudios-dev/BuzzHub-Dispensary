@@ -145,7 +145,7 @@ const ReviewSection = () => {
               key={review._id}
               className="flex-shrink-0 w-1/3 px-2"
             >
-              <div className="bg-white p-6 rounded-lg border space-y-4">
+              <div className="bg-gray-50 p-6 rounded-lg border space-y-4">
                 {/* Product Info */}
                 <div className="flex items-center space-x-4">
                   <img

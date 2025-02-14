@@ -21,6 +21,7 @@ import AddCard from "../pages/subscription/AddCard";
 import Verification from "../pages/onboarding/Verification";
 import UpdatePassword from "../pages/onboarding/UpdatePassword";
 import Wallet from "../pages/wallet/Wallet";
+import ChangePassword from "../pages/settings/ChangePassword";
 
 
 export const normalRoutes = [
@@ -46,10 +47,6 @@ export const normalRoutes = [
           url:"/update-password",
           page: <UpdatePassword />
           },
-
-          
-
-
         
     {
       title:"Packages",
@@ -110,6 +107,12 @@ export const normalRoutes = [
         title: "Order Tracking",
         url: "/order-tracking/:id",
         page: <GlobalLayout page={<OrderTracking />} />,
+      },
+
+      {
+        title: "Change Password",
+        url: "/change-password",
+        page: <GlobalLayout page={<ChangePassword />} />,
       },
    
       {
