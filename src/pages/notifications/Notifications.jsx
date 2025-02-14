@@ -46,7 +46,7 @@ const Notifications = () => {
   };
 
   return (
-    <div className="p-6 w-full min-h-screen">
+    <div className="p-6 w-full h-auto overflow-auto">
       <div className="mb-8 flex justify-between items-center">
         <h1 className="text-3xl font-bold text-gray-800">Notifications</h1>
       </div>
@@ -69,7 +69,9 @@ const Notifications = () => {
       />
 
       {/* Loading & Error Handling */}
-      {isLoading && <p className="text-center text-gray-600">Loading notifications...</p>}
+      {isLoading && (
+        <p className="text-center text-gray-600">Loading notifications...</p>
+      )}
       {error && <p className="text-center text-red-500">{error}</p>}
 
       {/* Notifications List */}
@@ -88,12 +90,16 @@ const Notifications = () => {
                   {new Date(notification.createdAt).toLocaleString()}
                 </span>
               </div>
-              <p className="text-gray-600 text-sm font-medium">{notification.message}</p>
+              <p className="text-gray-600 text-sm font-medium">
+                {notification.message}
+              </p>
             </div>
           ))}
         </div>
       ) : (
-        !isLoading && <p className="text-center text-gray-500">No notifications found.</p>
+        !isLoading && (
+          <p className="text-center text-gray-500">No notifications found.</p>
+        )
       )}
     </div>
   );
