@@ -1,5 +1,5 @@
 import { db } from "./firebase";
-import { collection, query, where, getDocs,orderBy, startAfter, onSnapshot, writeBatch,addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, query, where, getDocs,orderBy, startAfter, onSnapshot, writeBatch,addDoc, serverTimestamp, doc, updateDoc, arrayRemove, Timestamp, arrayUnion } from "firebase/firestore";
 
 // Get user's chat list
 export const getChats = async (uid) => {
@@ -9,6 +9,7 @@ export const getChats = async (uid) => {
     const chatSnapshot = await getDocs(q);
 
     const chats = chatSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    console.log(chats)
     return chats;
   } catch (error) {
     console.error('Error fetching chats:', error);
@@ -31,17 +32,19 @@ export const sendMessage = async (chatId, senderId, messageText) => {
 
 
 
-export const getMessages = (chatId, callback) => {
+export const getMessages = (chatId, callback, updatedAt) => {
+  console.log(updatedAt)
   if (!chatId) return;
 
   const messagesRef = collection(db, `chats/${chatId}/messages`);
-  const messagesQuery = query(messagesRef, orderBy("timestamp", "asc"));
+  const messagesQuery = query(messagesRef,  where("timestamp", ">", updatedAt),orderBy("timestamp", "asc"));
 
   return onSnapshot(messagesQuery, (snapshot) => {
     const messages = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
+    console.log(messages)
     callback(messages);
   }, (error) => console.error("Error fetching messages:", error));
 };
@@ -115,15 +118,58 @@ export const getUnreadMessageCount = async (uid) => {
   }
 };
 
+export const blockChatRoom = async ( chatId, userId, closeModal ) => {
+  try {
+    const chatDoc = doc(db, 'chats', chatId);
+
+    await updateDoc(chatDoc, {
+      blocked_ids: arrayUnion(userId),
+    });
+    closeModal()
+  } catch (e) {
+    throw new Error(`Failed to block chat room: ${e}`);
+  }
+};
+
+export const unblockChatRoom = async ( chatId, userId, closeModal ) => {
+  try {
+    const chatDoc = doc(db, 'chats', chatId);
+
+    await updateDoc(chatDoc, {
+      blocked_ids: arrayRemove(userId),
+    });
+    closeModal()
+
+
+  } catch (e) {
+    throw new Error(`Failed to unblock chat room: ${e}`);
+  }
+};
+
+export const deleteChatForUser = async ( chatId, userId, closeModal ) => {
+  try {
+    const updatedAt = {
+      [userId]: Timestamp.now()
+    };
+    const chatDoc = doc(db, 'chats', chatId);
+    updatedAt[userId] = Timestamp.now();
+
+    await updateDoc(chatDoc, {
+      [`updated_at.${userId}`]: Timestamp.now(),
+    });
+    closeModal()
+  } catch (e) {
+    throw new Error(`Failed to soft delete chat: ${e}`);
+  }
+};
 
 // Listen to blocked users in a chat
 export const listenToBlockedUsers = (chatId, callback) => {
-  return db.collection('chats')
-    .doc(chatId)
-    .onSnapshot(snapshot => {
-      if (snapshot.exists) {
-        const data = snapshot.data();
-        callback(data?.blocked_ids || []);
-      }
-    }, error => console.error('Error listening to blocked users:', error));
+  return onSnapshot(doc(db, 'chats', chatId), snapshot => {
+    if (snapshot.exists()) {
+      const data = snapshot.data();
+    
+      callback(data?.blocked_ids || []);
+    }
+  }, error => console.error('Error listening to blocked users:', error));
 };

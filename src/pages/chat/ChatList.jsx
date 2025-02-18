@@ -6,7 +6,13 @@ import { getChats, markMessagesAsRead } from "../../firebase/firestoreService"; 
 import useUnreadMessages from "./useUnreadMessages"; // Custom hook for unread counts
 
 // ChatList Component
-const ChatList = ({ userId, setSelectedChat, selectedChat }) => {
+const ChatList = ({
+  userId,
+  setSelectedChat,
+  selectedChat,
+  update,
+  setUpdate,
+}) => {
   const navigate = useNavigate(); // Initialize the navigation function
 
   const [chats, setChats] = useState([]);
@@ -19,11 +25,15 @@ const ChatList = ({ userId, setSelectedChat, selectedChat }) => {
     };
 
     fetchChats();
-  }, [userId]);
+  }, [userId, update]);
 
+  useEffect(() => {
+    selectedChat !== null &&
+      setSelectedChat(chats?.filter((chat) => selectedChat?.id == chat?.id)[0]);
+  }, [chats]);
   return (
     <ul className="space-y-4">
-      {chats.map((chat) => (
+      {chats?.map((chat) => (
         <li
           key={chat?.id}
           className={`flex items-center justify-between p-4 rounded-lg transition duration-200 cursor-pointer border ${

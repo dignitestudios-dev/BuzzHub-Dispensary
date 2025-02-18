@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FaStar, FaRegStar } from "react-icons/fa";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import axios from "../../axios"; // Assuming axios is configured
 
 const ReviewSection = () => {
@@ -8,6 +9,9 @@ const ReviewSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const startX = useRef(0);
   const isDragging = useRef(false);
+
+  // Initialize navigate
+  const navigate = useNavigate();
 
   // Fetch reviews from API
   useEffect(() => {
@@ -120,7 +124,11 @@ const ReviewSection = () => {
       {/* Header */}
       <div className="w-full flex justify-between items-center mb-4">
         <h1 className="text-black text-3xl font-bold ml-2">Reviews</h1>
-        <button className="text-green-600 font-medium hover:underline">
+        {/* "See all" button to navigate to /reviews */}
+        <button
+          className="text-green-600 font-medium hover:underline"
+          onClick={() => navigate("/reviews")} // Navigate to /reviews
+        >
           See all
         </button>
       </div>
@@ -141,10 +149,7 @@ const ReviewSection = () => {
         >
           {/* Render Three Reviews */}
           {reviews.map((review) => (
-            <div
-              key={review._id}
-              className="flex-shrink-0 w-1/3 px-2"
-            >
+            <div key={review._id} className="flex-shrink-0 w-1/3 px-2">
               <div className="bg-gray-50 p-6 rounded-lg border space-y-4">
                 {/* Product Info */}
                 <div className="flex items-center space-x-4">
@@ -154,7 +159,9 @@ const ReviewSection = () => {
                     className="w-14 h-14 rounded-lg object-cover"
                   />
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-black">{review.productName}</h3>
+                    <h3 className="text-lg font-semibold text-black">
+                      {review.productName}
+                    </h3>
                     <p className="text-xs text-gray-500">{`${review.city}, ${review.state}`}</p>
                   </div>
                   <span className="text-green-600 font-semibold text-lg">
@@ -171,7 +178,9 @@ const ReviewSection = () => {
                     alt="User"
                     className="w-10 h-10 rounded-full object-cover"
                   />
-                  <span className="text-sm font-medium text-black">{review.userFullName}</span>
+                  <span className="text-sm font-medium text-black">
+                    {review.userFullName}
+                  </span>
                 </div>
 
                 {/* Review Text */}
@@ -184,17 +193,19 @@ const ReviewSection = () => {
 
       {/* Dots Navigation */}
       <div className="flex justify-center space-x-3 mt-4">
-        {Array.from({ length: Math.ceil(reviews.length / 3) }).map((_, index) => (
-          <div
-            key={index}
-            onClick={() => setCurrentIndex(index * 3)}
-            className={`w-4 h-4 rounded-full cursor-pointer transition-all duration-300 transform ${
-              index * 3 === currentIndex
-                ? "bg-green-600 scale-110"
-                : "bg-gray-300"
-            }`}
-          ></div>
-        ))}
+        {Array.from({ length: Math.ceil(reviews.length / 3) }).map(
+          (_, index) => (
+            <div
+              key={index}
+              onClick={() => setCurrentIndex(index * 3)}
+              className={`w-4 h-4 rounded-full cursor-pointer transition-all duration-300 transform ${
+                index * 3 === currentIndex
+                  ? "bg-green-600 scale-110"
+                  : "bg-gray-300"
+              }`}
+            ></div>
+          )
+        )}
       </div>
     </div>
   );

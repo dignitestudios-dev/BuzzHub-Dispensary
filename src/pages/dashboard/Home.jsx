@@ -11,18 +11,17 @@ const Home = () => {
         <h1 className="text-black text-3xl font-bold">Dashboard</h1>
 
         {/* Stats Section */}
-        <div className="w-full flex flex-col lg:flex-row gap-6">
+        {/* <div className="w-full flex flex-col lg:flex-row gap-6">
           <DashboardStats />
-        </div>
+        </div> */}
         {/* <h1 className="text-black text-3xl font-bold">Orders</h1>
         <div className="w-full flex flex-col lg:flex-row gap-6">
 
           <OrdersTable />
         </div> */}
 
-        <h1 className="text-black text-3xl font-bold">Orders</h1>
+        {/* <h1 className="text-black text-3xl font-bold">Orders</h1> */}
         <div className="w-full flex flex-col lg:flex-row gap-6">
-
           <DashboardOrders />
         </div>
 
@@ -31,9 +30,6 @@ const Home = () => {
         <div className="w-full flex flex-col lg:flex-row gap-6">
           <ReviewSection />
         </div>
-
-        
-      
       </div>
     </>
   );

@@ -6,6 +6,8 @@ import ChatList from "./ChatList";
 import ChatScreen from "./ChatScreen";
 
 const Chat = () => {
+  const [update, setUpdate] = useState(false);
+
   const navigate = useNavigate(); // Initialize the navigation function
 
   const chats = [
@@ -47,6 +49,8 @@ const Chat = () => {
           userId={user?.uid || null}
           setSelectedChat={setSelectedChat}
           selectedChat={selectedChat}
+          setUpdate={setUpdate}
+          update={update}
         />
       </div>
 
@@ -57,6 +61,8 @@ const Chat = () => {
             selectedChat={selectedChat}
             chatId={selectedChat?.id}
             userId={user?.uid || null}
+            setUpdate={setUpdate}
+            update={update}
           />
         </div>
       ) : (

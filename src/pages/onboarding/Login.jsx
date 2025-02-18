@@ -31,10 +31,17 @@ const Login = () => {
 
     try {
       setLoading(true);
-      const response = await axios.post('/auth/login-dispensary', requestBody);
+      const response = await axios.post("/auth/login-dispensary", requestBody);
 
       if (response.status === 200) {
-        const { status, isSubscribed, rejectionReason } = response.data.data;
+        const { status, isSubscribed, rejectionReason, isSessionComplete } =
+          response.data.data;
+
+        // Check if session is complete
+        if (!isSessionComplete) {
+          navigate("/profile-completion");
+          return;
+        }
 
         if (status === "Approved") {
           if (!isSubscribed) {
@@ -49,12 +56,15 @@ const Login = () => {
           });
         }
 
-        localStorage.setItem('token', response.data.token);  
-        localStorage.setItem('userId', response.data.data._id);  
-        localStorage.setItem('userData', JSON.stringify(response.data.data));  
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userId", response.data.data._id);
+        localStorage.setItem("userData", JSON.stringify(response.data.data));
       }
     } catch (error) {
-      console.error("Login failed:", error.response?.data?.message || error.message);
+      console.error(
+        "Login failed:",
+        error.response?.data?.message || error.message
+      );
       alert("Login failed, please try again!");
     } finally {
       setLoading(false);
@@ -68,11 +78,13 @@ const Login = () => {
         className="w-full lg:w-1/2 h-full bg-white p-8 lg:p-20 flex flex-col justify-start items-start gap-8"
       >
         <div className="flex flex-col items-start space-y-2 mt-16">
-          <img src={Logo} alt="pill" className="w-[60px] bg-green-600 rounded-full" />
+          <img
+            src={Logo}
+            alt="pill"
+            className="w-[60px] bg-green-600 rounded-full"
+          />
           <h3 className="text-lg font-medium">Buzzhub Dispensary Panel</h3>
-          <p className="text-sm">
-            Login with your credentials to continue.
-          </p>
+          <p className="text-sm">Login with your credentials to continue.</p>
         </div>
 
         <div className="flex flex-col w-full h-auto justify-start items-start gap-4">
@@ -102,7 +114,9 @@ const Login = () => {
           <div className="flex flex-col w-full justify-start items-end gap-1">
             <div className="relative w-full h-auto flex flex-col justify-start items-start">
               <InputField
-                register={register("password", { required: "Please enter your password" })}
+                register={register("password", {
+                  required: "Please enter your password",
+                })}
                 maxLength={12}
                 text={"Password"}
                 placeholder={"Enter your password here"}
@@ -159,9 +173,7 @@ const Login = () => {
         <div className="absolute bottom-10 text-[#074F57] text-center z-20">
           <div className="flex flex-col items-center space-y-2">
             <h3 className="text-lg font-medium">Buzzhub Dispensary Panel</h3>
-            <p className="text-sm">
-              Login with your credentials to continue.
-            </p>
+            <p className="text-sm">Login with your credentials to continue.</p>
           </div>
         </div>
       </div>

@@ -72,18 +72,15 @@ const Wallet = () => {
 
       <div className="mt-6">
         <div className="flex justify-between items-center mb-2">
-          <h3 className="text-lg font-semibold text-black">Transaction History</h3>
-          <select className="bg-gray-100 text-black p-2 rounded-lg border focus:outline-none">
-            <option value="all">All</option>
-          </select>
+          <h3 className="text-lg font-semibold text-black">
+            Transaction History
+          </h3>
         </div>
 
         <div className="bg-gray-100 p-2 rounded-lg">
           <table className="w-full text-left">
             <thead>
               <tr className="text-gray-500 text-sm">
-                <th className="p-2">Date</th>
-                <th>Account Name</th>
                 <th>Type</th>
                 <th>Amount</th>
               </tr>
@@ -91,16 +88,20 @@ const Wallet = () => {
             <tbody>
               {transactions.length === 0 ? (
                 <tr>
-                  <td colSpan="4" className="p-2 text-center text-gray-500">
+                  <td colSpan="2" className="p-2 text-center text-gray-500">
                     No transactions available.
                   </td>
                 </tr>
               ) : (
                 transactions.map((item, index) => (
                   <tr key={index} className="text-sm border-t text-black">
-                    <td className="p-2">{item.date}</td>
-                    <td>{item.name}</td>
-                    <td className={item.type === "Withdrawn" ? "text-red-500" : "text-green-500"}>
+                    <td
+                      className={
+                        item.type === "Withdrawn"
+                          ? "text-red-500"
+                          : "text-green-500"
+                      }
+                    >
                       {item.type}
                     </td>
                     <td className="font-semibold">{item.amount}</td>
