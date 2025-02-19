@@ -9,7 +9,6 @@ import { ErrorToast, SuccessToast } from "../../components/global/Toaster";
 import { useNavigate } from "react-router-dom";
 import { Logo } from "../../assets/export";
 
-
 const ProfileCompletion = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
@@ -18,8 +17,10 @@ const ProfileCompletion = () => {
   const [startingTime, setStartingTime] = useState("");
 
   const [cities, setCities] = useState([]);
-  const [coordinates, setCoordinates] = useState({lat:40.7127837, 
-    lng: -74.0059413});
+  const [coordinates, setCoordinates] = useState({
+    lat: 40.7127837,
+    lng: -74.0059413,
+  });
 
   const [city, setCity] = useState("");
   const [selectedState, setSelectedState] = useState("");
@@ -77,10 +78,7 @@ const ProfileCompletion = () => {
       data.append("zipCode", formData.zipCode);
       data.append(
         "location[coordinates]",
-        JSON.stringify([
-            -74.0059413,
-            40.7127837,
-        ])
+        JSON.stringify([-74.0059413, 40.7127837])
       );
       // data.append("location[type]", "Point");
 
@@ -119,15 +117,18 @@ const ProfileCompletion = () => {
   };
 
   return (
-    
     <div className="flex flex-col justify-center bg-[#1d7c42] items-center h-full w-full  ">
       <div className="flex items-center space-x-4 mt-4">
-  <img src={Logo} alt="pill" className="w-[60px] bg-green-600 rounded-full border-2" />
-  <div className="flex flex-col items-start">
-    <h3 className="text-lg font-medium text-white">Buzzhub Dispensary</h3>
-    <p className="text-sm text-white">Fill the form below to continue</p>
-  </div>
-</div>
+        <img
+          src={Logo}
+          alt="pill"
+          className="w-[60px] bg-green-600 rounded-full border-2"
+        />
+        <div className="flex flex-col items-start">
+          <h3 className="text-lg font-medium text-white">Buzzhub Dispensary</h3>
+          <p className="text-sm text-white">Fill the form below to continue</p>
+        </div>
+      </div>
 
       <div className="flex pt-5 gap-10">
         {sections.map((value, index) => (
@@ -223,7 +224,6 @@ const ProfileCompletion = () => {
               fileNames={fileNames}
               setFileNames={setFileNames}
               handleSubmit={handleSubmit}
-
             />
           )}
           {step === 4 && (

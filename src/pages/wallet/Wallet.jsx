@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { FaWallet } from "react-icons/fa";
 import { HiArrowUpRight } from "react-icons/hi2";
-import axios from "../../axios"; // Make sure axios.js is properly imported
+import axios from "../../axios";
 
 const Wallet = () => {
-  const [walletData, setWalletData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [walletData, setWalletData] = useState("");
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch the wallet data on component mount
     const fetchWalletData = async () => {
       try {
-        const response = await axios.get("dispensary/get-wallet-dispensary");
-        setWalletData(response.data.data);
+        setLoading(true);
+        const response = await axios?.get("dispensary/get-wallet-dispensary");
+        setWalletData(response?.data?.data);
         setLoading(false);
       } catch (err) {
         setError("Failed to fetch wallet data.");
+      } finally {
         setLoading(false);
       }
     };
@@ -24,27 +25,24 @@ const Wallet = () => {
     fetchWalletData();
   }, []);
 
-  // Check if data is still loading
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen w-full">
-        <div className="spinner"></div> {/* This shows the loading spinner */}
+        <div className="spinner"></div>
       </div>
     );
   }
 
-  // Handle API errors
   if (error) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center w-full mt-12">
         <div className="text-red-500 text-lg">{error}</div>
       </div>
     );
   }
 
-  // Destructure the wallet data
-  const { walletAmount } = walletData.wallet;
-  const transactions = walletData.transactions.data; // Assuming your transactions are in this structure
+  const { walletAmount } = walletData?.wallet || {};
+  const transactions = walletData?.transactions?.data;
 
   return (
     <div className="p-6 w-full mx-auto bg-white min-h-screen">
@@ -77,34 +75,37 @@ const Wallet = () => {
           </h3>
         </div>
 
-        <div className="bg-gray-100 p-2 rounded-lg">
-          <table className="w-full text-left">
+        <div className="overflow-x-auto bg-gray-100 p-4 rounded-lg shadow-lg">
+          <table className="min-w-full text-left">
             <thead>
               <tr className="text-gray-500 text-sm">
-                <th>Type</th>
-                <th>Amount</th>
+                <th className="py-2 px-4">Type</th>
+                <th className="py-2 px-4">Amount</th>
               </tr>
             </thead>
             <tbody>
-              {transactions.length === 0 ? (
+              {transactions?.length === 0 ? (
                 <tr>
                   <td colSpan="2" className="p-2 text-center text-gray-500">
                     No transactions available.
                   </td>
                 </tr>
               ) : (
-                transactions.map((item, index) => (
-                  <tr key={index} className="text-sm border-t text-black">
+                transactions?.map((item, index) => (
+                  <tr
+                    key={index}
+                    className="text-sm border-t text-black hover:bg-gray-200 transition-all"
+                  >
                     <td
-                      className={
+                      className={`py-2 px-4 ${
                         item.type === "Withdrawn"
                           ? "text-red-500"
                           : "text-green-500"
-                      }
+                      }`}
                     >
-                      {item.type}
+                      {item?.type}
                     </td>
-                    <td className="font-semibold">{item.amount}</td>
+                    <td className="font-semibold py-2 px-4">${item?.amount}</td>
                   </tr>
                 ))
               )}

@@ -89,7 +89,7 @@ const UserInformation = ({
         return (
           <div
             key={field.key}
-            className="w-full h-auto flex flex-col justify-start items-start my-4"
+            className="w-full h-auto flex flex-col justify-start items-start my-4 border rounded-lg"
           >
             <InputField
               setCoordinates={setCoordinates}
@@ -109,7 +109,7 @@ const UserInformation = ({
         );
       })}
 
-      <div className="lg:w-[80%] h-auto flex flex-col justify-start items-start my-4">
+      <div className="w-full h-auto flex flex-col justify-start items-start my-4">
         <SelectField
           value={selectedState}
           handleChange={handleStateChange}
@@ -120,7 +120,7 @@ const UserInformation = ({
           disabled={false}
         />
       </div>
-      <div className="lg:w-[80%] h-auto flex flex-col justify-start items-start my-4">
+      <div className="w-full h-auto flex flex-col justify-start items-start my-4">
         <SelectField
           value={city}
           handleChange={(e) => setCity(e.target.value)}
@@ -131,7 +131,7 @@ const UserInformation = ({
           disabled={cities?.length === 0}
         />
       </div>
-      <div className="w-full h-auto flex flex-col justify-start items-start my-4">
+      <div className="w-full h-auto flex flex-col justify-start items-start my-4 border rounded-lg">
         <InputField
           placeholder={"Enter zip code"}
           type={"text"}
@@ -151,7 +151,7 @@ const UserInformation = ({
       </div>
 
       <div className="pt-2">
-        <AuthSubmitBtn text={"Next"}  />
+        <AuthSubmitBtn text={"Next"} />
       </div>
     </form>
   );

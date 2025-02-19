@@ -53,7 +53,7 @@ const UserSummary = ({
             font-normal px-4 lg:py-3 md:py-2 py-3 mb-3 rounded-xl outline-none bg-light"
         />
       </div>
-      <div className="w-full h-auto flex justify-between items-center">
+      <div className="w-full h-auto flex  items-center">
         <div>
           <label className="text-[14px] text-secondary pl-1">
             Opening Hour
@@ -189,66 +189,62 @@ const UserSummary = ({
         </div>
       </div>
 
-      <div className="pt-2">
-        <p className="text-[14px] text-secondary pl-1 text-center font-semibold">License</p>
-      </div>
-      <div className="flex justify-center mt-1 mb-2">
-        <div className="w-[343px] h-[153px] bg-white shadow-lg cursor-pointer rounded-xl flex flex-col gap-1 justify-center items-center relative">
-          <label className="text-sm font-medium text-center">
-            Uploaded Image
-          </label>
-
-          <img
-            className="w-[330px] mt-3 object-contain h-[110px] "
-            alt="123"
-            src={URL.createObjectURL(fileNames?.front)}
-          />
+      <div>
+        <div className="pt-2">
+          <p className="text-[14px] text-secondary pl-1 text-center font-semibold">
+            License and Registration
+          </p>
         </div>
-      </div>
 
-      <div className="flex justify-center mt-1 mb-2">
-        <div className="w-[343px] h-[153px] bg-white shadow-lg cursor-pointer rounded-xl flex flex-col gap-1 justify-center items-center relative">
-          <label className="text-sm font-medium text-center">
-            Uploaded Image
-          </label>
-          <img
-            className="w-[300px] h-[110px] mt-3  object-contain"
-            alt="123"
-            src={URL.createObjectURL(fileNames?.back)}
-          />
-        </div>
-      </div>
-      <div className="pt-2">
-        <p className="text-[14px] text-secondary text-center font-semibold">Registration</p>
-      </div>
-      <div className="flex justify-center mt-1 mb-2">
-        <div className="w-[343px] h-[153px] bg-white shadow-lg cursor-pointer rounded-xl flex flex-col gap-1 justify-center items-center relative">
-          <label className="text-sm font-medium text-center">
-            Uploaded Image
-          </label>
-          <img
-            className="w-[300px] h-[110px]  object-contain "
-            alt="123"
-            src={URL.createObjectURL(fileNames?.left)}
-          />
-        </div>
-      </div>
+        <div className="flex justify-center space-x-4 mt-1 mb-2">
+          <div className="w-[343px] h-[153px] bg-white shadow-lg cursor-pointer rounded-xl flex flex-col gap-1 justify-center items-center relative">
+            {/* <label className="text-sm font-medium text-center">
+              Uploaded Image
+            </label> */}
+            <img
+              className="w-[330px]  object-contain h-[140px]"
+              alt="123"
+              src={URL.createObjectURL(fileNames?.front)}
+            />
+          </div>
 
-      <div className="flex justify-center mt-1 mb-2">
-        <div className="w-[343px] h-[153px] bg-white shadow-lg cursor-pointer rounded-xl flex flex-col gap-1 justify-center items-center relative">
-          <label className="text-sm font-medium text-center">
-            Uploaded Image
-          </label>
-          <img
-            className="w-[300px] h-[110px]  object-contain "
-            alt="123"
-            src={URL.createObjectURL(fileNames?.right)}
-          />
+          <div className="w-[343px] h-[153px] bg-white shadow-lg cursor-pointer rounded-xl flex flex-col gap-1 justify-center items-center relative">
+            {/* <label className="text-sm font-medium text-center">
+              Uploaded Image
+            </label> */}
+            <img
+              className="w-[300px] h-[140px] object-contain"
+              alt="123"
+              src={URL.createObjectURL(fileNames?.back)}
+            />
+          </div>
+
+          <div className="w-[343px] h-[153px] bg-white shadow-lg cursor-pointer rounded-xl flex flex-col gap-1 justify-center items-center relative">
+            {/* <label className="text-sm font-medium text-center">
+              Uploaded Image
+            </label> */}
+            <img
+              className="w-[300px] h-[140px] object-contain"
+              alt="123"
+              src={URL.createObjectURL(fileNames?.left)}
+            />
+          </div>
+
+          <div className="w-[343px] h-[153px] bg-white shadow-lg cursor-pointer rounded-xl flex flex-col gap-1 justify-center items-center relative">
+            {/* <label className="text-sm font-medium text-center">
+              Uploaded Image
+            </label> */}
+            <img
+              className="w-[300px] h-[140px] object-contain"
+              alt="123"
+              src={URL.createObjectURL(fileNames?.right)}
+            />
+          </div>
         </div>
       </div>
 
       <div className="pt-5">
-        <AuthSubmitBtn text={"Submit"}  loading={loading} />
+        <AuthSubmitBtn text={"Submit"} loading={loading} />
       </div>
       <div className="">
         <button

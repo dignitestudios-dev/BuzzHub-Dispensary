@@ -88,7 +88,7 @@ const Login = () => {
         </div>
 
         <div className="flex flex-col w-full h-auto justify-start items-start gap-4">
-          <div className="relative w-full h-auto flex flex-col justify-start items-start my-4">
+          <div className="relative w-full h-auto flex flex-col justify-start items-start my-4 border rounded-lg">
             <InputField
               text={"Email"}
               placeholder={"Email Address"}
@@ -112,7 +112,7 @@ const Login = () => {
           </div>
 
           <div className="flex flex-col w-full justify-start items-end gap-1">
-            <div className="relative w-full h-auto flex flex-col justify-start items-start">
+            <div className="relative w-full h-auto flex flex-col justify-start items-start border rounded-lg">
               <InputField
                 register={register("password", {
                   required: "Please enter your password",
@@ -134,7 +134,7 @@ const Login = () => {
             <button
               type="button"
               onClick={() => navigate("/forgot-password")}
-              className="text-xs lg:w-[60%] font-medium text-green-600"
+              className="text-xs lg:w-[20%] font-medium text-green-600"
             >
               Forgot Password?
             </button>
@@ -143,7 +143,7 @@ const Login = () => {
 
         <AuthSubmitBtn text={"Log in"} loading={loading} />
 
-        <div className="w-full h-auto flex flex-col gap-1 justify-start items-start">
+        <div className="w-full h-auto flex flex-col gap-1 justify-center items-center">
           <div className="w-full lg:w-[434px] flex gap-1 justify-center items-center">
             <span className="text-[13px] font-medium text-[#C2C6CB]">
               Don’t have an account?

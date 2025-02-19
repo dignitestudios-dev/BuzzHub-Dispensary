@@ -47,31 +47,29 @@ const InputField = ({
   return (
     <div className="w-full h-auto flex flex-col gap-1 justify-start items-start">
       <div
-        className={`w-full h-[56px] focus-within:border-[1px] rounded-[12px] bg-light shadow-sm 
+        className={`w-full h-[56px]  rounded-[12px] bg-gray-50 shadow-sm 
              flex items-center justify-start  ${
-               error
-                 ? "focus-within:border-[#FF453A]"
-                 : "focus-within:border-[#1D7C42]"
+               error ? "focus-within:border-[#FF453A]" : ""
              } `}
       >
         <div
-          className={`w-[96%] h-full flex items-center justify-start rounded-[12px] relative`}
+          className={`w-full h-full flex items-center justify-start rounded-[12px] relative `}
         >
           {isPhone && (
-            <div className="flex items-center bg-light h-full rounded-l-[12px] pl-4">
+            <div className="flex items-center bg-gray-50 h-full rounded-l-[12px] pl-4">
               <span className="text-md text-[#6B7373] ml-7 -mr-7">+1</span>
             </div>
           )}
           {keyname === "streetAddress" && index === 1 ? (
             isLoaded ? (
               <Autocomplete
-                className="w-[96%] lg:w-[46%]"
+                className="w-full"
                 onLoad={(autocomplete) =>
                   (startLocationRef.current = autocomplete)
                 }
                 onPlaceChanged={handleStartPlaceChanged}
               >
-                <div className="w-full">
+                <div className="w-full ">
                   <input
                     disabled={isDisabled}
                     type="text"
@@ -79,7 +77,7 @@ const InputField = ({
                     className={`w-full text-sm text-[#1D7C42] placeholder:text-black ml-2 placeholder:font-normal 
                   font-normal ${
                     isPhone ? "pr-4 pl-2" : "px-4"
-                  } lg:py-3 md:py-2 py-3 my-2 rounded-xl outline-none bg-light`}
+                  } lg:py-3 md:py-2 py-3 my-2 rounded-xl outline-none bg-gray-50`}
                     {...register}
                     maxLength={maxLength}
                     onInput={onInput}
@@ -101,7 +99,7 @@ const InputField = ({
               } placeholder:font-normal 
             font-normal ${
               isPhone ? "pr-4 pl-2" : "px-4"
-            } lg:py-3 md:py-2 py-3 my-2 rounded-xl outline-none bg-light`}
+            } lg:py-3 md:py-2 py-3 my-2 rounded-xl outline-none bg-gray-50`}
               {...register}
               maxLength={maxLength}
               onInput={onInput}

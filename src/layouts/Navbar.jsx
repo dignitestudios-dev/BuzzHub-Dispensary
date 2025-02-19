@@ -18,7 +18,7 @@ const Navbar = () => {
         try {
           // Fetch dispensary details using the userId
           const response = await axios.get(`/dispensary/details/${userId}`);
-          if (response.data.success) {
+          if (response?.data?.success) {
             setDispensaryDetails(response.data.data.dispensary);
           } else {
             console.error("Failed to fetch dispensary details.");
@@ -32,13 +32,6 @@ const Navbar = () => {
   }, []);
 
   // If dispensaryDetails is not yet fetched, you can show a loading state
-  if (!dispensaryDetails) {
-    return (
-      <div className="w-full h-screen flex items-center justify-center">
-        <div className="spinner"></div>
-      </div>
-    );
-  }
 
   return (
     <div className="w-full h-[60px] bg-gray-50  border-b border-gray-300 flex justify-end items-center px-4 relative">
@@ -80,7 +73,7 @@ const Navbar = () => {
               className="text-[11px] font-medium text-[#074F57]"
               onClick={() => navigate("/profile", "Profile")}
             >
-              {dispensaryDetails.dispensaryName}
+              {dispensaryDetails?.dispensaryName}
             </p>
           </div>
         </button>
