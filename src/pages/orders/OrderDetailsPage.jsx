@@ -158,7 +158,7 @@ const OrderDetailsPage = () => {
                   {order.OrderBy.Username}
                 </p>
                 <p className="text-sm text-gray-600">
-                  User ID: {order.OrderBy.uid}
+                  {/* User ID: {order.OrderBy.uid} */}
                 </p>
                 <p className="text-sm text-gray-600">
                   Phone: {order.phoneNumber}
