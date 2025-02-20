@@ -10,7 +10,7 @@ function App() {
 
   return (
     <Routes>
-      <Route element={<PublicRoute token={token} />}>
+      <Route>
         {AuthenticationRoutes.map((route) => {
           return (
             <Route path={route?.url} element={route?.page} key={route?.title} />
@@ -18,7 +18,7 @@ function App() {
         })}
       </Route>
 
-      <Route element={<ProtectedRoute token={token} />}>
+      <Route>
         {normalRoutes.map((route) => {
           return (
             <Route path={route?.url} element={route?.page} key={route?.title} />
