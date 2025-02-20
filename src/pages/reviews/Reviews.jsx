@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 import axios from "../../axios"; // Assuming you have axios setup
+import { Logo } from "../../assets/export";
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -63,7 +64,8 @@ const Reviews = () => {
             <FaStar key={i} />
           ))}
           <span className="text-gray-600 text-sm">
-            ({reviewSummary.totalReviews} reviews) | Average: {reviewSummary.averageRating}
+            ({reviewSummary.totalReviews} reviews) | Average:{" "}
+            {reviewSummary.averageRating}
           </span>
         </div>
 
@@ -75,10 +77,16 @@ const Reviews = () => {
               <div className="flex-1 bg-gray-200 rounded-full h-2">
                 <div
                   className="bg-green-500 h-2 rounded-full"
-                  style={{ width: `${getReviewBarWidth(reviewSummary.ratings[starRating])}%` }}
+                  style={{
+                    width: `${getReviewBarWidth(
+                      reviewSummary.ratings[starRating]
+                    )}%`,
+                  }}
                 ></div>
               </div>
-              <span className="text-sm text-gray-600">{reviewSummary.ratings[starRating]}</span>
+              <span className="text-sm text-gray-600">
+                {reviewSummary.ratings[starRating]}
+              </span>
             </div>
           ))}
         </div>
@@ -90,22 +98,32 @@ const Reviews = () => {
           <div key={review._id} className="bg-gray-50 p-4 rounded-lg border">
             <div className="flex items-start space-x-4">
               <img
-                src={review.productImage[0]} // Use the first product image
+                src={
+                  review?.productImage?.length > 0
+                    ? review.productImage[0]
+                    : Logo
+                }
                 alt="Item"
-                className="w-16 h-16 object-cover rounded-md"
+                className="w-16 h-16 object-cover rounded-md bg-green-600"
               />
               <div className="flex-1">
-                <h3 className="font-semibold">{review.productName}</h3>
-                <p className="text-sm text-gray-500">{review.city}, {review.state}</p>
-                <p className="font-semibold text-green-600">${review.productPrice}</p>
+                <h3 className="font-semibold">{review?.productName}</h3>
+                <p className="text-sm text-gray-500">
+                  {review.city}, {review.state}
+                </p>
+                <p className="font-semibold text-green-600">
+                  ${review.productPrice}
+                </p>
               </div>
             </div>
 
             {/* Add a fallback for invalid ratingNumber */}
             <div className="mt-2 flex items-center space-x-1 text-yellow-500">
-              {[...Array(Math.max(0, Math.floor(review.ratingNumber)))].map((_, i) => (
-                <FaStar key={i} />
-              ))}
+              {[...Array(Math.max(0, Math.floor(review.ratingNumber)))].map(
+                (_, i) => (
+                  <FaStar key={i} />
+                )
+              )}
             </div>
 
             <p className="text-sm text-gray-700 mt-2">{review.review}</p>

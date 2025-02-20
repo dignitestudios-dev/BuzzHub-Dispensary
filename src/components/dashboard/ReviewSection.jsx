@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import axios from "../../axios"; // Assuming axios is configured
+import { Logo } from "../../assets/export";
 
 const ReviewSection = () => {
   const [reviews, setReviews] = useState([]); // Store reviews data
@@ -18,8 +19,8 @@ const ReviewSection = () => {
     const fetchReviews = async () => {
       try {
         const response = await axios.get("dispensary/get-item-reviews"); // Adjust the API endpoint as needed
-        if (response.data.success) {
-          setReviews(response.data.data.reviews); // Setting the reviews data
+        if (response?.data?.success) {
+          setReviews(response?.data?.data?.reviews); // Setting the reviews data
         }
       } catch (error) {
         console.error("Error fetching reviews:", error);
@@ -41,7 +42,7 @@ const ReviewSection = () => {
   // Function to move to the previous review (3 at a time)
   const prevReview = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex - 3 < 0 ? reviews.length - 3 : prevIndex - 3
+      prevIndex - 3 < 0 ? reviews?.length - 3 : prevIndex - 3
     );
   };
 
@@ -149,42 +150,46 @@ const ReviewSection = () => {
         >
           {/* Render Three Reviews */}
           {reviews.map((review) => (
-            <div key={review._id} className="flex-shrink-0 w-1/3 px-2">
+            <div key={review?._id} className="flex-shrink-0 w-1/3 px-2">
               <div className="bg-gray-50 p-6 rounded-lg border space-y-4">
                 {/* Product Info */}
                 <div className="flex items-center space-x-4">
                   <img
-                    src={review.productImage[0]} // Using the first product image
+                    src={
+                      review?.productImage?.length > 0
+                        ? review.productImage[0]
+                        : Logo
+                    }
                     alt="Product"
-                    className="w-14 h-14 rounded-lg object-cover"
+                    className="w-14 h-14 rounded-lg object-cover bg-green-600"
                   />
                   <div className="flex-1">
                     <h3 className="text-lg font-semibold text-black">
-                      {review.productName}
+                      {review?.productName}
                     </h3>
-                    <p className="text-xs text-gray-500">{`${review.city}, ${review.state}`}</p>
+                    <p className="text-xs text-gray-500">{`${review?.city}, ${review?.state}`}</p>
                   </div>
                   <span className="text-green-600 font-semibold text-lg">
-                    ${review.productPrice}
+                    ${review?.productPrice}
                   </span>
                 </div>
 
                 {/* Star Rating */}
-                <div className="flex">{renderStars(review.ratingNumber)}</div>
+                <div className="flex">{renderStars(review?.ratingNumber)}</div>
 
                 <div className="flex items-center space-x-3">
                   <img
-                    src={review.userProfilePicture} // User profile picture
+                    src={review?.userProfilePicture} // User profile picture
                     alt="User"
                     className="w-10 h-10 rounded-full object-cover"
                   />
                   <span className="text-sm font-medium text-black">
-                    {review.userFullName}
+                    {review?.userFullName}
                   </span>
                 </div>
 
                 {/* Review Text */}
-                <p className="text-sm text-gray-700">{review.review}</p>
+                <p className="text-sm text-gray-700">{review?.review}</p>
               </div>
             </div>
           ))}
@@ -193,7 +198,7 @@ const ReviewSection = () => {
 
       {/* Dots Navigation */}
       <div className="flex justify-center space-x-3 mt-4">
-        {Array.from({ length: Math.ceil(reviews.length / 3) }).map(
+        {Array.from({ length: Math.ceil(reviews?.length / 3) }).map(
           (_, index) => (
             <div
               key={index}
