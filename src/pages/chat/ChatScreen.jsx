@@ -229,6 +229,7 @@ const ChatScreen = ({ selectedChat, chatId, userId, update, setUpdate }) => {
         chatId={chatId}
         userId={userId}
         setUpdate={setUpdate}
+        setMessages={setMessages}
       />
       <BlockModal
         isOpen={isBlockModalOpen}

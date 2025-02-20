@@ -12,7 +12,9 @@ const OrderTrackingTable = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get("dispensary/view-all-orders-dispensary");
+        const response = await axios.get(
+          "dispensary/view-all-orders-dispensary"
+        );
         if (response.data.success) {
           // Ensure that you handle each filter correctly based on the status
           setOrders(response.data.data[filter] || []); // Load orders based on the filter
@@ -39,12 +41,12 @@ const OrderTrackingTable = () => {
         return "bg-green-600"; // Green for Approved
       case "Rejected":
         return "bg-red-500"; // Red for Rejected
-        case "Completed":
+      case "Completed":
         return "bg-green-600"; // Blue for Completed
       case "In Process":
-        return "bg-orange-600"; // Orange for In Process
+        return "bg-yellow-400"; // Orange for In Process
       case "Out for Delivery":
-        return "bg-green-600"; // Purple for Out for Delivery
+        return "bg-blue-500"; // Purple for Out for Delivery
       case "Ready":
         return "bg-green-600"; // green for Ready
       default:
@@ -58,7 +60,9 @@ const OrderTrackingTable = () => {
       <div className="flex justify-start mb-6 space-x-4">
         <button
           onClick={() => setFilter("All")}
-          className={`px-3 py-3 rounded-md text-sm font-semibold ${filter === "All" ? "bg-[#1D7C42] text-white" : "bg-gray-300"}`}
+          className={`px-3 py-3 rounded-md text-sm font-semibold ${
+            filter === "All" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+          }`}
         >
           All Orders
         </button>
@@ -82,25 +86,35 @@ const OrderTrackingTable = () => {
         </button> */}
         <button
           onClick={() => setFilter("Completed")}
-          className={`px-3 py-3 rounded-md text-sm font-semibold ${filter === "Completed" ? "bg-[#1D7C42] text-white" : "bg-gray-300"}`}
+          className={`px-3 py-3 rounded-md text-sm font-semibold ${
+            filter === "Completed" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+          }`}
         >
           Completed
         </button>
         <button
           onClick={() => setFilter("InProcess")}
-          className={`px-3 py-3 rounded-md text-sm font-semibold ${filter === "InProcess" ? "bg-[#1D7C42] text-white" : "bg-gray-300"}`}
+          className={`px-3 py-3 rounded-md text-sm font-semibold ${
+            filter === "InProcess" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+          }`}
         >
           In Process
         </button>
         <button
           onClick={() => setFilter("OutForDelivery")}
-          className={`px-3 py-3 rounded-md text-sm font-semibold ${filter === "OutForDelivery" ? "bg-[#1D7C42] text-white" : "bg-gray-300"}`}
+          className={`px-3 py-3 rounded-md text-sm font-semibold ${
+            filter === "OutForDelivery"
+              ? "bg-[#1D7C42] text-white"
+              : "bg-gray-300"
+          }`}
         >
           Out for Delivery
         </button>
         <button
           onClick={() => setFilter("Ready")}
-          className={`px-3 py-3 rounded-md text-sm font-semibold ${filter === "Ready" ? "bg-[#1D7C42] text-white" : "bg-gray-300"}`}
+          className={`px-3 py-3 rounded-md text-sm font-semibold ${
+            filter === "Ready" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+          }`}
         >
           Ready
         </button>
@@ -109,7 +123,9 @@ const OrderTrackingTable = () => {
       {/* Orders Table */}
       <div className="overflow-x-auto rounded-lg border">
         {orders.length === 0 ? (
-          <div className="text-center p-6 text-gray-500">No orders to show.</div>
+          <div className="text-center p-6 text-gray-500">
+            No orders to show.
+          </div>
         ) : (
           <table className="min-w-full text-black bg-white border border-gray-200">
             <thead>
@@ -133,15 +149,25 @@ const OrderTrackingTable = () => {
                           alt={order.products[0].name}
                           className="w-20 h-20 object-cover rounded-md"
                         />
-                        <span className="text-sm font-medium">{order.products[0].name}</span>
+                        <span className="text-sm font-medium">
+                          {order.products[0].name}
+                        </span>
                       </>
                     )}
                   </td>
                   <td className="p-4 text-sm">{order.orderUvid}</td>
-                  <td className="p-4 text-sm">{new Date(order.createdAt).toLocaleDateString()}</td>
-                  <td className="p-4 text-sm font-medium">${order.totalAmount}</td>
+                  <td className="p-4 text-sm">
+                    {new Date(order.createdAt).toLocaleDateString()}
+                  </td>
+                  <td className="p-4 text-sm font-medium">
+                    ${order.totalAmount}
+                  </td>
                   <td className="p-4">
-                    <span className={`px-3 py-1 text-white rounded-full ${getStatusColor(order.orderStatus)}`}>
+                    <span
+                      className={`px-3 py-1 text-white rounded-full ${getStatusColor(
+                        order.orderStatus
+                      )}`}
+                    >
                       {order.orderStatus}
                     </span>
                   </td>

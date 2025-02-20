@@ -8,8 +8,10 @@ import InputField from "../../components/onboarding/InputField";
 import { useForm } from "react-hook-form";
 import { CiLock } from "react-icons/ci";
 import { PiEnvelopeLight } from "react-icons/pi";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const Login = () => {
+  const { signIn } = useContext(AuthContext);
   const { navigate } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
 
@@ -36,7 +38,7 @@ const Login = () => {
       if (response.status === 200) {
         const { status, isSubscribed, rejectionReason, isSessionComplete } =
           response.data.data;
-
+        signIn(response.data);
         // Check if session is complete
         if (!isSessionComplete) {
           navigate("/profile-completion");
@@ -55,10 +57,6 @@ const Login = () => {
             rejectReason: rejectionReason || null,
           });
         }
-
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("userId", response.data.data._id);
-        localStorage.setItem("userData", JSON.stringify(response.data.data));
       }
     } catch (error) {
       console.error(

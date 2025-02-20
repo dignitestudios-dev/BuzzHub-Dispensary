@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Logo } from "../../src/assets/export"; 
+import { Logo } from "../../src/assets/export";
 import { sidebarArr } from "../constants/sidebarArr";
 import { RiLogoutCircleLine, RiMenuLine, RiCloseLine } from "react-icons/ri";
+import { AuthContext } from "../contexts/AuthContext";
 // import axios from "../axios";
 
 const Sidebar = () => {
+  const { signOut } = useContext(AuthContext);
+
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const [activeLink, setActiveLink] = useState(null);
@@ -30,17 +33,15 @@ const Sidebar = () => {
 
   //     localStorage.removeItem("token");
 
-  //     navigate("/login"); 
+  //     navigate("/login");
   //   } catch (error) {
   //     console.error("Error logging out", error);
   //   }
   // };
 
   const handleLogout = async () => {
-    
-
-      navigate("/"); 
-   
+    signOut();
+    navigate("/");
   };
 
   return (
@@ -70,7 +71,10 @@ const Sidebar = () => {
         <div className="w-full flex-grow mt-4 scrollbar-hide">
           <ul className="w-full space-y-4">
             {sidebarArr.map((link, index) => (
-              <li key={index} className="w-full flex justify-start items-center gap-3">
+              <li
+                key={index}
+                className="w-full flex justify-start items-center gap-3"
+              >
                 <span
                   className={`w-2 h-3 rounded-r-full ${
                     activeLink === link.url
@@ -80,10 +84,10 @@ const Sidebar = () => {
                 ></span>
                 <Link
                   to={link.url}
-                  onClick={() => handleLinkClick(link.url)} 
+                  onClick={() => handleLinkClick(link.url)}
                   className={`flex items-end w-[calc(100%-1.9rem)] gap-2 px-8 py-3 rounded-md transition-all relative ${
                     activeLink === link.url
-                      ? "bg-[#1D7C42] text-white" 
+                      ? "bg-[#1D7C42] text-white"
                       : "bg-[#1D7C4230] border border-[#074F57] text-[#074F57] hover:bg-[#1D7C42]  hover:text-white" // Hover background color
                   }`}
                 >
@@ -98,7 +102,7 @@ const Sidebar = () => {
             <li className="w-full flex justify-start items-center gap-3">
               <span className="w-2 h-3 rounded-r-full bg-[#074F5730] border border-[#074F57]"></span>
               <button
-                onClick={handleLogout} 
+                onClick={handleLogout}
                 className="flex items-center gap-3 px-8 py-3 bg-[#1D7C4230] border border-[#074F57] text-[#074F57] hover:bg-[#1D7C42]  hover:text-white rounded-md transition-all w-[calc(100%-1.9rem)]"
               >
                 <RiLogoutCircleLine className="text-xl" />

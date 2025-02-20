@@ -30,8 +30,6 @@ export const sendMessage = async (chatId, senderId, messageText) => {
 };
 
 
-
-
 export const getMessages = (chatId, callback, updatedAt) => {
   console.log(updatedAt)
   if (!chatId) return;
@@ -44,7 +42,7 @@ export const getMessages = (chatId, callback, updatedAt) => {
       id: doc.id,
       ...doc.data(),
     }));
-    console.log(messages)
+    console.log("message call==> ",messages)
     callback(messages);
   }, (error) => console.error("Error fetching messages:", error));
 };
@@ -146,7 +144,7 @@ export const unblockChatRoom = async ( chatId, userId, closeModal ) => {
   }
 };
 
-export const deleteChatForUser = async ( chatId, userId, closeModal ) => {
+export const deleteChatForUser = async ( chatId, userId, closeModal, setMessages ) => {
   try {
     const updatedAt = {
       [userId]: Timestamp.now()
@@ -157,7 +155,9 @@ export const deleteChatForUser = async ( chatId, userId, closeModal ) => {
     await updateDoc(chatDoc, {
       [`updated_at.${userId}`]: Timestamp.now(),
     });
+    
     closeModal()
+    getMessages(chatId,setMessages,updatedAt)
   } catch (e) {
     throw new Error(`Failed to soft delete chat: ${e}`);
   }

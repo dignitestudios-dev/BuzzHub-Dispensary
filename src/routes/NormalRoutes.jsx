@@ -22,144 +22,154 @@ import Verification from "../pages/onboarding/Verification";
 import UpdatePassword from "../pages/onboarding/UpdatePassword";
 import Wallet from "../pages/wallet/Wallet";
 import ChangePassword from "../pages/settings/ChangePassword";
-
+import PageNotFound from "../pages/onboarding/PageNotFound";
+import { Navigate } from "react-router-dom";
 
 export const normalRoutes = [
-    {
-    title:"Profile Completion",
-    url:"/profile-completion",
-    page: <ProfileCompletion />
-    },
-    {
-      title:"Request Success",
-      url:"/req-success",
-      page: <RequestSuccessScreen />
-      },
+  {
+    title: "Profile Completion",
+    url: "/profile-completion",
+    page: <ProfileCompletion />,
+  },
+  {
+    title: "Request Success",
+    url: "/req-success",
+    page: <RequestSuccessScreen />,
+  },
 
-      {
-        title:"Verification",
-        url:"/verification",
-        page: <Verification />
-        },
+  {
+    title: "Verification",
+    url: "/verification",
+    page: <Verification />,
+  },
 
-        {
-          title:"Update Password",
-          url:"/update-password",
-          page: <UpdatePassword />
-          },
-        
-    {
-      title:"Packages",
-      url:"/packages",
-      page: <Packages />
-      },
+  {
+    title: "Update Password",
+    url: "/update-password",
+    page: <UpdatePassword />,
+  },
 
-      {
-        title:"Add Card",
-        url:"/add-card",
-        page: <AddCard />
-        },
+  {
+    title: "Packages",
+    url: "/packages",
+    page: <Packages />,
+  },
 
-    {
-        title: "Dashboard",
-        url: "/dashboard",
-        page: <GlobalLayout page={<Home />} />,
-      },
+  {
+    title: "Add Card",
+    url: "/add-card",
+    page: <AddCard />,
+  },
 
-      {
-        title: "Dashboard",
-        url: "/order-details",
-        page: <GlobalLayout page={<OrderDetailsPage />} />,
-      },
+  {
+    title: "Dashboard",
+    url: "/dashboard",
+    page: <GlobalLayout page={<Home />} />,
+  },
 
+  {
+    title: "Dashboard",
+    url: "/order-details",
+    page: <GlobalLayout page={<OrderDetailsPage />} />,
+  },
 
-      {
-        title: "Wallet",
-        url: "/wallet",
-        page: <GlobalLayout page={<Wallet />} />,
-      },
+  {
+    title: "Wallet",
+    url: "/wallet",
+    page: <GlobalLayout page={<Wallet />} />,
+  },
 
-      // {
-      //   title: "Chat List",
-      //   url: "/chat",
-      //   page: <GlobalLayout page={<ChatList />} />,
-      // },
+  // {
+  //   title: "Chat List",
+  //   url: "/chat",
+  //   page: <GlobalLayout page={<ChatList />} />,
+  // },
 
-      {
-        title: "Chat List",
-        url: "/chat",
-        page: <GlobalLayout page={<Chat />} />,
-      },
+  {
+    title: "Chat List",
+    url: "/chat",
+    page: <GlobalLayout page={<Chat />} />,
+  },
 
-      {
-        title: "Chat Screen",
-        url: "/chat-screen",
-        page: <GlobalLayout page={<ChatScreen />} />,
-      },
+  {
+    title: "Chat Screen",
+    url: "/chat-screen",
+    page: <GlobalLayout page={<ChatScreen />} />,
+  },
 
-      {
-        title: "Accepted Order",
-        url: "/accepted-order",
-        page: <GlobalLayout page={<AcceptedOrder />} />,
-      },
+  {
+    title: "Accepted Order",
+    url: "/accepted-order",
+    page: <GlobalLayout page={<AcceptedOrder />} />,
+  },
 
-      {
-        title: "Order Tracking",
-        url: "/order-tracking/:id",
-        page: <GlobalLayout page={<OrderTracking />} />,
-      },
+  {
+    title: "Order Tracking",
+    url: "/order-tracking/:id",
+    page: <GlobalLayout page={<OrderTracking />} />,
+  },
 
-      {
-        title: "Change Password",
-        url: "/change-password",
-        page: <GlobalLayout page={<ChangePassword />} />,
-      },
-   
-      {
-        title: "Item Details",
-        url: "/item-details/:orderId",
-        page: <GlobalLayout page={<ItemDetails />} />,
-      },
+  {
+    title: "Change Password",
+    url: "/change-password",
+    page: <GlobalLayout page={<ChangePassword />} />,
+  },
 
-      {
-        title: "Order Management",
-        url: "/orders",
-        page: <GlobalLayout page={<Orders />} />,
-      }, 
-      {
-        title: "Notifications",
-        url: "/notifications",
-        page: <GlobalLayout page={<Notifications />} />,
-      },
+  {
+    title: "Item Details",
+    url: "/item-details/:orderId",
+    page: <GlobalLayout page={<ItemDetails />} />,
+  },
 
-      {
-        title: "products",
-        url: "/products",
-        page: <GlobalLayout page={<Products />} />,
-      },
+  {
+    title: "Order Management",
+    url: "/orders",
+    page: <GlobalLayout page={<Orders />} />,
+  },
+  {
+    title: "Notifications",
+    url: "/notifications",
+    page: <GlobalLayout page={<Notifications />} />,
+  },
 
-      {
-        title: "Track Orders",
-        url: "/track-orders",
-        page: <GlobalLayout page={<TrackOrders />} />,
-      },
+  {
+    title: "products",
+    url: "/products",
+    page: <GlobalLayout page={<Products />} />,
+  },
 
-      {
-        title: "Reviews",
-        url: "/reviews",
-        page: <GlobalLayout page={<Reviews />} />,
-      },
+  {
+    title: "Track Orders",
+    url: "/track-orders",
+    page: <GlobalLayout page={<TrackOrders />} />,
+  },
 
-      {
-        title: "Profile",
-        url: "/profile",
-        page: <GlobalLayout page={<Profile />} />,
-      },
+  {
+    title: "Reviews",
+    url: "/reviews",
+    page: <GlobalLayout page={<Reviews />} />,
+  },
 
-      
-      {
-        title: "Edit Profile",
-        url: "/edit-profile",
-        page: <GlobalLayout page={<EditProfilePage />} />,
-      },
-]    
+  {
+    title: "Profile",
+    url: "/profile",
+    page: <GlobalLayout page={<Profile />} />,
+  },
+
+  {
+    title: "Edit Profile",
+    url: "/edit-profile",
+    page: <GlobalLayout page={<EditProfilePage />} />,
+  },
+
+  {
+    title: "Not found",
+    url: "*",
+    page: <Navigate to="/404" />,
+  },
+  {
+    title: "Not found",
+    url: "/404",
+    page: <PageNotFound />,
+  },
+];

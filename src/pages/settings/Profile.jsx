@@ -2,11 +2,15 @@ import React, { useState, useEffect } from "react";
 import { FiEdit2, FiMail, FiPhone, FiClock, FiMapPin } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import axios from "../../axios";
+import { ErrorToast, SuccessToast } from "../../components/global/Toaster";
+import { MdOutlineDeleteOutline } from "react-icons/md";
 
 const Profile = () => {
   const navigate = useNavigate();
   const [dispensaryDetails, setDispensaryDetails] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [password, setPassword] = useState(""); // State to store password
+  const [passwordError, setPasswordError] = useState(""); // State for password error message
 
   useEffect(() => {
     const fetchDispensaryDetails = async () => {
@@ -38,49 +42,44 @@ const Profile = () => {
   }
 
   const handleDeleteProfile = async () => {
-    try {
-      const token = localStorage.getItem("token"); // Get the token from localStorage
+    if (!password) {
+      setPasswordError("Password is required to delete your profile.");
+      ErrorToast("Password is required.");
+      return;
+    }
 
+    try {
+      const token = localStorage.getItem("token");
       if (!token) {
         alert("Token is missing. Please log in again.");
         return;
       }
 
-      // Prompt the user for the password
-      const password = prompt(
-        "Please enter your password to confirm deletion:"
-      );
-
-      if (!password) {
-        alert("Password is required to delete your profile.");
-        return;
-      }
-
-      // Make the API request to delete the account
       const response = await axios.post(
-        `/delete-account-dispensary`,
+        `auth/delete-account-dispensary`,
         {
-          password: password, // Send the password
+          password: password,
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Add the token as Bearer Token in Authorization header
+            Authorization: `Bearer ${token}`,
           },
         }
       );
 
       if (response.data.success) {
-        alert("Profile deleted successfully");
-        localStorage.clear(); // Clear all localStorage data
-        navigate("/login"); // Redirect to login page after deletion
+        SuccessToast("Profile deleted successfully");
+        localStorage.clear();
+        navigate("/");
       } else {
-        alert("Failed to delete profile.");
+        ErrorToast("Failed to delete profile.");
       }
     } catch (error) {
       console.error("Error deleting profile:", error);
+      ErrorToast("An error occurred while deleting the profile.");
     }
 
-    setIsModalOpen(false); // Close the modal after deletion attempt
+    setIsModalOpen(false);
   };
 
   return (
@@ -136,12 +135,12 @@ const Profile = () => {
         </button>
 
         {/* Delete Profile Button */}
-        {/* <button
+        <button
           onClick={() => setIsModalOpen(true)} // Open the modal when clicked
           className="w-full bg-red-600 text-white py-3 rounded-lg flex items-center justify-center hover:bg-red-700 transition duration-300"
         >
-          <FiEdit2 className="mr-2" /> Delete Profile
-        </button> */}
+          <MdOutlineDeleteOutline className="mr-2 text-xl" /> Delete Profile
+        </button>
       </div>
 
       {/* Bio Section */}
@@ -163,6 +162,18 @@ const Profile = () => {
               Are you sure you want to delete your profile? This action is
               irreversible.
             </p>
+            <div className="mb-4">
+              <input
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full p-2 border rounded"
+              />
+              {passwordError && (
+                <p className="text-red-500 text-sm mt-2">{passwordError}</p>
+              )}
+            </div>
             <div className="flex justify-end gap-4">
               <button
                 onClick={() => setIsModalOpen(false)} // Close the modal without deleting

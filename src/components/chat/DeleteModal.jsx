@@ -1,7 +1,14 @@
 import React from "react";
 import { deleteChatForUser } from "../../firebase/firestoreService";
 
-const DeleteModal = ({ isOpen, onClose, chatId, userId, setUpdate }) => {
+const DeleteModal = ({
+  isOpen,
+  onClose,
+  chatId,
+  userId,
+  setUpdate,
+  setMessages,
+}) => {
   if (!isOpen) return null;
 
   return (
@@ -13,7 +20,7 @@ const DeleteModal = ({ isOpen, onClose, chatId, userId, setUpdate }) => {
           <button
             className="bg-green-600 text-white px-4 py-2 rounded mr-4"
             onClick={async () => {
-              await deleteChatForUser(chatId, userId, onClose);
+              await deleteChatForUser(chatId, userId, onClose, setMessages);
               setUpdate((prev) => !prev);
             }}
           >
