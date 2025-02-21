@@ -222,6 +222,14 @@ const ChatScreen = ({ selectedChat, chatId, userId, update, setUpdate }) => {
         </div>
       )}
 
+      {blockedIds?.length > 0 && (
+        <div className="flex items-center px-6 py-4 ">
+          <h1 className="text-gray-500">
+            Either you or the other user has blocked this conversation.
+          </h1>
+        </div>
+      )}
+
       {/* Modals */}
       <DeleteModal
         isOpen={isDeleteModalOpen}

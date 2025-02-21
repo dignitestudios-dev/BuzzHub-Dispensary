@@ -32,7 +32,7 @@ const ChatList = ({
       setSelectedChat(chats?.filter((chat) => selectedChat?.id == chat?.id)[0]);
   }, [chats]);
   return (
-    <ul className="space-y-4">
+    <ul className="space-y- overflow-auto">
       {chats?.map((chat) => (
         <li
           key={chat?.id}

@@ -4,12 +4,7 @@ import InputField from "../onboarding/InputField";
 import SelectField from "../onboarding/SelectField";
 // import stateCityData from "../dataCountry/CountryData";
 import AuthSubmitBtn from "../onboarding/AuthSubmitBtn";
-const stateCityData = {
-  California: ["Los Angeles", "San Francisco", "San Diego"],
-  Texas: ["Houston", "Dallas", "Austin"],
-  "New York": ["New York City", "Buffalo", "Rochester"],
-};
-
+import stateCityData from "../../components/profileCompletion/CountryData";
 const UserInformation = ({
   handleNext,
   register,

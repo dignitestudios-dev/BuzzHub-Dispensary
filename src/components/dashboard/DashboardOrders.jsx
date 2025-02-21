@@ -50,38 +50,48 @@ const DashboardOrders = () => {
   return (
     <div className="w-full">
       {/* Filter Buttons */}
-      <div className="flex justify-start mb-6 space-x-4">
+      <div className="flex justify-between mb-6">
+        {/* Filter Buttons */}
+        <div className="flex space-x-4">
+          <button
+            onClick={() => setFilter("All")}
+            className={`px-3 py-3 rounded-md text-sm font-semibold ${
+              filter === "All" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+            }`}
+          >
+            All Orders
+          </button>
+          <button
+            onClick={() => setFilter("Pending")}
+            className={`px-3 py-3 rounded-md text-sm font-semibold ${
+              filter === "Pending" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+            }`}
+          >
+            Pending
+          </button>
+          <button
+            onClick={() => setFilter("Approved")}
+            className={`px-3 py-3 rounded-md text-sm font-semibold ${
+              filter === "Approved" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+            }`}
+          >
+            Approved
+          </button>
+          <button
+            onClick={() => setFilter("Rejected")}
+            className={`px-3 py-3 rounded-md text-sm font-semibold ${
+              filter === "Rejected" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+            }`}
+          >
+            Rejected
+          </button>
+        </div>
+
         <button
-          onClick={() => setFilter("All")}
-          className={`px-3 py-3 rounded-md text-sm font-semibold ${
-            filter === "All" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-          }`}
+          onClick={() => navigate("/orders")}
+          className="text-green-600 font-medium hover:underline"
         >
-          All Orders
-        </button>
-        <button
-          onClick={() => setFilter("Pending")}
-          className={`px-3 py-3 rounded-md text-sm font-semibold ${
-            filter === "Pending" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-          }`}
-        >
-          Pending
-        </button>
-        <button
-          onClick={() => setFilter("Approved")}
-          className={`px-3 py-3 rounded-md text-sm font-semibold ${
-            filter === "Approved" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-          }`}
-        >
-          Approved
-        </button>
-        <button
-          onClick={() => setFilter("Rejected")}
-          className={`px-3 py-3 rounded-md text-sm font-semibold ${
-            filter === "Rejected" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-          }`}
-        >
-          Rejected
+          See all
         </button>
       </div>
 
@@ -104,7 +114,7 @@ const DashboardOrders = () => {
               </tr>
             </thead>
             <tbody>
-              {orders.map((order) => (
+              {orders.slice(0, 5).map((order) => (
                 <tr key={order._id} className="border-b hover:bg-gray-100">
                   <td className="p-4 flex items-center space-x-3">
                     {order.products.length > 0 && (
