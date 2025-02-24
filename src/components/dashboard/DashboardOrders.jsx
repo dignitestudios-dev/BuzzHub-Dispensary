@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import axios from "../../axios";
+import { ErrorToast } from "../../components/global/Toaster";
 
 const DashboardOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -15,11 +16,12 @@ const DashboardOrders = () => {
         const response = await axios.get(
           "dispensary/view-all-orders-dispensary"
         );
-        if (response.data.success) {
-          setOrders(response.data.data[filter]); // Load orders based on the filter
+        if (response?.data?.success) {
+          setOrders(response?.data?.data[filter]);
         }
       } catch (error) {
         console.error("Error fetching orders:", error);
+        ErrorToast("Error fetching orders:", error);
       }
     };
 
@@ -114,36 +116,36 @@ const DashboardOrders = () => {
               </tr>
             </thead>
             <tbody>
-              {orders.slice(0, 5).map((order) => (
+              {orders?.slice(0, 5).map((order) => (
                 <tr key={order._id} className="border-b hover:bg-gray-100">
                   <td className="p-4 flex items-center space-x-3">
-                    {order.products.length > 0 && (
+                    {order?.products?.length > 0 && (
                       <>
                         <img
-                          src={order.products[0].productImage[0]} // First image of the first product
-                          alt={order.products[0].name}
+                          src={order?.products[0]?.productImage[0]} // First image of the first product
+                          alt={order?.products[0]?.name}
                           className="w-20 h-20 object-cover rounded-md"
                         />
                         <span className="text-sm font-medium">
-                          {order.products[0].name}
+                          {order?.products[0]?.name}
                         </span>
                       </>
                     )}
                   </td>
-                  <td className="p-4 text-sm">{order.orderUvid}</td>
+                  <td className="p-4 text-sm">{order?.orderUvid}</td>
                   <td className="p-4 text-sm">
-                    {new Date(order.createdAt).toLocaleDateString()}
+                    {new Date(order?.createdAt).toLocaleDateString()}
                   </td>
                   <td className="p-4 text-sm font-medium">
-                    ${order.totalAmount}
+                    ${order?.totalAmount}
                   </td>
                   <td className="p-4">
                     <span
                       className={`px-3 py-1 text-white rounded-full ${getStatusColor(
-                        order.orderStatus
+                        order?.orderStatus
                       )}`}
                     >
-                      {order.orderStatus}
+                      {order?.orderStatus}
                     </span>
                   </td>
                   <td className="p-4">

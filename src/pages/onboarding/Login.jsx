@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { CiLock } from "react-icons/ci";
 import { PiEnvelopeLight } from "react-icons/pi";
 import { AuthContext } from "../../contexts/AuthContext";
+import { ErrorToast } from "../../components/global/Toaster";
 
 const Login = () => {
   const { signIn } = useContext(AuthContext);
@@ -16,10 +17,8 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const {
-    // getValues,
     register,
     handleSubmit,
-    // watch,
     formState: { errors },
   } = useForm();
 
@@ -37,8 +36,8 @@ const Login = () => {
 
       if (response.status === 200) {
         const { status, isSubscribed, rejectionReason, isSessionComplete } =
-          response.data.data;
-        signIn(response.data);
+          response?.data?.data;
+        signIn(response?.data);
         // Check if session is complete
         if (!isSessionComplete) {
           navigate("/profile-completion");
@@ -61,9 +60,9 @@ const Login = () => {
     } catch (error) {
       console.error(
         "Login failed:",
-        error.response?.data?.message || error.message
+        error.response?.data?.message || error?.message
       );
-      alert("Login failed, please try again!");
+      ErrorToast(error?.response?.data?.message);
     } finally {
       setLoading(false);
     }
@@ -98,7 +97,7 @@ const Login = () => {
                   message: "Please enter a valid email address.",
                 },
               })}
-              error={errors.email}
+              error={errors?.email}
               icon={true}
             />
             <PiEnvelopeLight

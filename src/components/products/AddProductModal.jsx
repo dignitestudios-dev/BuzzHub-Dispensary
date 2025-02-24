@@ -3,7 +3,6 @@ import { FaPlus, FaTimes } from "react-icons/fa";
 import axios from "../../axios"; // Import axios instance
 import { useNavigate } from "react-router-dom";
 
-// Define the types and corresponding subtypes
 const typesAndSubtypes = {
   "Indica Strains": [
     "Northern Lights",
@@ -55,7 +54,6 @@ const AddProductModal = ({ onClose }) => {
       setFullfillmentMethod(method);
     }
   }, []);
-  // Empty dependency array to run once when component mounts
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
@@ -77,8 +75,7 @@ const AddProductModal = ({ onClose }) => {
       return;
     }
 
-    setLoading(true); // Start loading
-
+    setLoading(true);
     const formData = new FormData();
     formData.append("productName", productName);
     formData.append("productPrice", productPrice);
@@ -93,7 +90,7 @@ const AddProductModal = ({ onClose }) => {
 
     formData.append("weightQuantity", weightQuantity);
     formData.append("weightType", weightType);
-    formData.append("fullfillmentMethod", fullfillmentMethod); // Use stored fulfillment method
+    formData.append("fullfillmentMethod", fullfillmentMethod);
 
     images.forEach((image) => {
       formData.append("productImage", image);
@@ -106,13 +103,13 @@ const AddProductModal = ({ onClose }) => {
         },
       });
 
-      if (response.data.success) {
-        console.log("Product added successfully:", response.data.data);
+      if (response?.data?.success) {
+        console.log("Product added successfully:", response?.data?.data);
         onClose();
         navigate("/products");
         window.location.reload();
       } else {
-        console.error("Failed to add product:", response.data.message);
+        console.error("Failed to add product:", response?.data?.message);
       }
     } catch (error) {
       console.error("Error adding product:", error);
@@ -174,7 +171,7 @@ const AddProductModal = ({ onClose }) => {
             </label>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-1 gap-4 mb-4">
             <input
               type="text"
               placeholder="Name"
@@ -191,9 +188,10 @@ const AddProductModal = ({ onClose }) => {
               required
               onChange={(e) => setProductPrice(e.target.value)}
             />
+            <p className=" text-gray-600 ">Expiry Date</p>
             <input
               type="date"
-              className="w-full p-2 border rounded"
+              className="w-full p-2 -mt-2 border rounded"
               value={expiryDate}
               required
               onChange={(e) => setExpiryDate(e.target.value)}

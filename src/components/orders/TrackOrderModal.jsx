@@ -35,9 +35,8 @@ const TrackOrderModal = ({
           status: selectedStatus,
         }
       );
-      console.log("resp00", response);
       if (response.status === 200) {
-        setShowModal(false); // Close the modal
+        setShowModal(false);
         navigate("/track-orders");
       }
     } catch (error) {
@@ -53,7 +52,6 @@ const TrackOrderModal = ({
         <div className="bg-gray-50 p-8 rounded-lg max-w-sm w-full">
           <h2 className="text-xl font-semibold mb-4">Track Order</h2>
 
-          {/* Dropdown to select the status */}
           <div className="mb-4">
             <label htmlFor="status" className="block text-gray-600">
               Select Status
@@ -64,7 +62,7 @@ const TrackOrderModal = ({
               onChange={(e) => setSelectedStatus(e.target.value)}
               className="w-full py-2 px-3 border rounded-lg mt-2"
             >
-              {statusList.map((status) => (
+              {statusList?.map((status) => (
                 <option key={status} value={status}>
                   {status}
                 </option>
@@ -72,7 +70,6 @@ const TrackOrderModal = ({
             </select>
           </div>
 
-          {/* Action Buttons */}
           <div className="flex justify-between space-x-4">
             <button
               onClick={handleStatusChange}

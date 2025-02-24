@@ -234,7 +234,6 @@ const ReviewSection = () => {
   // Initialize navigate
   const navigate = useNavigate();
 
-  // Fetch reviews from API
   useEffect(() => {
     const fetchReviews = async () => {
       try {
@@ -245,28 +244,25 @@ const ReviewSection = () => {
       } catch (error) {
         console.error("Error fetching reviews:", error);
       } finally {
-        setLoading(false); // Set loading to false when done
+        setLoading(false);
       }
     };
 
     fetchReviews();
   }, []);
 
-  // Function to move to the next review (3 at a time)
   const nextReview = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex + 3 >= reviews.length ? 0 : prevIndex + 3
+      prevIndex + 3 >= reviews?.length ? 0 : prevIndex + 3
     );
   };
 
-  // Function to move to the previous review (3 at a time)
   const prevReview = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex - 3 < 0 ? reviews?.length - 3 : prevIndex - 3
     );
   };
 
-  // Function to render star ratings
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, i) =>
       i < rating ? (
@@ -326,22 +322,19 @@ const ReviewSection = () => {
     }
   };
 
-  // Handle touch end (end of touch)
   const handleTouchEnd = () => {
     isDragging.current = false;
   };
 
-  // Loading Spinner or Reviews Display
   if (loading) {
     return (
       <div className="w-full p-4 text-center">
-        <div className="spinner"></div> {/* Loading spinner */}
+        <div className="spinner"></div>
       </div>
     );
   }
 
-  // Show message if no reviews are available
-  if (reviews.length === 0) {
+  if (reviews?.length === 0) {
     return (
       <div className="w-full p-4 text-center">
         <p className="text-xl text-gray-500">No reviews available.</p>
@@ -351,19 +344,16 @@ const ReviewSection = () => {
 
   return (
     <div className="w-full">
-      {/* Header */}
       <div className="w-full flex justify-between items-center mb-4">
         <h1 className="text-black text-3xl font-bold ml-2">Reviews</h1>
-        {/* "See all" button to navigate to /reviews */}
         <button
           className="text-green-600 font-medium hover:underline"
-          onClick={() => navigate("/reviews")} // Navigate to /reviews
+          onClick={() => navigate("/reviews")}
         >
           See all
         </button>
       </div>
 
-      {/* Review Card Slider */}
       <div
         className="relative overflow-hidden"
         onMouseDown={handleMouseDown}
@@ -377,16 +367,14 @@ const ReviewSection = () => {
           className="flex transition-transform duration-500 ease-in-out"
           style={{ transform: `translateX(-${currentIndex * 33.3333}%)` }}
         >
-          {/* Render Three Reviews */}
-          {reviews.map((review) => (
+          {reviews?.map((review) => (
             <div key={review?._id} className="flex-shrink-0 w-1/3 px-2">
               <div className="bg-gray-50 p-6 rounded-lg border space-y-4">
-                {/* Product Info */}
                 <div className="flex items-center space-x-4">
                   <img
                     src={
                       review?.productImage?.length > 0
-                        ? review.productImage[0]
+                        ? review?.productImage[0]
                         : Logo
                     }
                     alt="Product"

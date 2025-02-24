@@ -7,7 +7,7 @@ const UserVerification = ({
   handlePrev,
   fileNames,
   setFileNames,
-  handleSubmit
+  handleSubmit,
 }) => {
   const [errors, setErrors] = useState({
     front: "",
@@ -74,14 +74,14 @@ const UserVerification = ({
   return (
     <form onSubmit={handleSubmit(validateForNext)} className="w-full h-full">
       <div className="pt-2 pb-1">
-        <p className="text-[12px] font-bold text-center justify-center">License</p>
+        <p className="text-[12px] font-bold text-center justify-center">
+          License
+        </p>
       </div>
 
       {/* License Upload Buttons */}
       <div className="flex justify-center space-x-4">
-        <div
-          className="w-[330px] h-[140px] bg-white border-dashed border-2 border-primary cursor-pointer rounded-xl flex flex-col gap-0 justify-center items-center relative"
-        >
+        <div className="w-[330px] h-[140px] bg-white border-dashed border-2 border-primary cursor-pointer rounded-xl flex flex-col gap-0 justify-center items-center relative">
           {fileNames.front ? (
             <img
               src={fileNames.front ? URL.createObjectURL(fileNames.front) : ""}
@@ -134,21 +134,27 @@ const UserVerification = ({
         </div>
       </div>
 
-      {errors.front && <p className="text-xs text-red-500 text-center">{errors.front}</p>}
-      {errors.back && <p className="text-xs text-red-500 text-center">{errors.back}</p>}
+      {errors?.front && (
+        <p className="text-xs text-red-500 text-center">{errors?.front}</p>
+      )}
+      {errors?.back && (
+        <p className="text-xs text-red-500 text-center">{errors?.back}</p>
+      )}
 
       <div className="pt-4 pb-1">
-        <p className="text-[12px] font-bold text-center justify-center">Registration</p>
+        <p className="text-[12px] font-bold text-center justify-center">
+          Registration
+        </p>
       </div>
 
       {/* Registration Upload Buttons */}
       <div className="flex justify-center space-x-4">
         <div className="w-[330px] h-[140px] bg-white border-dashed border-2 border-primary cursor-pointer rounded-xl flex flex-col gap-1 justify-center items-center relative">
-          {fileNames.left ? (
+          {fileNames?.left ? (
             <img
-              src={fileNames.left ? URL.createObjectURL(fileNames.left) : ""}
+              src={fileNames?.left ? URL.createObjectURL(fileNames?.left) : ""}
               className="w-[320px] h-[135px] rounded-lg object-cover"
-              onLoad={() => URL.revokeObjectURL(fileNames.left)}
+              onLoad={() => URL.revokeObjectURL(fileNames?.left)}
             />
           ) : (
             <label className="text-sm text-primary font-medium text-center">
@@ -170,11 +176,13 @@ const UserVerification = ({
         </div>
 
         <div className="w-[330px] h-[140px] bg-white border-dashed border-2 border-primary cursor-pointer rounded-xl flex flex-col gap-1 justify-center items-center relative">
-          {fileNames.right ? (
+          {fileNames?.right ? (
             <img
-              src={fileNames.right ? URL.createObjectURL(fileNames.right) : ""}
+              src={
+                fileNames?.right ? URL.createObjectURL(fileNames?.right) : ""
+              }
               className="w-[320px] h-[135px] rounded-lg object-cover"
-              onLoad={() => URL.revokeObjectURL(fileNames.right)}
+              onLoad={() => URL.revokeObjectURL(fileNames?.right)}
             />
           ) : (
             <label className="text-sm text-primary font-medium text-center">
@@ -196,8 +204,12 @@ const UserVerification = ({
         </div>
       </div>
 
-      {errors.left && <p className="text-xs text-red-500 text-center">{errors.left}</p>}
-      {errors.right && <p className="text-xs text-red-500 text-center">{errors.right}</p>}
+      {errors?.left && (
+        <p className="text-xs text-red-500 text-center">{errors?.left}</p>
+      )}
+      {errors?.right && (
+        <p className="text-xs text-red-500 text-center">{errors?.right}</p>
+      )}
 
       {/* Buttons */}
       <div className="pt-6 flex justify-center items-center">

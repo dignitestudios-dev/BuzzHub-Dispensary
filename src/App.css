@@ -63,6 +63,8 @@
 }
 
 
+
+
 /* Hide scrollbar for WebKit browsers (Chrome, Safari, etc.) */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;  /* Hides the scrollbar */
