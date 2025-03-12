@@ -6,10 +6,9 @@ import { ErrorToast } from "../../components/global/Toaster";
 
 const DashboardOrders = () => {
   const [orders, setOrders] = useState([]);
-  const [filter, setFilter] = useState("All"); // Default filter is Pending
+  const [filter, setFilter] = useState("All");
   const navigate = useNavigate();
 
-  // Fetch orders from API
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -26,9 +25,8 @@ const DashboardOrders = () => {
     };
 
     fetchOrders();
-  }, [filter]); // Fetch orders whenever the filter changes
+  }, [filter]);
 
-  // Handle navigation to order details page with state
   const handleViewDetails = (order) => {
     navigate("/order-details", { state: { order } });
   };
@@ -37,23 +35,21 @@ const DashboardOrders = () => {
   const getStatusColor = (status) => {
     switch (status) {
       case "Pending":
-        return "bg-yellow-400"; // Yellow for Pending
+        return "bg-yellow-400";
       case "Approved":
-        return "bg-green-600"; // Blue for Approved
+        return "bg-green-600";
       case "Completed":
-        return "bg-green-600"; // Red for Rejected
+        return "bg-green-600";
       case "Rejected":
         return "bg-red-500";
       default:
-        return "bg-gray-300"; // Default color for other statuses
+        return "bg-gray-300";
     }
   };
 
   return (
     <div className="w-full">
-      {/* Filter Buttons */}
       <div className="flex justify-between mb-6">
-        {/* Filter Buttons */}
         <div className="flex space-x-4">
           <button
             onClick={() => setFilter("All")}
@@ -97,9 +93,8 @@ const DashboardOrders = () => {
         </button>
       </div>
 
-      {/* Orders Table */}
       <div className="overflow-x-auto rounded-lg border">
-        {orders.length === 0 ? (
+        {orders?.length === 0 ? (
           <div className="text-center p-6 text-gray-500">
             No orders to show.
           </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaPlus, FaTimes } from "react-icons/fa";
 import axios from "../../axios"; // Import axios instance
 import { useNavigate } from "react-router-dom";
+import { ErrorToast } from "../../components/global/Toaster";
 
 const typesAndSubtypes = {
   "Indica Strains": [
@@ -37,12 +38,19 @@ const AddProductModal = ({ onClose }) => {
   const [productDescription, setProductDescription] = useState("");
   const [warningDescription, setWarningDescription] = useState("");
   const [productType, setProductType] = useState(""); // Store the selected product type
+  console.log("productType ", productType);
+
   const [subTypes, setSubTypes] = useState([]); // Store the selected subtypes as an array
   const [weightQuantity, setWeightQuantity] = useState("");
   const [weightType, setWeightType] = useState("");
   const [fullfillmentMethod, setFullfillmentMethod] = useState(""); // Store fulfillment method
   const [subTypesError, setSubTypesError] = useState("");
+  console.log("subTypesError00 ", subTypesError);
   const [loading, setLoading] = useState(false);
+  const [customCategory, setCustomCategory] = useState(""); // For custom category
+  const [customSubCategory, setCustomSubCategory] = useState(""); // For custom subcategory
+  const [isCustomCategory, setIsCustomCategory] = useState(false); // Track if custom category is selected
+  const [isCustomSubCategory, setIsCustomSubCategory] = useState(false); // Track if custom subcategory is selected
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("userData"));
@@ -68,11 +76,22 @@ const AddProductModal = ({ onClose }) => {
     e.preventDefault();
     navigate("/products");
 
-    if (!productType || subTypes.length === 0) {
-      setSubTypesError(
-        "Please select a product type and at least one subtype."
-      );
-      return;
+    if (productType === "Other") {
+      if (customCategory === "") {
+        setSubTypesError("Please enter a custom category");
+        return;
+      }
+      if (customSubCategory === "") {
+        setSubTypesError("Please enter a custom sub category");
+        return;
+      }
+    } else {
+      if (!productType || subTypes.length === 0) {
+        setSubTypesError(
+          "Please select a product type and at least one subtype."
+        );
+        return;
+      }
     }
 
     setLoading(true);
@@ -82,12 +101,16 @@ const AddProductModal = ({ onClose }) => {
     formData.append("expiryDate", expiryDate);
     formData.append("productDescription", productDescription);
     formData.append("warningDescription", warningDescription);
-    formData.append("productType", productType);
 
-    subTypes.forEach((subType) => {
-      formData.append("subTypes[]", subType);
-    });
-
+    if (productType === "Other") {
+      formData.append("subTypes[0]", customSubCategory);
+      formData.append("productType", customCategory);
+    } else {
+      formData.append("productType", productType);
+      subTypes.forEach((subType) => {
+        formData.append("subTypes[]", subType);
+      });
+    }
     formData.append("weightQuantity", weightQuantity);
     formData.append("weightType", weightType);
     formData.append("fullfillmentMethod", fullfillmentMethod);
@@ -112,11 +135,15 @@ const AddProductModal = ({ onClose }) => {
         console.error("Failed to add product:", response?.data?.message);
       }
     } catch (error) {
+      ErrorToast(error?.response.data?.message);
       console.error("Error adding product:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleSubTypeChange = (subtype) => {
+    setSubTypesError("");
     setSubTypes((prevSubTypes) => {
       if (prevSubTypes.includes(subtype)) {
         return prevSubTypes.filter((item) => item !== subtype);
@@ -128,7 +155,7 @@ const AddProductModal = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 overflow-auto">
-      <div className="bg-white text-black p-6 rounded-lg shadow-lg w-full max-w-2xl relative">
+      <div className="bg-white text-black p-6 rounded-lg mt-20 shadow-lg w-full max-w-2xl relative">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-xl text-black hover:text-gray-800"
@@ -138,6 +165,7 @@ const AddProductModal = ({ onClose }) => {
 
         <h1 className="text-lg font-semibold mb-4">Upload Product</h1>
         <form onSubmit={handleSubmit}>
+          {/* File Upload */}
           <div className="flex gap-2 mb-4">
             {images.length > 0 &&
               images.map((image, index) => (
@@ -171,6 +199,7 @@ const AddProductModal = ({ onClose }) => {
             </label>
           </div>
 
+          {/* Product Name, Price, Expiry Date */}
           <div className="grid grid-cols-1 gap-4 mb-4">
             <input
               type="text"
@@ -196,12 +225,20 @@ const AddProductModal = ({ onClose }) => {
               required
               onChange={(e) => setExpiryDate(e.target.value)}
             />
+            {/* Product Type Dropdown with Other Option */}
             <div>
               <select
                 className="w-full p-2 border rounded"
                 value={productType}
                 onChange={(e) => {
-                  setProductType(e.target.value);
+                  const value = e.target.value;
+                  setProductType(value);
+                  setSubTypesError("");
+                  if (value === "Other") {
+                    setIsCustomCategory(true);
+                  } else {
+                    setIsCustomCategory(false);
+                  }
                   setSubTypes([]);
                 }}
               >
@@ -209,11 +246,33 @@ const AddProductModal = ({ onClose }) => {
                 <option value="Indica Strains">Indica Strains</option>
                 <option value="Sativa Strains">Sativa Strains</option>
                 <option value="Hybrid Strains">Hybrid Strains</option>
+                <option value="Other">Other</option>
               </select>
             </div>
+
+            {/* Custom Category Input */}
+            {isCustomCategory && (
+              <div className="space-y-2 mt-2">
+                <input
+                  type="text"
+                  placeholder="Enter custom category"
+                  className="w-full p-2 border rounded"
+                  value={customCategory}
+                  onChange={(e) => setCustomCategory(e.target.value)}
+                />
+                <input
+                  type="text"
+                  placeholder="Enter custom subcategory"
+                  className="w-full p-2 border rounded"
+                  value={customSubCategory}
+                  onChange={(e) => setCustomSubCategory(e.target.value)}
+                />
+              </div>
+            )}
           </div>
 
-          {productType && (
+          {/* Subtypes Checkbox */}
+          {productType && !isCustomCategory && (
             <div className="mb-4">
               <div className="space-y-3 space-x-1">
                 {typesAndSubtypes[productType]?.map((subtype) => (
@@ -237,13 +296,13 @@ const AddProductModal = ({ onClose }) => {
             </div>
           )}
 
+          {/* Weight and Weight Type */}
           <div className="grid grid-cols-2 gap-4 mb-4">
             <input
               type="number"
               placeholder="Weight Quantity"
               className="w-full p-2 border rounded"
               value={weightQuantity}
-              required
               onChange={(e) => setWeightQuantity(e.target.value)}
             />
             <select
@@ -252,11 +311,13 @@ const AddProductModal = ({ onClose }) => {
               onChange={(e) => setWeightType(e.target.value)}
             >
               <option value="">Select Weight Type</option>
-              <option value="ounces">Ounces</option>
               <option value="grams">Grams</option>
+              <option value="ounces">Ounces</option>
+              <option value="kilograms">Kilograms</option>
             </select>
           </div>
 
+          {/* Product Details */}
           <div className="grid grid-cols-2 gap-4 mb-4">
             <textarea
               placeholder="Product Details"
@@ -274,11 +335,11 @@ const AddProductModal = ({ onClose }) => {
             />
           </div>
 
+          {/* Fulfillment Method */}
           <div className="mb-4">
-            {/* Display Fulfillment Method as Text */}
             {fullfillmentMethod ? (
               <p className="w-full p-2">
-                Fullfillment Method <br />
+                Fulfillment Method <br />
                 {fullfillmentMethod}
               </p>
             ) : (
@@ -286,6 +347,7 @@ const AddProductModal = ({ onClose }) => {
             )}
           </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
             className="w-full bg-green-600 text-white p-2 rounded flex items-center justify-center"

@@ -9,6 +9,8 @@ const Products = () => {
   const [products, setProducts] = useState([]); // Initialize products state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true); // Loading state
+  const [currentPage, setCurrentPage] = useState(1); // State for current page
+  const [productsPerPage] = useState(10); // Show 10 products per page
   const navigate = useNavigate();
 
   // Fetch products on component mount
@@ -24,7 +26,7 @@ const Products = () => {
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
@@ -32,8 +34,19 @@ const Products = () => {
   }, []);
 
   const handleViewDetails = (productId) => {
-    navigate(`/item-details/${productId}`); 
+    navigate(`/item-details/${productId}`);
   };
+
+  // Calculate the current products to display
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="w-full p-8 overflow-auto">
@@ -49,41 +62,75 @@ const Products = () => {
 
       {loading ? (
         <div className="flex justify-center items-center">
-          <div className="spinner"></div> 
+          <div className="spinner"></div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {products.length > 0 ? (
-            products.map((product) => (
-              <div
-                key={product._id}
-                className="bg-white border rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl"
-              >
-                <div className="relative w-full h-64">
-                  <img
-                    src={product.productImage[0] || Logo} // Use product image or fallback to Logo
-                    alt={product.productName}
-                    className="w-full h-full object-cover bg-[#1D7C42] rounded-t-lg transition-transform transform hover:scale-110"
-                  />
-                </div>
-                <div className="p-6 flex flex-col h-full">
-                  <h3 className="text-2xl font-semibold text-gray-800 mb-2">{product.productName}</h3>
-                  <p className="text-gray-600 text-sm mb-4">{product.productDescription}</p>
-                  <div className="flex justify-between items-center">
-                    <p className="text-xl font-bold text-[#074F57]">${product.productPrice}</p>
-                    <button
-                      onClick={() => handleViewDetails(product._id)}  // Pass productId for details
-                      className="text-white bg-[#1D7C42] p-2 rounded-full hover:bg-[#195c33] text-sm"
-                    >
-                      View Details
-                    </button>
+        <div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {currentProducts.length > 0 ? (
+              currentProducts.map((product) => (
+                <div
+                  key={product._id}
+                  className="bg-white border rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl"
+                >
+                  <div className="relative w-full h-64">
+                    <img
+                      src={product.productImage[0] || Logo} // Use product image or fallback to Logo
+                      alt={product.productName}
+                      className="w-full h-full object-cover bg-[#1D7C42] rounded-t-lg transition-transform transform hover:scale-110"
+                    />
+                  </div>
+                  <div className="p-6 flex flex-col h-full">
+                    <h3 className="text-2xl font-semibold text-gray-800 mb-2">
+                      {product.productName}
+                    </h3>
+                    <p className="text-gray-600 text-sm mb-4">
+                      {product.productDescription}
+                    </p>
+                    <div className="flex justify-between items-center">
+                      <p className="text-xl font-bold text-[#074F57]">
+                        ${product.productPrice}
+                      </p>
+                      <button
+                        onClick={() => handleViewDetails(product._id)} // Pass productId for details
+                        className="text-white bg-[#1D7C42] p-2 rounded-full hover:bg-[#195c33] text-sm"
+                      >
+                        View Details
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))
-          ) : (
-            <p>No products available</p> // Show message if no products are available
-          )}
+              ))
+            ) : (
+              <p>No products available</p> // Show message if no products are available
+            )}
+          </div>
+
+          {/* Pagination Controls */}
+          <div className="flex justify-center items-center mt-8 space-x-4">
+            {/* Previous Button */}
+            <button
+              onClick={() => paginate(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-6 py-2 bg-[#1D7C42] text-white rounded-lg hover:bg-[#155e2e] focus:outline-none focus:ring-2 focus:ring-[#074F57] disabled:opacity-50 transition-all duration-200"
+            >
+              Previous
+            </button>
+
+            {/* Current Page */}
+            <span className="text-xl text-gray-500 font-semibold">
+              Page {currentPage}
+            </span>
+
+            {/* Next Button */}
+            <button
+              onClick={() => paginate(currentPage + 1)}
+              disabled={currentPage * productsPerPage >= products.length}
+              className="px-6 py-2 bg-[#1D7C42] text-white rounded-lg hover:bg-[#155e2e] focus:outline-none focus:ring-2 focus:ring-[#074F57] disabled:opacity-50 transition-all duration-200"
+            >
+              Next
+            </button>
+          </div>
         </div>
       )}
 

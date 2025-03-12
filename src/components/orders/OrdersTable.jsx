@@ -6,6 +6,8 @@ import axios from "../../axios";
 const OrdersTable = () => {
   const [orders, setOrders] = useState([]);
   const [filter, setFilter] = useState("All");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [ordersPerPage] = useState(10); // You can change this to any number of orders per page
   const navigate = useNavigate();
 
   // Fetch orders from API
@@ -45,8 +47,26 @@ const OrdersTable = () => {
     }
   };
 
+  // Pagination Logic
+  const indexOfLastOrder = currentPage * ordersPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+
+  const totalPages = Math.ceil(orders.length / ordersPerPage);
+
+  // Check if there is a next page
+  const hasNextPage = currentPage < totalPages;
+  const hasPreviousPage = currentPage > 1;
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber > 0 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
+
   return (
     <div className="w-full">
+      {/* Filter Buttons */}
       <div className="flex justify-start mb-6 space-x-4">
         <button
           onClick={() => setFilter("All")}
@@ -82,6 +102,7 @@ const OrdersTable = () => {
         </button>
       </div>
 
+      {/* Orders Table */}
       <div className="overflow-x-auto rounded-lg border">
         {orders.length === 0 ? (
           <div className="text-center p-6 text-gray-500">
@@ -100,7 +121,7 @@ const OrdersTable = () => {
               </tr>
             </thead>
             <tbody>
-              {orders.map((order) => (
+              {currentOrders.map((order) => (
                 <tr key={order?._id} className="border-b hover:bg-gray-100">
                   <td className="p-4 flex items-center space-x-3">
                     {order?.products?.length > 0 && (
@@ -145,6 +166,29 @@ const OrdersTable = () => {
             </tbody>
           </table>
         )}
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-center mt-6 space-x-2">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={!hasPreviousPage}
+          className="px-4 py-2 bg-[#1D7C42] text-white rounded-md disabled:opacity-50"
+        >
+          Previous
+        </button>
+
+        <span className="px-4 py-2 text-xl text-gray-500">
+          Page {currentPage}
+        </span>
+
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={!hasNextPage}
+          className="px-4 py-2 bg-[#1D7C42] text-white rounded-md disabled:opacity-50"
+        >
+          Next
+        </button>
       </div>
     </div>
   );

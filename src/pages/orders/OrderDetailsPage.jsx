@@ -99,6 +99,8 @@ const OrderDetailsPage = () => {
     setShowTrackOrderModal(true);
   };
 
+  // Calculate subtotal by adding totalAmount and platformFee
+  const subtotal = order?.totalAmount + order?.platformFee;
   return (
     <div className="h-auto w-full bg-gray-100 flex justify-center p-6 overflow-auto text-black">
       <div className="w-full bg-white rounded-lg shadow-xl overflow-y-auto">
@@ -124,7 +126,9 @@ const OrderDetailsPage = () => {
               </div>
               <div className="flex justify-between">
                 <span>Placed On</span>
-                <span>{new Date(order.createdAt).toLocaleDateString()}</span>
+                <span className="font-medium">
+                  {new Date(order.createdAt).toLocaleDateString()}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span>Order Status</span>
@@ -134,12 +138,26 @@ const OrderDetailsPage = () => {
               </div>
 
               <div className="flex justify-between">
+                <span>Platform Fee</span>
+                <span className="font-medium">${order?.platformFee}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Grams</span>
+                <span className="font-medium">{order.products[0]?.gram}</span>
+              </div>
+              <div className="flex justify-between">
                 <span>Total Amount</span>
-                <span className="font-medium">${order.totalAmount}</span>
+                <span className="font-medium">${order?.totalAmount} </span>
               </div>
               <div className="flex justify-between">
                 <span>Fulfillment Method</span>
-                <span>{order.fulfillmentMethod}</span>
+                <span className="font-medium">{order?.fulfillmentMethod}</span>
+              </div>
+              {/* Subtotal Calculation */}
+              <div className="flex justify-between font-medium">
+                <span>Subtotal</span>
+                <span className="font-medium">${subtotal.toFixed(2)}</span>{" "}
+                {/* Show subtotal with 2 decimal places */}
               </div>
             </div>
           </div>

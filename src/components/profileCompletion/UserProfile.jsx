@@ -109,9 +109,9 @@ const UserProfile = ({
           />
         </div>
       </div>
-      {imgError.profile && (
+      {imgError?.profile && (
         <p className="text-red-500 text-xs text-center -mt-2">
-          {imgError.profile}
+          {imgError?.profile}
         </p>
       )}
 
@@ -129,7 +129,7 @@ const UserProfile = ({
       </div>
       {errors.bio && (
         <p className="text-red-500 text-xs text-center mt-1">
-          {errors.bio.message}
+          {errors?.bio?.message}
         </p>
       )}
       <div className="w-full h-auto flex justify-between items-center mt-1">
@@ -188,8 +188,8 @@ const UserProfile = ({
                 {...field}
                 type="time"
                 value={
-                  field.value
-                    ? moment(field.value, "hh:mm A").format("HH:mm")
+                  field?.value
+                    ? moment(field?.value, "hh:mm A").format("HH:mm")
                     : ""
                 }
                 {...register("closingHour", {
@@ -251,7 +251,7 @@ const UserProfile = ({
 
         {errors.deliveryRadius && (
           <p className="text-[#FF453A] text-sm">
-            {errors.deliveryRadius.message}
+            {errors?.deliveryRadius?.message}
           </p>
         )}
 

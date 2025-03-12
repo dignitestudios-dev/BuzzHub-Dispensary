@@ -5,7 +5,9 @@ import axios from "../../axios";
 
 const OrderTrackingTable = () => {
   const [orders, setOrders] = useState([]);
-  const [filter, setFilter] = useState("All"); // Default filter is Pending
+  const [filter, setFilter] = useState("All"); // Default filter is All
+  const [currentPage, setCurrentPage] = useState(1); // State for current page
+  const [ordersPerPage] = useState(10); // Number of orders to show per page
   const navigate = useNavigate();
 
   // Fetch orders from API
@@ -32,6 +34,14 @@ const OrderTrackingTable = () => {
     navigate("/order-details", { state: { order } });
   };
 
+  // Pagination Logic
+  const indexOfLastOrder = currentPage * ordersPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   // Map status to a background color
   const getStatusColor = (status) => {
     switch (status) {
@@ -42,13 +52,13 @@ const OrderTrackingTable = () => {
       case "Rejected":
         return "bg-red-500"; // Red for Rejected
       case "Completed":
-        return "bg-green-600"; // Blue for Completed
+        return "bg-blue-600"; // Blue for Completed
       case "In Process":
         return "bg-yellow-400"; // Orange for In Process
       case "Out for Delivery":
-        return "bg-blue-500"; // Purple for Out for Delivery
+        return "bg-purple-500"; // Purple for Out for Delivery
       case "Ready":
-        return "bg-green-600"; // green for Ready
+        return "bg-green-600"; // Green for Ready
       default:
         return "bg-gray-300"; // Default color for other statuses
     }
@@ -66,24 +76,6 @@ const OrderTrackingTable = () => {
         >
           All Orders
         </button>
-        {/* <button
-          onClick={() => setFilter("Pending")}
-          className={`px-3 py-3 rounded-md text-sm font-semibold ${filter === "Pending" ? "bg-[#1D7C42] text-white" : "bg-gray-300"}`}
-        >
-          Pending
-        </button>
-        <button
-          onClick={() => setFilter("Approved")}
-          className={`px-3 py-3 rounded-md text-sm font-semibold ${filter === "Approved" ? "bg-[#1D7C42] text-white" : "bg-gray-300"}`}
-        >
-          Approved
-        </button>
-        <button
-          onClick={() => setFilter("Rejected")}
-          className={`px-3 py-3 rounded-md text-sm font-semibold ${filter === "Rejected" ? "bg-[#1D7C42] text-white" : "bg-gray-300"}`}
-        >
-          Rejected
-        </button> */}
         <button
           onClick={() => setFilter("Completed")}
           className={`px-3 py-3 rounded-md text-sm font-semibold ${
@@ -122,7 +114,7 @@ const OrderTrackingTable = () => {
 
       {/* Orders Table */}
       <div className="overflow-x-auto rounded-lg border">
-        {orders.length === 0 ? (
+        {currentOrders.length === 0 ? (
           <div className="text-center p-6 text-gray-500">
             No orders to show.
           </div>
@@ -139,7 +131,7 @@ const OrderTrackingTable = () => {
               </tr>
             </thead>
             <tbody>
-              {orders.map((order) => (
+              {currentOrders.map((order) => (
                 <tr key={order?._id} className="border-b hover:bg-gray-100">
                   <td className="p-4 flex items-center space-x-3">
                     {order.products.length > 0 && (
@@ -184,6 +176,32 @@ const OrderTrackingTable = () => {
             </tbody>
           </table>
         )}
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-center items-center mt-8 space-x-4">
+        {/* Previous Button */}
+        <button
+          onClick={() => paginate(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-6 py-2 bg-[#1D7C42] text-white rounded-lg hover:bg-[#155e2e] focus:outline-none focus:ring-2 focus:ring-[#074F57] disabled:opacity-50 transition-all duration-200"
+        >
+          Previous
+        </button>
+
+        {/* Current Page */}
+        <span className="text-xl text-gray-700 font-semibold">
+          Page {currentPage}
+        </span>
+
+        {/* Next Button */}
+        <button
+          onClick={() => paginate(currentPage + 1)}
+          disabled={currentPage * ordersPerPage >= orders.length}
+          className="px-6 py-2 bg-[#1D7C42] text-white rounded-lg hover:bg-[#155e2e] focus:outline-none focus:ring-2 focus:ring-[#074F57] disabled:opacity-50 transition-all duration-200"
+        >
+          Next
+        </button>
       </div>
     </div>
   );
