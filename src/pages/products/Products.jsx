@@ -85,7 +85,9 @@ const Products = () => {
                       {product.productName}
                     </h3>
                     <p className="text-gray-600 text-sm mb-4">
-                      {product.productDescription}
+                      {product.productDescription.length > 30
+                        ? product.productDescription.slice(0, 30) + "..."
+                        : product.productDescription}
                     </p>
                     <div className="flex justify-between items-center">
                       <p className="text-xl font-bold text-[#074F57]">

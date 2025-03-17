@@ -230,6 +230,7 @@ const AddProductModal = ({ onClose }) => {
               <select
                 className="w-full p-2 border rounded"
                 value={productType}
+                required
                 onChange={(e) => {
                   const value = e.target.value;
                   setProductType(value);
@@ -297,23 +298,26 @@ const AddProductModal = ({ onClose }) => {
           )}
 
           {/* Weight and Weight Type */}
+          <p className=" text-gray-600 ">Quantity Available</p>
           <div className="grid grid-cols-2 gap-4 mb-4">
             <input
               type="number"
-              placeholder="Weight Quantity"
+              placeholder="Quantity Available"
               className="w-full p-2 border rounded"
               value={weightQuantity}
+              required
               onChange={(e) => setWeightQuantity(e.target.value)}
             />
             <select
               className="w-full p-2 border rounded"
               value={weightType}
+              required
               onChange={(e) => setWeightType(e.target.value)}
             >
-              <option value="">Select Weight Type</option>
+              <option value="">Weight Type</option>
               <option value="grams">Grams</option>
-              <option value="ounces">Ounces</option>
-              <option value="kilograms">Kilograms</option>
+              {/* <option value="ounces">Ounces</option>
+              <option value="kilograms">Kilograms</option> */}
             </select>
           </div>
 
