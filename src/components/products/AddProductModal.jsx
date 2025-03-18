@@ -5,27 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { ErrorToast } from "../../components/global/Toaster";
 
 const typesAndSubtypes = {
-  "Indica Strains": [
-    "Northern Lights",
-    "Afghan Kush",
-    "Granddaddy Purple (GDP)",
-    "Bubba Kush",
-    "Hindu Kush",
-  ],
-  "Sativa Strains": [
-    "Durban Poison",
-    "Sour Diesel",
-    "Jack Herer",
-    "Maui Wowie",
-    "Green Crack",
-  ],
-  "Hybrid Strains": [
-    "Blue Dream",
-    "Girl Scout Cookies (GSC)",
-    "OG Kush",
-    "Pineapple Express",
-    "White Widow",
-  ],
+  "Indica Strains": ["Flower", "Concentrates", "Edibles", "Other"],
+  "Sativa Strains": ["Flower", "Concentrates", "Edibles", "Other"],
+  "Hybrid Strains": ["Flower", "Concentrates", "Edibles", "Other"],
 };
 
 const AddProductModal = ({ onClose }) => {

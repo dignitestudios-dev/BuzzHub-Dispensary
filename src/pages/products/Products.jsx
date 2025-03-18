@@ -10,7 +10,7 @@ const Products = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true); // Loading state
   const [currentPage, setCurrentPage] = useState(1); // State for current page
-  const [productsPerPage] = useState(10); // Show 10 products per page
+  const [productsPerPage] = useState(12); // Show 10 products per page
   const navigate = useNavigate();
 
   // Fetch products on component mount
