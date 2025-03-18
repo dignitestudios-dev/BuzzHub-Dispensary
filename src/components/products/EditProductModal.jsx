@@ -189,7 +189,7 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
             </label>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-1 gap-4 mb-4">
             <input
               type="text"
               placeholder="Name"
@@ -204,12 +204,12 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
               value={productPrice}
               onChange={(e) => setProductPrice(e.target.value)}
             />
-            <input
+            {/* <input
               type="date"
               className="w-full p-2 border rounded"
               value={expiryDate}
               onChange={(e) => setExpiryDate(e.target.value)}
-            />
+            /> */}
             <div>
               <select
                 className="w-full p-2 border rounded"
@@ -251,7 +251,7 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
             </div>
           )}
 
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-1 gap-4 mb-4">
             <input
               type="number"
               placeholder="Weight Quantity"
@@ -259,7 +259,7 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
               value={weightQuantity}
               onChange={(e) => setWeightQuantity(e.target.value)}
             />
-            <select
+            {/* <select
               className="w-full p-2 border rounded"
               value={weightType}
               onChange={(e) => setWeightType(e.target.value)}
@@ -267,7 +267,7 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
               <option value="">Select Weight Type</option>
               <option value="ounces">Ounces</option>
               <option value="grams">Grams</option>
-            </select>
+            </select> */}
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-4">

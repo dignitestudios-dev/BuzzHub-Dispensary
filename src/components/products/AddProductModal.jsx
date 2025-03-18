@@ -94,7 +94,7 @@ const AddProductModal = ({ onClose }) => {
       });
     }
     formData.append("weightQuantity", weightQuantity);
-    formData.append("weightType", weightType);
+    formData.append("weightType", "grams"); // Force weightType to grams
     formData.append("fullfillmentMethod", fullfillmentMethod);
 
     images.forEach((image) => {
@@ -280,8 +280,8 @@ const AddProductModal = ({ onClose }) => {
           )}
 
           {/* Weight and Weight Type */}
-          <p className=" text-gray-600 ">Quantity Available</p>
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <p className=" text-gray-600 ">Quantity Available - (Grams)</p>
+          <div className="grid grid-cols-1 gap-4 mb-4">
             <input
               type="number"
               placeholder="Quantity Available"
@@ -290,7 +290,7 @@ const AddProductModal = ({ onClose }) => {
               required
               onChange={(e) => setWeightQuantity(e.target.value)}
             />
-            <select
+            {/* <select
               className="w-full p-2 border rounded"
               value={weightType}
               required
@@ -298,9 +298,9 @@ const AddProductModal = ({ onClose }) => {
             >
               <option value="">Weight Type</option>
               <option value="grams">Grams</option>
-              {/* <option value="ounces">Ounces</option>
-              <option value="kilograms">Kilograms</option> */}
-            </select>
+              <option value="ounces">Ounces</option>
+              <option value="kilograms">Kilograms</option>
+            </select> */}
           </div>
 
           {/* Product Details */}
