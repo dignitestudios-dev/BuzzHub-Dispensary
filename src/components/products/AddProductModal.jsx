@@ -80,7 +80,7 @@ const AddProductModal = ({ onClose }) => {
     const formData = new FormData();
     formData.append("productName", productName);
     formData.append("productPrice", productPrice);
-    formData.append("expiryDate", expiryDate);
+    // formData.append("expiryDate", expiryDate);
     formData.append("productDescription", productDescription);
     formData.append("warningDescription", warningDescription);
 
@@ -199,14 +199,14 @@ const AddProductModal = ({ onClose }) => {
               required
               onChange={(e) => setProductPrice(e.target.value)}
             />
-            <p className=" text-gray-600 ">Expiry Date</p>
+            {/* <p className=" text-gray-600 ">Expiry Date</p>
             <input
               type="date"
               className="w-full p-2 -mt-2 border rounded"
               value={expiryDate}
               required
               onChange={(e) => setExpiryDate(e.target.value)}
-            />
+            /> */}
             {/* Product Type Dropdown with Other Option */}
             <div>
               <select

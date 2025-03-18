@@ -5,27 +5,9 @@ import { useNavigate, useParams } from "react-router-dom";
 
 // Define the types and corresponding subtypes
 const typesAndSubtypes = {
-  "Indica Strains": [
-    "Northern Lights",
-    "Afghan Kush",
-    "Granddaddy Purple (GDP)",
-    "Bubba Kush",
-    "Hindu Kush",
-  ],
-  "Sativa Strains": [
-    "Durban Poison",
-    "Sour Diesel",
-    "Jack Herer",
-    "Maui Wowie",
-    "Green Crack",
-  ],
-  "Hybrid Strains": [
-    "Blue Dream",
-    "Girl Scout Cookies (GSC)",
-    "OG Kush",
-    "Pineapple Express",
-    "White Widow",
-  ],
+  "Indica Strains": ["Flower", "Concentrates", "Edibles", "Other"],
+  "Sativa Strains": ["Flower", "Concentrates", "Edibles", "Other"],
+  "Hybrid Strains": ["Flower", "Concentrates", "Edibles", "Other"],
 };
 
 const EditProductModal = ({ onClose, productData, orderId }) => {

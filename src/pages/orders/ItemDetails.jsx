@@ -147,10 +147,10 @@ const ItemDetails = () => {
               <p className="text-gray-600 mb-4">
                 {product?.productDescription}
               </p>
-              <p className="text-red-600 font-semibold mb-4">
+              {/* <p className="text-red-600 font-semibold mb-4">
                 Expiry Date:{" "}
                 {new Date(product?.expiryDate).toLocaleDateString()}
-              </p>
+              </p> */}
               <h3 className="text-lg font-semibold text-gray-800 mb-2">
                 Warnings and Additional Information:
               </h3>
