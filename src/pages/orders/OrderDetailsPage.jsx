@@ -86,8 +86,8 @@ const OrderDetailsPage = () => {
   };
 
   // Handle image click (open modal)
-  const handleImageClick = (imageUrl) => {
-    setSelectedImage(imageUrl); // Set the clicked image in state
+  const handleImageClick = (imageSrc) => {
+    window.open(imageSrc, "_blank", "noopener,noreferrer");
   };
 
   // Handle modal close
@@ -99,8 +99,15 @@ const OrderDetailsPage = () => {
     setShowTrackOrderModal(true);
   };
 
+  // Calculate the total grams of the order by adding up grams of each product
+  const totalGrams = order?.products.reduce(
+    (total, product) => total + product.gram,
+    0
+  );
+
   // Calculate subtotal by adding totalAmount and platformFee
   const subtotal = order?.totalAmount + order?.platformFee;
+
   return (
     <div className="h-auto w-full bg-gray-100 flex justify-center p-6 overflow-auto text-black">
       <div className="w-full bg-white rounded-lg shadow-xl overflow-y-auto">
@@ -142,8 +149,8 @@ const OrderDetailsPage = () => {
                 <span className="font-medium">${order?.platformFee}</span>
               </div>
               <div className="flex justify-between">
-                <span>Grams</span>
-                <span className="font-medium">{order.products[0]?.gram}</span>
+                <span>Total Grams</span>
+                <span className="font-medium">{totalGrams} grams</span>
               </div>
               <div className="flex justify-between">
                 <span>Total Amount</span>
@@ -225,14 +232,17 @@ const OrderDetailsPage = () => {
                     Sub-Types: {product.subTypes.join(", ")}
                   </p>
                   <p className="text-sm text-gray-600">
-                    Weight: {product.weightQuantity} {product.weightType}
+                    Total Grams: {product.weightQuantity} {product.weightType}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Ordered Grams: {product.gram} grams
                   </p>
                   <p className="text-sm text-gray-600">
                     Price: ${product.price}
                   </p>
-                  <p className="text-sm text-gray-600">
+                  {/* <p className="text-sm text-gray-600">
                     {product.productDescription}
-                  </p>
+                  </p> */}
                   <p className="text-sm text-gray-600">
                     {product.warningDescription}
                   </p>
@@ -241,10 +251,12 @@ const OrderDetailsPage = () => {
             ))}
           </div>
           {/* Shipping Address */}
-          <div>
-            <h2 className="text-2xl font-semibold mb-4">Shipping Address</h2>
-            <p className="text-sm text-gray-600">{order.shippingAddress}</p>
-          </div>
+          {order.fulfillmentMethod !== "Self Pickup" && (
+            <div>
+              <h2 className="text-2xl font-semibold mb-4">Shipping Address</h2>
+              <p className="text-sm text-gray-600">{order.shippingAddress}</p>
+            </div>
+          )}
           {/* Conditional Buttons */}
           {order.orderStatus === "In Process" ||
           order.orderStatus === "Ready" ||
@@ -277,86 +289,9 @@ const OrderDetailsPage = () => {
               </button>
             </div>
           )}
-          {error && <p className="text-red-600 mt-4">{error}</p>}{" "}
-          {/* Show error message */}
+          {error && <p className="text-red-600">{error}</p>} {/* Show error */}
         </div>
       </div>
-
-      {/* Confirmation Modals */}
-      {showAcceptModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
-          <div className="bg-white p-8 rounded-lg max-w-sm w-full">
-            <h2 className="text-xl font-semibold mb-4">
-              Are you sure you want to accept this order?
-            </h2>
-            <div className="flex justify-between space-x-4">
-              <button
-                onClick={handleAcceptOrder}
-                className="w-1/2 py-2 bg-green-600 text-white rounded-lg font-medium"
-              >
-                Accept
-              </button>
-              <button
-                onClick={() => setShowAcceptModal(false)}
-                className="w-1/2 py-2 bg-gray-300 text-black rounded-lg font-medium"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {showRejectModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
-          <div className="bg-white p-8 rounded-lg max-w-sm w-full">
-            <h2 className="text-xl font-semibold mb-4">
-              Are you sure you want to reject this order?
-            </h2>
-            <div className="flex justify-between space-x-4">
-              <button
-                onClick={handleRejectOrder}
-                className="w-1/2 py-2 bg-red-600 text-white rounded-lg font-medium"
-              >
-                Reject
-              </button>
-              <button
-                onClick={() => setShowRejectModal(false)}
-                className="w-1/2 py-2 bg-gray-300 text-black rounded-lg font-medium"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Track Order Modal */}
-      <TrackOrderModal
-        showModal={showTrackOrderModal}
-        setShowModal={setShowTrackOrderModal}
-        orderId={order._id}
-        currentStatus={order.orderStatus}
-      />
-
-      {/* Modal to display the clicked image */}
-      {selectedImage && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
-          <div className="relative bg-gray-50 p-6 rounded-lg max-w-2xl w-full">
-            <img
-              src={selectedImage}
-              alt="Medical Card"
-              className="w-full h-auto max-h-96 object-contain rounded-lg"
-            />
-            <button
-              onClick={closeModal}
-              className="absolute top-0.5 right-3 text-black rounded-full focus:outline-none transition"
-            >
-              <span className="text-3xl">×</span>
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

@@ -113,6 +113,8 @@ const OrdersTable = () => {
             <thead>
               <tr className="text-left bg-[#1D7C42] text-white">
                 <th className="p-5 text-sm font-medium">Product</th>
+                <th className="p-5 text-sm font-medium">Ordered By</th>
+
                 <th className="p-5 text-sm font-medium">Order ID</th>
                 <th className="p-5 text-sm font-medium">Date</th>
                 <th className="p-5 text-sm font-medium">Amount</th>
@@ -137,12 +139,14 @@ const OrdersTable = () => {
                       </>
                     )}
                   </td>
+                  <td className="p-4 text-sm">{order?.OrderBy?.Username}</td>
+
                   <td className="p-4 text-sm">{order?.orderUvid}</td>
                   <td className="p-4 text-sm">
                     {new Date(order?.createdAt).toLocaleDateString()}
                   </td>
                   <td className="p-4 text-sm font-medium">
-                    ${order?.totalAmount}
+                    ${order?.totalAmount?.toFixed(1)}
                   </td>
                   <td className="p-4">
                     <span
@@ -169,7 +173,7 @@ const OrdersTable = () => {
       </div>
 
       {/* Pagination Controls */}
-      <div className="flex justify-center mt-6 space-x-2">
+      <div className="flex justify-end mt-6 space-x-2">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={!hasPreviousPage}

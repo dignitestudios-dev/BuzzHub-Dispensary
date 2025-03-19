@@ -109,7 +109,7 @@ const Products = () => {
           </div>
 
           {/* Pagination Controls */}
-          <div className="flex justify-center items-center mt-8 space-x-4">
+          <div className="flex justify-end items-center mt-8 space-x-4">
             {/* Previous Button */}
             <button
               onClick={() => paginate(currentPage - 1)}

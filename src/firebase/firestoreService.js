@@ -17,6 +17,79 @@ export const getChats = async (uid) => {
   }
 };
 
+// export const getChats = async (uid) => {
+//   try {
+//     const chatsRef = collection(db, 'chats');
+//     const q = query(chatsRef, where('members', 'array-contains', uid));
+//     const chatSnapshot = await getDocs(q);
+//       try {
+//     const chatData = chatSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+//     const chatPromises = chatData.map(async (c) => {
+//       const otherUserId = c.members.find((e) => e !== uid);
+//       console.log("Dispesary id:", otherUserId);
+
+//       const userDocRef = doc(db, "users", otherUserId);
+//       const userDocSnap = await getDoc(userDocRef);
+      
+//       if (userDocSnap.exists()) {
+//         console.log("Document Data:", userDocSnap.data());
+//         return userDocSnap.data();
+
+//       }
+      
+//       return c;
+//     });
+
+//     const chats = await Promise.all(chatPromises);
+//     return chats;
+//   } catch (error) {
+//     console.error("Error fetching chats:", error);
+//     return [];
+//   }
+
+//     // const chats = chatSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+//     // console.log(chats)
+//   } catch (error) {
+//     console.error('Error fetching chats:', error);
+//     return [];
+//   }
+// };
+
+
+// import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+// import { db } from "./firebaseConfig"; // Adjust the path to your Firebase config
+
+// const getChats = async (snapshot, uid) => {
+//   try {
+//     const chatData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+//     const chatPromises = chatData.map(async (c) => {
+//       const otherUserId = c.members.find((e) => e !== uid);
+//       console.log("Dispesary id:", otherUserId);
+
+//       const userDocRef = doc(db, "users", otherUserId);
+//       const userDocSnap = await getDoc(userDocRef);
+      
+//       if (userDocSnap.exists()) {
+//         console.log("Document Data:", userDocSnap.data());
+//         return { ...c, ...userDocSnap.data() };
+//       }
+      
+//       return c;
+//     });
+
+//     const chats = await Promise.all(chatPromises);
+//     return chats;
+//   } catch (error) {
+//     console.error("Error fetching chats:", error);
+//     return [];
+//   }
+// };
+
+// export default getChats;
+
+
 export const sendMessage = async (chatId, senderId, messageText) => {
   if (!chatId || !messageText.trim()) return;
 
