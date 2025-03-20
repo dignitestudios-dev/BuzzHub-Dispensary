@@ -5,6 +5,24 @@ import { useNavigate } from "react-router-dom";
 import AddProductModal from "../../components/products/AddProductModal";
 import { Logo } from "../../assets/export";
 
+// Function to display star ratings
+const renderStars = (rating) => {
+  const stars = [];
+  for (let i = 1; i <= 5; i++) {
+    stars.push(
+      <span
+        key={i}
+        className={`${
+          i <= rating ? "text-yellow-400" : "text-gray-300"
+        } text-xl`}
+      >
+        &#9733;
+      </span>
+    );
+  }
+  return stars;
+};
+
 const Products = () => {
   const [products, setProducts] = useState([]); // Initialize products state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -89,13 +107,23 @@ const Products = () => {
                         ? product.productDescription.slice(0, 30) + "..."
                         : product.productDescription}
                     </p>
+                    <div className="flex justify-between items-center mb-4">
+                      <div className="flex items-center">
+                        {renderStars(product.averageRating)}{" "}
+                        {/* Display stars */}
+                        <span className="ml-2 text-sm text-gray-500">
+                          {product.averageRating} ({product.totalReviews}{" "}
+                          reviews)
+                        </span>
+                      </div>
+                    </div>
                     <div className="flex justify-between items-center">
                       <p className="text-xl font-bold text-[#074F57]">
                         ${product.productPrice}
                       </p>
                       <button
                         onClick={() => handleViewDetails(product._id)} // Pass productId for details
-                        className="text-white bg-[#1D7C42] p-2 rounded-full hover:bg-[#195c33] text-sm"
+                        className="text-white bg-[#1D7C42] p-2 rounded-md hover:bg-[#195c33] text-sm"
                       >
                         View Details
                       </button>
