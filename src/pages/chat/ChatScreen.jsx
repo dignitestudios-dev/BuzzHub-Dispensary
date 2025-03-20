@@ -113,9 +113,9 @@ const ChatScreen = ({ selectedChat, chatId, userId, update, setUpdate }) => {
       {/* Header Section */}
       <div className="bg-[#1D7C42] text-white px-6 py-2 rounded-xl flex items-center space-x-4 justify-between">
         <div className="flex items-center space-x-3">
-          {selectedChat?.image_url ? (
+          {selectedChat?.image ? (
             <img
-              src={selectedChat?.image_url}
+              src={selectedChat?.image}
               className="w-12 h-12 rounded-full object-scale-down border bg-gray-50"
             />
           ) : (
@@ -123,7 +123,7 @@ const ChatScreen = ({ selectedChat, chatId, userId, update, setUpdate }) => {
           )}
           <div>
             <p className="font-semibold text-lg">
-              {selectedChat?.chat_name || "N/A"}
+              {selectedChat?.name || "N/A"}
             </p>
           </div>
         </div>

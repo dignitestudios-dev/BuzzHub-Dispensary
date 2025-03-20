@@ -47,9 +47,9 @@ const ChatList = ({
           }} // Add onClick to navigate
         >
           <div className="flex items-center space-x-4">
-            {chat?.image_url ? (
+            {chat?.image ? (
               <img
-                src={chat?.image_url}
+                src={chat?.image}
                 className="w-12 h-12 rounded-full object-scale-down border bg-gray-50"
               />
             ) : (
@@ -57,7 +57,7 @@ const ChatList = ({
             )}
             <div>
               <p className="text-lg font-semibold text-[#074F57]">
-                {chat?.chat_name || "N/A"}
+                {chat?.name || "N/A"}
               </p>
               <p className="text-sm font-medium text-gray-600">
                 {chat?.last_msg?.content || ""}

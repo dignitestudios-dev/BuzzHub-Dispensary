@@ -190,27 +190,6 @@ const OrderDetailsPage = () => {
                 </p>
               </div>
             </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Medical Details</h3>
-              <div className="flex space-x-4">
-                <img
-                  src={order.OrderBy.medicalCardFront}
-                  alt="Medical Card Front"
-                  className="w-24 h-16 object-cover rounded-md cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
-                  onClick={() =>
-                    handleImageClick(order.OrderBy.medicalCardFront)
-                  } // Open modal on click
-                />
-                <img
-                  src={order.OrderBy.medicalCardBack}
-                  alt="Medical Card Back"
-                  className="w-24 h-16 object-cover rounded-md cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
-                  onClick={() =>
-                    handleImageClick(order.OrderBy.medicalCardBack)
-                  } // Open modal on click
-                />
-              </div>
-            </div>
           </div>
           {/* Product Details */}
           <div className="border-b border-gray-200"></div>
@@ -240,9 +219,6 @@ const OrderDetailsPage = () => {
                   <p className="text-sm text-gray-600">
                     Price: ${product.price}
                   </p>
-                  {/* <p className="text-sm text-gray-600">
-                    {product.productDescription}
-                  </p> */}
                   <p className="text-sm text-gray-600">
                     {product.warningDescription}
                   </p>
@@ -265,8 +241,8 @@ const OrderDetailsPage = () => {
           order.orderStatus === "Completed" ? (
             <div className="w-full">
               <button
-                onClick={() => handleTrackOrder()} // Add a function to track the order
-                className="w-full py-3 bg-green-600 text-white rounded-lg font-medium" // w-full makes it full width
+                onClick={() => setShowTrackOrderModal(true)} // Show Track Order Modal
+                className="w-full py-3 bg-green-600 text-white rounded-lg font-medium"
               >
                 Track Order
               </button>
@@ -292,6 +268,63 @@ const OrderDetailsPage = () => {
           {error && <p className="text-red-600">{error}</p>} {/* Show error */}
         </div>
       </div>
+
+      {/* Confirmation Modals */}
+      {showAcceptModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
+          <div className="bg-white p-8 rounded-lg max-w-sm w-full">
+            <h2 className="text-xl font-semibold mb-4">
+              Are you sure you want to accept this order?
+            </h2>
+            <div className="flex justify-between space-x-4">
+              <button
+                onClick={handleAcceptOrder}
+                className="w-1/2 py-2 bg-green-600 text-white rounded-lg font-medium"
+              >
+                Accept
+              </button>
+              <button
+                onClick={() => setShowAcceptModal(false)}
+                className="w-1/2 py-2 bg-gray-300 text-black rounded-lg font-medium"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showRejectModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
+          <div className="bg-white p-8 rounded-lg max-w-sm w-full">
+            <h2 className="text-xl font-semibold mb-4">
+              Are you sure you want to reject this order?
+            </h2>
+            <div className="flex justify-between space-x-4">
+              <button
+                onClick={handleRejectOrder}
+                className="w-1/2 py-2 bg-red-600 text-white rounded-lg font-medium"
+              >
+                Reject
+              </button>
+              <button
+                onClick={() => setShowRejectModal(false)}
+                className="w-1/2 py-2 bg-gray-300 text-black rounded-lg font-medium"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Track Order Modal */}
+      <TrackOrderModal
+        showModal={showTrackOrderModal}
+        setShowModal={setShowTrackOrderModal}
+        orderId={order._id}
+        currentStatus={order.orderStatus}
+      />
     </div>
   );
 };

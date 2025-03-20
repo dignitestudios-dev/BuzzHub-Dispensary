@@ -1,55 +1,16 @@
 import { db } from "./firebase";
-import { collection, query, where, getDocs,orderBy, startAfter, onSnapshot, writeBatch,addDoc, serverTimestamp, doc, updateDoc, arrayRemove, Timestamp, arrayUnion } from "firebase/firestore";
+import { collection, query, where, getDocs,orderBy, startAfter, onSnapshot, writeBatch,addDoc, serverTimestamp, doc, updateDoc, arrayRemove, Timestamp, arrayUnion, getDoc } from "firebase/firestore";
 
 // Get user's chat list
-export const getChats = async (uid) => {
-  try {
-    const chatsRef = collection(db, 'chats');
-    const q = query(chatsRef, where('members', 'array-contains', uid));
-    const chatSnapshot = await getDocs(q);
-
-    const chats = chatSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    console.log(chats)
-    return chats;
-  } catch (error) {
-    console.error('Error fetching chats:', error);
-    return [];
-  }
-};
-
 // export const getChats = async (uid) => {
 //   try {
 //     const chatsRef = collection(db, 'chats');
 //     const q = query(chatsRef, where('members', 'array-contains', uid));
 //     const chatSnapshot = await getDocs(q);
-//       try {
-//     const chatData = chatSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
-//     const chatPromises = chatData.map(async (c) => {
-//       const otherUserId = c.members.find((e) => e !== uid);
-//       console.log("Dispesary id:", otherUserId);
-
-//       const userDocRef = doc(db, "users", otherUserId);
-//       const userDocSnap = await getDoc(userDocRef);
-      
-//       if (userDocSnap.exists()) {
-//         console.log("Document Data:", userDocSnap.data());
-//         return userDocSnap.data();
-
-//       }
-      
-//       return c;
-//     });
-
-//     const chats = await Promise.all(chatPromises);
+//     const chats = chatSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+//     console.log(chats)
 //     return chats;
-//   } catch (error) {
-//     console.error("Error fetching chats:", error);
-//     return [];
-//   }
-
-//     // const chats = chatSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-//     // console.log(chats)
 //   } catch (error) {
 //     console.error('Error fetching chats:', error);
 //     return [];
@@ -57,37 +18,48 @@ export const getChats = async (uid) => {
 // };
 
 
-// import { collection, getDocs, doc, getDoc } from "firebase/firestore";
-// import { db } from "./firebaseConfig"; // Adjust the path to your Firebase config
+// Get user chats list updated
+export const getChats = async (uid) => {
+  try {
+    const chatsRef = collection(db, 'chats');
+    const q = query(chatsRef, where('members', 'array-contains', uid));
+    const chatSnapshot = await getDocs(q);
+      try {
+    const chatData = chatSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
-// const getChats = async (snapshot, uid) => {
-//   try {
-//     const chatData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    const chatPromises = chatData.map(async (c) => {
+      const otherUserId = c.members.find((e) => e !== uid);
+      console.log("Dispesary id:", otherUserId);
 
-//     const chatPromises = chatData.map(async (c) => {
-//       const otherUserId = c.members.find((e) => e !== uid);
-//       console.log("Dispesary id:", otherUserId);
-
-//       const userDocRef = doc(db, "users", otherUserId);
-//       const userDocSnap = await getDoc(userDocRef);
+      const userDocRef = doc(db, "users", otherUserId);
+      const userDocSnap = await getDoc(userDocRef);
       
-//       if (userDocSnap.exists()) {
-//         console.log("Document Data:", userDocSnap.data());
-//         return { ...c, ...userDocSnap.data() };
-//       }
+      if (userDocSnap.exists()) {
+        console.log("Document Data:", { ...c, ...userDocSnap.data() });
+        return { ...c, ...userDocSnap.data() };
+
+      }
       
-//       return c;
-//     });
+      return c;
+    });
 
-//     const chats = await Promise.all(chatPromises);
-//     return chats;
-//   } catch (error) {
-//     console.error("Error fetching chats:", error);
-//     return [];
-//   }
-// };
+    const chats = await Promise.all(chatPromises);
+    return chats;
+  } catch (error) {
+    console.error("Error fetching chats:", error);
+    return [];
+  }
 
-// export default getChats;
+    // const chats = chatSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    // console.log(chats)
+  } catch (error) {
+    console.error('Error fetching chats:', error);
+    return [];
+  }
+};
+
+
+
 
 
 export const sendMessage = async (chatId, senderId, messageText) => {

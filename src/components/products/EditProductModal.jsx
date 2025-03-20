@@ -28,6 +28,8 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
   const [weightType, setWeightType] = useState("");
   const [fullfillmentMethod, setFullfillmentMethod] = useState(""); // Store fulfillment method
   const [subTypesError, setSubTypesError] = useState("");
+  // Error handling for weight
+  const [weightError, setWeightError] = useState("");
 
   const [loading, setLoading] = useState(false);
 
@@ -138,6 +140,18 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
         return [...prevSubTypes, subtype];
       }
     });
+  };
+
+  const handleWeightChange = (e) => {
+    const value = e.target.value;
+
+    if (value > 300) {
+      setWeightError("Quantity cannot be more than 300 grams.");
+    } else {
+      setWeightError(""); // Clear error if valid
+    }
+
+    setWeightQuantity(value);
   };
 
   return (
@@ -257,17 +271,11 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
               placeholder="Weight Quantity"
               className="w-full p-2 border rounded"
               value={weightQuantity}
-              onChange={(e) => setWeightQuantity(e.target.value)}
+              onChange={handleWeightChange}
             />
-            {/* <select
-              className="w-full p-2 border rounded"
-              value={weightType}
-              onChange={(e) => setWeightType(e.target.value)}
-            >
-              <option value="">Select Weight Type</option>
-              <option value="ounces">Ounces</option>
-              <option value="grams">Grams</option>
-            </select> */}
+            {weightError && (
+              <div className="text-red-500 text-sm">{weightError}</div>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-4">

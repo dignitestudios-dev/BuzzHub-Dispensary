@@ -33,6 +33,7 @@ const AddProductModal = ({ onClose }) => {
   const [customSubCategory, setCustomSubCategory] = useState(""); // For custom subcategory
   const [isCustomCategory, setIsCustomCategory] = useState(false); // Track if custom category is selected
   const [isCustomSubCategory, setIsCustomSubCategory] = useState(false); // Track if custom subcategory is selected
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("userData"));
@@ -133,6 +134,19 @@ const AddProductModal = ({ onClose }) => {
         return [...prevSubTypes, subtype];
       }
     });
+  };
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+
+    // Check if the value exceeds 300
+    if (value > 300) {
+      setError("Quantity cannot be more than 300 grams.");
+    } else {
+      setError("");
+    }
+
+    setWeightQuantity(value);
   };
 
   return (
@@ -281,26 +295,16 @@ const AddProductModal = ({ onClose }) => {
 
           {/* Weight and Weight Type */}
           <p className=" text-gray-600 ">Quantity Available - (Grams)</p>
-          <div className="grid grid-cols-1 gap-4 mb-4">
+          <div className="mb-4">
             <input
               type="number"
               placeholder="Quantity Available"
               className="w-full p-2 border rounded"
               value={weightQuantity}
               required
-              onChange={(e) => setWeightQuantity(e.target.value)}
+              onChange={handleChange}
             />
-            {/* <select
-              className="w-full p-2 border rounded"
-              value={weightType}
-              required
-              onChange={(e) => setWeightType(e.target.value)}
-            >
-              <option value="">Weight Type</option>
-              <option value="grams">Grams</option>
-              <option value="ounces">Ounces</option>
-              <option value="kilograms">Kilograms</option>
-            </select> */}
+            {error && <div className="text-red-500 text-sm mt-1">{error}</div>}
           </div>
 
           {/* Product Details */}
