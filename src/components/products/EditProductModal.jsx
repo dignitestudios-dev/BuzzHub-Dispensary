@@ -77,6 +77,13 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
       return;
     }
 
+    if (images.length === 0) {
+      <span className="text-red-500 text-sm mt-2">
+        Please upload at least one image.
+      </span>;
+      return;
+    }
+
     setLoading(true);
     const formData = new FormData();
     formData.append("productId", orderId);
@@ -149,10 +156,19 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
       setWeightError("Quantity cannot be more than 300 grams.");
     } else {
       setWeightError(""); // Clear error if valid
+      setWeightQuantity(value);
     }
-
-    setWeightQuantity(value);
   };
+
+  /* Display message if no images uploaded */
+
+  {
+    images.length === 0 && (
+      <span className="text-red-500 text-sm mt-2">
+        Please upload at least one image.
+      </span>
+    );
+  }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 overflow-auto z-10">
@@ -199,17 +215,10 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
                 multiple
                 className="hidden"
                 onChange={handleImageUpload}
-                required
               />
             </label>
           </div>
 
-          {/* Display message if no images uploaded */}
-          {images.length === 0 && (
-            <span className="text-red-500 text-sm mt-2">
-              Please upload at least one image.
-            </span>
-          )}
           <div className="grid grid-cols-1 gap-4 mb-4">
             <input
               type="text"

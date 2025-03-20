@@ -77,6 +77,12 @@ const AddProductModal = ({ onClose }) => {
       }
     }
 
+    if (images.length === 0) {
+      <span className="text-red-500 text-sm mt-2">
+        Please upload at least one image.
+      </span>;
+      return;
+    }
     setLoading(true);
     const formData = new FormData();
     formData.append("productName", productName);
@@ -144,9 +150,8 @@ const AddProductModal = ({ onClose }) => {
       setError("Quantity cannot be more than 300 grams.");
     } else {
       setError("");
+      setWeightQuantity(value);
     }
-
-    setWeightQuantity(value);
   };
 
   return (
