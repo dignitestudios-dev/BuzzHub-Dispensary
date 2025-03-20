@@ -99,13 +99,11 @@ const OrderDetailsPage = () => {
     setShowTrackOrderModal(true);
   };
 
-  // Calculate the total grams of the order by adding up grams of each product
   const totalGrams = order?.products.reduce(
     (total, product) => total + product.gram,
     0
   );
 
-  // Calculate subtotal by adding totalAmount and platformFee
   const subtotal = order?.totalAmount + order?.platformFee;
 
   return (
@@ -145,26 +143,26 @@ const OrderDetailsPage = () => {
               </div>
 
               <div className="flex justify-between">
-                <span>Platform Fee</span>
-                <span className="font-medium">${order?.platformFee}</span>
+                <span>Platform Fee</span>$
+                {(order?.totalAmount * 0.02).toFixed(2)}
               </div>
               <div className="flex justify-between">
                 <span>Total Grams</span>
                 <span className="font-medium">{totalGrams} grams</span>
               </div>
               <div className="flex justify-between">
-                <span>Total Amount</span>
+                <spaln>Subtotal</spaln>
                 <span className="font-medium">${order?.totalAmount} </span>
               </div>
               <div className="flex justify-between">
                 <span>Fulfillment Method</span>
                 <span className="font-medium">{order?.fulfillmentMethod}</span>
               </div>
-              {/* Subtotal Calculation */}
-              <div className="flex justify-between font-medium">
-                <span>Subtotal</span>
-                <span className="font-medium">${subtotal.toFixed(2)}</span>{" "}
-                {/* Show subtotal with 2 decimal places */}
+              <div className="flex justify-between">
+                <span>Total Amount</span>
+                <span className="font-medium">
+                  ${(order?.totalAmount * 1.02).toFixed(2)}
+                </span>
               </div>
             </div>
           </div>
