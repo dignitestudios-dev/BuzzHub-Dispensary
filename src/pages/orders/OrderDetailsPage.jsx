@@ -86,8 +86,8 @@ const OrderDetailsPage = () => {
   };
 
   // Handle image click (open modal)
-  const handleImageClick = (imageSrc) => {
-    window.open(imageSrc, "_blank", "noopener,noreferrer");
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl); // Set the clicked image in state
   };
 
   // Handle modal close
@@ -187,6 +187,23 @@ const OrderDetailsPage = () => {
                   Phone: {order.phoneNumber}
                 </p>
               </div>
+            </div>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Medical Details</h3>
+            <div className="flex space-x-4">
+              <img
+                src={order.OrderBy.medicalCardFront}
+                alt="Medical Card Front"
+                className="w-24 h-16 object-cover rounded-md cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
+                onClick={() => handleImageClick(order.OrderBy.medicalCardFront)} // Open modal on click
+              />
+              <img
+                src={order.OrderBy.medicalCardBack}
+                alt="Medical Card Back"
+                className="w-24 h-16 object-cover rounded-md cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
+                onClick={() => handleImageClick(order.OrderBy.medicalCardBack)} // Open modal on click
+              />
             </div>
           </div>
           {/* Product Details */}
@@ -323,6 +340,25 @@ const OrderDetailsPage = () => {
         orderId={order._id}
         currentStatus={order.orderStatus}
       />
+
+      {/* Modal to display the clicked image */}
+      {selectedImage && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
+          <div className="relative bg-gray-50 p-6 rounded-lg max-w-2xl w-full">
+            <img
+              src={selectedImage}
+              alt="Medical Card"
+              className="w-full h-auto max-h-96 object-contain rounded-lg"
+            />
+            <button
+              onClick={closeModal}
+              className="absolute top-0.5 right-3 text-black rounded-full focus:outline-none transition"
+            >
+              <span className="text-3xl">×</span>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
