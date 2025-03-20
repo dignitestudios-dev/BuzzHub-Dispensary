@@ -199,10 +199,17 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
                 multiple
                 className="hidden"
                 onChange={handleImageUpload}
+                required
               />
             </label>
           </div>
 
+          {/* Display message if no images uploaded */}
+          {images.length === 0 && (
+            <span className="text-red-500 text-sm mt-2">
+              Please upload at least one image.
+            </span>
+          )}
           <div className="grid grid-cols-1 gap-4 mb-4">
             <input
               type="text"

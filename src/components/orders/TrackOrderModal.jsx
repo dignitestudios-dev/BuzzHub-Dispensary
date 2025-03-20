@@ -21,7 +21,6 @@ const TrackOrderModal = ({
     "In Process",
     "Out for Delivery",
     "Ready",
-    "Unknown",
   ];
 
   const handleStatusChange = async () => {

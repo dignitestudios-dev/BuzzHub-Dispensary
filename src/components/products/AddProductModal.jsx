@@ -191,10 +191,17 @@ const AddProductModal = ({ onClose }) => {
                 multiple
                 className="hidden"
                 onChange={handleImageUpload}
+                required
               />
             </label>
           </div>
 
+          {/* Display message if no images uploaded */}
+          {images.length === 0 && (
+            <span className="text-red-500 text-sm mt-2">
+              Please upload at least one image.
+            </span>
+          )}
           {/* Product Name, Price, Expiry Date */}
           <div className="grid grid-cols-1 gap-4 mb-4">
             <input
