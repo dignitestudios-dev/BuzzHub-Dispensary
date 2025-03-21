@@ -189,21 +189,48 @@ const OrderDetailsPage = () => {
               </div>
             </div>
           </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-2">Medical Details</h3>
-            <div className="flex space-x-4">
-              <img
-                src={order.OrderBy.medicalCardFront}
-                alt="Medical Card Front"
-                className="w-24 h-16 object-cover rounded-md cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
-                onClick={() => handleImageClick(order.OrderBy.medicalCardFront)} // Open modal on click
-              />
-              <img
-                src={order.OrderBy.medicalCardBack}
-                alt="Medical Card Back"
-                className="w-24 h-16 object-cover rounded-md cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
-                onClick={() => handleImageClick(order.OrderBy.medicalCardBack)} // Open modal on click
-              />
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <h3 className="text-lg font-semibold mb-2">Medical Details</h3>
+              <div className="flex space-x-4">
+                <img
+                  src={order.OrderBy.medicalCardFront}
+                  alt="Medical Card Front"
+                  className="w-24 h-16 object-cover rounded-md cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
+                  onClick={() =>
+                    handleImageClick(order.OrderBy.medicalCardFront)
+                  } // Open modal on click
+                />
+                <img
+                  src={order.OrderBy.medicalCardBack}
+                  alt="Medical Card Back"
+                  className="w-24 h-16 object-cover rounded-md cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
+                  onClick={() =>
+                    handleImageClick(order.OrderBy.medicalCardBack)
+                  } // Open modal on click
+                />
+              </div>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold mb-2">License</h3>
+              <div className="flex space-x-4">
+                <img
+                  src={order.OrderBy.drivingLicenseFront}
+                  alt="Driving License Front"
+                  className="w-24 h-16 object-cover rounded-md cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
+                  onClick={() =>
+                    handleImageClick(order.OrderBy.drivingLicenseFront)
+                  } // Open modal on click
+                />
+                <img
+                  src={order.OrderBy.drivingLicenseBack}
+                  alt="Driving License Back"
+                  className="w-24 h-16 object-cover rounded-md cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
+                  onClick={() =>
+                    handleImageClick(order.OrderBy.drivingLicenseBack)
+                  } // Open modal on click
+                />
+              </div>
             </div>
           </div>
           {/* Product Details */}

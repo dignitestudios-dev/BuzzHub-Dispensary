@@ -5,9 +5,9 @@ import { useNavigate, useParams } from "react-router-dom";
 
 // Define the types and corresponding subtypes
 const typesAndSubtypes = {
-  "Indica Strains": ["Flower", "Concentrates", "Edibles", "Other"],
-  "Sativa Strains": ["Flower", "Concentrates", "Edibles", "Other"],
-  "Hybrid Strains": ["Flower", "Concentrates", "Edibles", "Other"],
+  Flower: ["Indica Strains", "Sativa Strains", "Hybrid Strains"],
+  Concentrates: ["Indica Strains", "Sativa Strains", "Hybrid Strains"],
+  Edibles: ["Indica Strains", "Sativa Strains", "Hybrid Strains"],
 };
 
 const EditProductModal = ({ onClose, productData, orderId }) => {
@@ -250,9 +250,10 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
                 }}
               >
                 <option value="">Select Product Type</option>
-                <option value="Indica Strains">Indica Strains</option>
-                <option value="Sativa Strains">Sativa Strains</option>
-                <option value="Hybrid Strains">Hybrid Strains</option>
+                <option value="Flower">Flower</option>
+                <option value="Concentrates">Concentrates</option>
+                <option value="Edibles">Edibles</option>
+                <option value="Other">Other</option>
               </select>
             </div>
           </div>
