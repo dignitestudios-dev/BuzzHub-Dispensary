@@ -36,6 +36,8 @@ const AddProductModal = ({ onClose }) => {
   const [isCustomSubCategory, setIsCustomSubCategory] = useState(false); // Track if custom subcategory is selected
   const [error, setError] = useState("");
 
+  const MAX_IMAGES = 4; // Maximum number of images allowed
+
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("userData"));
     if (userData && userData.fulfillmentMethod) {
@@ -48,9 +50,22 @@ const AddProductModal = ({ onClose }) => {
   }, []);
 
   const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
-    setImages([...images, ...files]);
-    setImageError(""); // Reset error when new image is uploaded
+    const files = Array.from(e.target.files); // Convert file list to array
+    if (images.length + files.length > MAX_IMAGES) {
+      // Check if uploading exceeds the max limit
+      alert(`You can upload a maximum of ${MAX_IMAGES} images.`);
+      return;
+    }
+    setImages([...images, ...files]); // Add files to state
+    setImageError(""); // Clear any previous errors
+
+    {
+      images.length >= MAX_IMAGES && (
+        <span className="text-red-500 text-sm mt-2">
+          Maximum image limit reached. You can upload up to {MAX_IMAGES} images.
+        </span>
+      );
+    }
   };
 
   const handleImageRemove = (index) => {

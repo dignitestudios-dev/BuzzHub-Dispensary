@@ -5,9 +5,9 @@ import { useNavigate, useParams } from "react-router-dom";
 
 // Define the types and corresponding subtypes
 const typesAndSubtypes = {
-  Flower: ["Indica Strains", "Sativa Strains", "Hybrid Strains"],
-  Concentrates: ["Indica Strains", "Sativa Strains", "Hybrid Strains"],
-  Edibles: ["Indica Strains", "Sativa Strains", "Hybrid Strains"],
+  Flower: ["Indica Strains", "Sativa Strains", "Hybrid Strains", "Other"],
+  Concentrates: ["Indica Strains", "Sativa Strains", "Hybrid Strains", "Other"],
+  Edibles: ["Indica Strains", "Sativa Strains", "Hybrid Strains", "Other"],
 };
 
 const EditProductModal = ({ onClose, productData, orderId }) => {
@@ -55,10 +55,12 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
   }, [productData]); // Empty dependency array to run once when component mounts
 
   const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
-    if (images.length < 5) {
-      setImages([...images, ...files]);
+    const files = Array.from(e.target.files); // Convert selected files to an array
+    if (images.length + files.length > MAX_IMAGES) {
+      alert(`You can upload a maximum of ${MAX_IMAGES} images.`);
+      return;
     }
+    setImages([...images, ...files]);
   };
 
   const handleImageRemove = (index) => {
@@ -169,6 +171,8 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
       </span>
     );
   }
+
+  const MAX_IMAGES = 4; // Maximum number of images allowed
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 overflow-auto z-10">
