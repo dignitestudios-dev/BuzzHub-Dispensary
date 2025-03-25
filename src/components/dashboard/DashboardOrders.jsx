@@ -6,12 +6,14 @@ import { ErrorToast } from "../../components/global/Toaster";
 
 const DashboardOrders = () => {
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState("All");
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(
           "dispensary/view-all-orders-dispensary"
         );
@@ -21,6 +23,8 @@ const DashboardOrders = () => {
       } catch (error) {
         console.error("Error fetching orders:", error);
         ErrorToast("Error fetching orders:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -92,29 +96,33 @@ const DashboardOrders = () => {
           See all
         </button>
       </div>
+      {loading ? (
+        <div className="w-full flex justify-center items-center">
+          <div className="spinner"></div>
+        </div>
+      ) : (
+        <div className="overflow-x-auto rounded-lg border">
+          {orders?.length === 0 ? (
+            <div className="text-center p-6 text-gray-500">
+              No orders to show.
+            </div>
+          ) : (
+            <table className="min-w-full text-black bg-white border border-gray-200">
+              <thead>
+                <tr className="text-left bg-[#1D7C42] text-white">
+                  <th className="p-5 text-sm font-medium">Ordered By</th>
 
-      <div className="overflow-x-auto rounded-lg border">
-        {orders?.length === 0 ? (
-          <div className="text-center p-6 text-gray-500">
-            No orders to show.
-          </div>
-        ) : (
-          <table className="min-w-full text-black bg-white border border-gray-200">
-            <thead>
-              <tr className="text-left bg-[#1D7C42] text-white">
-                <th className="p-5 text-sm font-medium">Ordered By</th>
-
-                <th className="p-5 text-sm font-medium">Order ID</th>
-                <th className="p-5 text-sm font-medium">Date</th>
-                <th className="p-5 text-sm font-medium">Amount</th>
-                <th className="p-5 text-sm font-medium">Status</th>
-                <th className="p-5 text-sm font-medium">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders?.slice(0, 5).map((order) => (
-                <tr key={order._id} className="border-b hover:bg-gray-100">
-                  {/* <td className="p-4 flex items-center space-x-3">
+                  <th className="p-5 text-sm font-medium">Order ID</th>
+                  <th className="p-5 text-sm font-medium">Date</th>
+                  <th className="p-5 text-sm font-medium">Amount</th>
+                  <th className="p-5 text-sm font-medium">Status</th>
+                  <th className="p-5 text-sm font-medium">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders?.slice(0, 5).map((order) => (
+                  <tr key={order._id} className="border-b hover:bg-gray-100">
+                    {/* <td className="p-4 flex items-center space-x-3">
                     {order?.products?.length > 0 && (
                       <>
                         <img
@@ -128,49 +136,50 @@ const DashboardOrders = () => {
                       </>
                     )}
                   </td> */}
-                  <td className="p-4 flex items-center space-x-3">
-                    <>
-                      <img
-                        src={order?.OrderBy?.profilePicture} // First image of the first product
-                        alt={order?.products[0]?.name}
-                        className="w-20 h-20 object-cover rounded-md"
-                      />
-                      <span className="text-sm font-medium">
-                        {order?.OrderBy?.Username}
-                      </span>
-                    </>
-                  </td>
+                    <td className="p-4 flex items-center space-x-3">
+                      <>
+                        <img
+                          src={order?.OrderBy?.profilePicture} // First image of the first product
+                          alt={order?.products[0]?.name}
+                          className="w-20 h-20 object-cover rounded-md"
+                        />
+                        <span className="text-sm font-medium">
+                          {order?.OrderBy?.Username}
+                        </span>
+                      </>
+                    </td>
 
-                  <td className="p-4 text-sm">{order?.orderUvid}</td>
-                  <td className="p-4 text-sm">
-                    {new Date(order?.createdAt).toLocaleDateString()}
-                  </td>
-                  <td className="p-4 text-sm font-medium">
-                    ${order?.totalAmount?.toFixed(1)}
-                  </td>
-                  <td className="p-4">
-                    <span
-                      className={`px-3 py-1 text-white rounded-full ${getStatusColor(
-                        order?.orderStatus
-                      )}`}
-                    >
-                      {order?.orderStatus}
-                    </span>
-                  </td>
-                  <td className="p-4">
-                    <button
-                      onClick={() => handleViewDetails(order)}
-                      className="text-[#1D7C42] hover:text-green-500 transition duration-300"
-                    >
-                      <FaEye className="text-xl" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+                    <td className="p-4 text-sm">{order?.orderUvid}</td>
+                    <td className="p-4 text-sm">
+                      {new Date(order?.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="p-4 text-sm font-medium">
+                      ${order?.totalAmount?.toFixed(1)}
+                    </td>
+                    <td className="p-4">
+                      <span
+                        className={`px-3 py-1 text-white rounded-full ${getStatusColor(
+                          order?.orderStatus
+                        )}`}
+                      >
+                        {order?.orderStatus}
+                      </span>
+                    </td>
+                    <td className="p-4">
+                      <button
+                        onClick={() => handleViewDetails(order)}
+                        className="text-[#1D7C42] hover:text-green-500 transition duration-300"
+                      >
+                        <FaEye className="text-xl" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      )}
     </div>
   );
 };

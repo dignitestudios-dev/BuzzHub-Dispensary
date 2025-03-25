@@ -82,6 +82,21 @@ const Profile = () => {
     setIsModalOpen(false);
   };
 
+  const formatPhoneNumber = (phoneNumber) => {
+    if (!phoneNumber) return ""; // return an empty string if phoneNumber is not provided
+
+    // Removing any non-digit characters (optional, in case you have a formatted number)
+    const cleaned = ("" + phoneNumber).replace(/\D/g, "");
+
+    // Apply the USA format (XXX) XXX-XXXX
+    const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+    if (match) {
+      return `(${match[1]}) ${match[2]}-${match[3]}`;
+    }
+
+    return phoneNumber; // Return the original phone number if it doesn't match the expected pattern
+  };
+
   return (
     <div className="w-full text-black mx-auto p-6 bg-white overflow-auto">
       {/* Profile Header */}
@@ -102,7 +117,8 @@ const Profile = () => {
             {dispensaryDetails?.state}
           </p>
           <p className="flex items-center text-gray-600 text-sm">
-            <FiPhone className="mr-2" /> {dispensaryDetails?.phoneNumber}
+            <FiPhone className="mr-2" /> +1{" "}
+            {formatPhoneNumber(dispensaryDetails?.phoneNumber)}
           </p>
           <p className="flex items-center text-gray-600 text-sm">
             <FiMail className="mr-2" /> {dispensaryDetails?.email}

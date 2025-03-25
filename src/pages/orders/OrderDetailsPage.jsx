@@ -25,6 +25,7 @@ const OrderDetailsPage = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [loading, setLoading] = useState(false); // For loading state
   const [error, setError] = useState(null); // For error state
+  const [chatLoading, setChatLoading] = useState(false);
 
   // States for the modals
   const [showAcceptModal, setShowAcceptModal] = useState(false);
@@ -122,6 +123,7 @@ const OrderDetailsPage = () => {
     : null;
 
   const handleSubmit = async (sellerId, buyerId, chatName, imageUrl) => {
+    setChatLoading(true);
     try {
       const members = [sellerId, buyerId];
 
@@ -155,6 +157,8 @@ const OrderDetailsPage = () => {
       navigate(`/chat`, { state: { existingChatRoomId } });
     } catch (e) {
       console.error("Error starting chat:", e);
+    } finally {
+      setChatLoading(false);
     }
   };
 
@@ -331,6 +335,7 @@ const OrderDetailsPage = () => {
             <div className="w-full">
               <div className="w-full">
                 <button
+                  disabled={chatLoading}
                   onClick={() =>
                     handleSubmit(
                       user?.uid,
@@ -341,7 +346,7 @@ const OrderDetailsPage = () => {
                   }
                   className="w-full py-3 bg-green-600 text-white rounded-lg font-medium"
                 >
-                  Chat with Buyer
+                  {chatLoading ? "Loading..." : "Chat with Buyer"}
                 </button>
               </div>
             </div>
@@ -391,10 +396,11 @@ const OrderDetailsPage = () => {
             </h2>
             <div className="flex justify-between space-x-4">
               <button
+                disabled={loading}
                 onClick={handleAcceptOrder}
                 className="w-1/2 py-2 bg-green-600 text-white rounded-lg font-medium"
               >
-                Accept
+                {loading ? "loading..." : "Accept"}
               </button>
               <button
                 onClick={() => setShowAcceptModal(false)}
