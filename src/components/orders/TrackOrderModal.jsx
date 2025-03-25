@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "../../axios";
 import { useNavigate } from "react-router-dom";
+import { updateOrderStatus } from "../../firebase/firestoreService";
 
 const TrackOrderModal = ({
   showModal,
@@ -35,6 +36,8 @@ const TrackOrderModal = ({
         }
       );
       if (response.status === 200) {
+        updateOrderStatus(orderId, selectedStatus);
+
         setShowModal(false);
         navigate("/track-orders");
       }

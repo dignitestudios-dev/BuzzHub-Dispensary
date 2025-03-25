@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { FaEllipsisV, FaPaperPlane } from "react-icons/fa";
 import { BsArrowLeft } from "react-icons/bs";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useLocation, useNavigate } from "react-router-dom"; // Import useNavigate
 import ChatList from "./ChatList";
 import ChatScreen from "./ChatScreen";
 
 const Chat = () => {
   const [update, setUpdate] = useState(false);
-
   const navigate = useNavigate(); // Initialize the navigation function
+
+  const location = useLocation();
+  // const { existingChatRoomId } = location?.state;
+  // console.log("existingChatRoomId- ", existingChatRoomId);
 
   const chats = [
     { id: 1, name: "Mike Smith", message: "Hi, how are you?", date: "1 Jan" },

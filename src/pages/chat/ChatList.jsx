@@ -14,10 +14,9 @@ const ChatList = ({
   setUpdate,
 }) => {
   const navigate = useNavigate(); // Initialize the navigation function
-
   const [chats, setChats] = useState([]);
-  const unreadCounts = useUnreadMessages(userId);
 
+  const unreadCounts = useUnreadMessages(userId);
   useEffect(() => {
     const fetchChats = async () => {
       const chatData = await getChats(userId);
@@ -32,7 +31,7 @@ const ChatList = ({
       setSelectedChat(chats?.filter((chat) => selectedChat?.id == chat?.id)[0]);
   }, [chats]);
   return (
-    <ul className="space-y- overflow-auto">
+    <ul className="space-y-2 overflow-auto">
       {chats?.map((chat) => (
         <li
           key={chat?.id}

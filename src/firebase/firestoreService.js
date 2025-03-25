@@ -18,24 +18,43 @@ import { collection, query, where, getDocs,orderBy, startAfter, onSnapshot, writ
 // };
 
 
+  // Fetch existing chat room
+  export const getExistingChatRoom = async (members) => {
+
+    const chatsRef = collection(db, 'chats');
+    const q = query(chatsRef, where('members', 'array-contains', members[0]));
+    
+    const querySnapshot = await getDocs(q);
+
+    for (let doc of querySnapshot.docs) {
+      const data = doc.data();
+      if (data.members.includes(members[1])) {
+        return doc.id;
+      }
+    }
+
+    return null;
+  };
+
+
 // Get user chats list updated
 export const getChats = async (uid) => {
   try {
     const chatsRef = collection(db, 'chats');
-    const q = query(chatsRef, where('members', 'array-contains', uid));
+    const q = query(chatsRef, where('members', 'array-contains', uid), where('order_status', '!=', 'Completed'));
     const chatSnapshot = await getDocs(q);
-      try {
-    const chatData = chatSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    try {
+      const chatData = chatSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
     const chatPromises = chatData.map(async (c) => {
       const otherUserId = c.members.find((e) => e !== uid);
-      console.log("Dispesary id:", otherUserId);
+      
 
       const userDocRef = doc(db, "users", otherUserId);
       const userDocSnap = await getDoc(userDocRef);
       
       if (userDocSnap.exists()) {
-        console.log("Document Data:", { ...c, ...userDocSnap.data() });
+        
         return { ...c, ...userDocSnap.data() };
 
       }
@@ -44,6 +63,7 @@ export const getChats = async (uid) => {
     });
 
     const chats = await Promise.all(chatPromises);
+    
     return chats;
   } catch (error) {
     console.error("Error fetching chats:", error);
@@ -55,6 +75,16 @@ export const getChats = async (uid) => {
   } catch (error) {
     console.error('Error fetching chats:', error);
     return [];
+  }
+};
+
+export const updateOrderStatus = async (chatRoomId, status) => {
+  try {
+    const chatDocRef = doc(db, "chats", chatRoomId);
+    await updateDoc(chatDocRef, { order_status: status });
+    
+  } catch (error) {
+    console.error("Error updating order status:", error);
   }
 };
 
@@ -76,7 +106,7 @@ export const sendMessage = async (chatId, senderId, messageText) => {
 
 
 export const getMessages = (chatId, callback, updatedAt) => {
-  console.log(updatedAt)
+  console.log("updatedAt-- ", updatedAt)
   if (!chatId) return;
 
   const messagesRef = collection(db, `chats/${chatId}/messages`);
@@ -87,7 +117,7 @@ export const getMessages = (chatId, callback, updatedAt) => {
       id: doc.id,
       ...doc.data(),
     }));
-    console.log("message call==> ",messages)
+    
     callback(messages);
   }, (error) => console.error("Error fetching messages:", error));
 };

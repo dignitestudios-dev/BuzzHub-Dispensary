@@ -3,6 +3,17 @@ import { FaArrowLeft } from "react-icons/fa";
 import { useState } from "react";
 import axios from "../../axios";
 import TrackOrderModal from "../../components/orders/TrackOrderModal";
+import { db } from "../../firebase/firebase"; // Assume Firebase is configured here
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
+import { getExistingChatRoom } from "../../firebase/firestoreService";
 
 const OrderDetailsPage = () => {
   const location = useLocation();
@@ -106,6 +117,47 @@ const OrderDetailsPage = () => {
 
   const subtotal = order?.totalAmount + order?.platformFee;
 
+  const user = localStorage.getItem("userData")
+    ? JSON.parse(localStorage.getItem("userData"))
+    : null;
+
+  const handleSubmit = async (sellerId, buyerId, chatName, imageUrl) => {
+    try {
+      const members = [sellerId, buyerId];
+
+      console.log(`sellerId: ${sellerId}\nbuyerId: ${buyerId}`);
+
+      let existingChatRoomId = await getExistingChatRoom(members);
+      console.log("existingChatRoomId--- ", existingChatRoomId);
+
+      if (!existingChatRoomId) {
+        const response = await axios.post("/dispensary/create-chatroom", {
+          userUid: buyerId,
+        });
+        console.log("response== ", response);
+        if (response.status === 200) {
+          const chatRoomId = response.data.chatRoomId;
+
+          existingChatRoomId = chatRoomId;
+
+          const chatRoomRef = await addDoc(collection(db, "chats"), {
+            members,
+            chatName,
+            imageUrl,
+            buyerId,
+            sellerId,
+            createdAt: new Date(),
+          });
+
+          existingChatRoomId = chatRoomRef.id;
+        }
+      }
+      navigate(`/chat`, { state: { existingChatRoomId } });
+    } catch (e) {
+      console.error("Error starting chat:", e);
+    }
+  };
+
   return (
     <div className="h-auto w-full bg-gray-100 flex justify-center p-6 overflow-auto text-black">
       <div className="w-full bg-white rounded-lg shadow-xl overflow-y-auto">
@@ -151,7 +203,7 @@ const OrderDetailsPage = () => {
                 <span className="font-medium">{totalGrams} grams</span>
               </div>
               <div className="flex justify-between">
-                <spaln>Subtotal</spaln>
+                <span>Subtotal</span>
                 <span className="font-medium">${order?.totalAmount} </span>
               </div>
               <div className="flex justify-between">
@@ -199,7 +251,7 @@ const OrderDetailsPage = () => {
                   className="w-24 h-16 object-cover rounded-md cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
                   onClick={() =>
                     handleImageClick(order.OrderBy.medicalCardFront)
-                  } // Open modal on click
+                  }
                 />
                 <img
                   src={order.OrderBy.medicalCardBack}
@@ -207,7 +259,7 @@ const OrderDetailsPage = () => {
                   className="w-24 h-16 object-cover rounded-md cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
                   onClick={() =>
                     handleImageClick(order.OrderBy.medicalCardBack)
-                  } // Open modal on click
+                  }
                 />
               </div>
             </div>
@@ -220,7 +272,7 @@ const OrderDetailsPage = () => {
                   className="w-24 h-16 object-cover rounded-md cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
                   onClick={() =>
                     handleImageClick(order.OrderBy.drivingLicenseFront)
-                  } // Open modal on click
+                  }
                 />
                 <img
                   src={order.OrderBy.drivingLicenseBack}
@@ -228,7 +280,7 @@ const OrderDetailsPage = () => {
                   className="w-24 h-16 object-cover rounded-md cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
                   onClick={() =>
                     handleImageClick(order.OrderBy.drivingLicenseBack)
-                  } // Open modal on click
+                  }
                 />
               </div>
             </div>
@@ -275,7 +327,25 @@ const OrderDetailsPage = () => {
               <p className="text-sm text-gray-600">{order.shippingAddress}</p>
             </div>
           )}
-          {/* Conditional Buttons */}
+          {order.orderStatus === "Approved" ? (
+            <div className="w-full">
+              <div className="w-full">
+                <button
+                  onClick={() =>
+                    handleSubmit(
+                      user?.uid,
+                      order?.userId,
+                      user?.dispensaryName,
+                      user?.profilePicture
+                    )
+                  }
+                  className="w-full py-3 bg-green-600 text-white rounded-lg font-medium"
+                >
+                  Chat with Buyer
+                </button>
+              </div>
+            </div>
+          ) : null}
           {order.orderStatus === "In Process" ||
           order.orderStatus === "Ready" ||
           order.orderStatus === "Out for Delivery" ||
@@ -283,16 +353,17 @@ const OrderDetailsPage = () => {
           order.orderStatus === "Completed" ? (
             <div className="w-full">
               <button
-                onClick={() => setShowTrackOrderModal(true)} // Show Track Order Modal
+                onClick={() => setShowTrackOrderModal(true)}
                 className="w-full py-3 bg-green-600 text-white rounded-lg font-medium"
               >
                 Track Order
               </button>
             </div>
-          ) : (
+          ) : null}
+          {order.orderStatus === "Pending" ? (
             <div className="flex justify-between space-x-4">
               <button
-                onClick={() => setShowAcceptModal(true)} // Show Accept Modal
+                onClick={() => setShowAcceptModal(true)}
                 className="w-1/2 py-3 bg-green-600 text-white rounded-lg font-medium"
                 disabled={loading}
               >
@@ -306,7 +377,7 @@ const OrderDetailsPage = () => {
                 {loading ? "Updating..." : "Reject Order"}
               </button>
             </div>
-          )}
+          ) : null}
           {error && <p className="text-red-600">{error}</p>} {/* Show error */}
         </div>
       </div>

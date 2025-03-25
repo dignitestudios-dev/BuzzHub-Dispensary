@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { ErrorToast } from "../../components/global/Toaster";
 
 const typesAndSubtypes = {
-  Flower: ["Indica Strains", "Sativa Strains", "Hybrid Strains"],
-  Concentrates: ["Indica Strains", "Sativa Strains", "Hybrid Strains"],
-  Edibles: ["Indica Strains", "Sativa Strains", "Hybrid Strains"],
+  Flower: ["Indica Strains", "Sativa Strains", "Hybrid Strains", "Other"],
+  Concentrates: ["Indica Strains", "Sativa Strains", "Hybrid Strains", "Other"],
+  Edibles: ["Indica Strains", "Sativa Strains", "Hybrid Strains", "Other"],
   // Other: ["Indica Strains", "Sativa Strains", "Hybrid Strains"],
 };
 

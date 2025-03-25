@@ -10,9 +10,25 @@ import {
 import DeleteModal from "../../components/chat/DeleteModal";
 import ReportModal from "../../components/chat/ReportModal";
 import BlockModal from "../../components/chat/BlockModal";
+import firebase from "firebase/compat/app";
 
 const ChatScreen = ({ selectedChat, chatId, userId, update, setUpdate }) => {
+  console.log("selectedChat", selectedChat);
+
   const [messages, setMessages] = useState([]);
+
+  // const parseUpdatedAt = (selectedChat, userId) => {
+  //   const updatedAtMap = {};
+  //   // Parse updated_at to create a mapping
+  //   for (const entry of Object.values(selectedChat?.updated_at || {})) {
+  //     if (entry.uid) {
+  //       updatedAtMap[entry.uid] = entry._Timestamp;
+  //     }
+  //   }
+
+  //   // Extract and return the value for userId
+  //   return updatedAtMap[userId] || null;
+  // };
 
   useEffect(() => {
     console.log("update", update);
@@ -21,6 +37,7 @@ const ChatScreen = ({ selectedChat, chatId, userId, update, setUpdate }) => {
     const unsubscribe = getMessages(
       chatId,
       setMessages,
+      // parseUpdatedAt(selectedChat, userId)
       selectedChat?.updated_at[userId]
     );
     return () => unsubscribe(); // Cleanup on unmount
