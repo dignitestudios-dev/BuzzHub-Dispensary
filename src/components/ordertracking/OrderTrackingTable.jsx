@@ -20,6 +20,7 @@ const OrderTrackingTable = () => {
           "dispensary/view-all-orders-dispensary"
         );
         if (response.data.success) {
+          console.log(response.data.data);
           // Ensure that you handle each filter correctly based on the status
           setOrders(response.data.data[filter] || []); // Load orders based on the filter
         }
@@ -50,21 +51,21 @@ const OrderTrackingTable = () => {
   const getStatusColor = (status) => {
     switch (status) {
       case "Pending":
-        return "bg-yellow-400"; // Yellow for Pending
+        return "bg-yellow-400";
       case "Approved":
-        return "bg-green-600"; // Green for Approved
+        return "bg-green-600";
       case "Rejected":
-        return "bg-red-500"; // Red for Rejected
+        return "bg-red-500";
       case "Completed":
-        return "bg-blue-600"; // Blue for Completed
+        return "bg-blue-600";
       case "In Process":
-        return "bg-yellow-400"; // Orange for In Process
+        return "bg-yellow-400";
       case "Out for Delivery":
-        return "bg-purple-500"; // Purple for Out for Delivery
+        return "bg-purple-500";
       case "Ready":
-        return "bg-green-600"; // Green for Ready
+        return "bg-green-600";
       default:
-        return "bg-gray-300"; // Default color for other statuses
+        return "bg-gray-300";
     }
   };
 

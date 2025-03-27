@@ -375,7 +375,7 @@ const OrderDetailsPage = () => {
                 {loading ? "Updating..." : "Accept Order"}
               </button>
               <button
-                onClick={() => setShowRejectModal(true)} // Show Reject Modal
+                onClick={() => setShowRejectModal(true)}
                 className="w-1/2 py-3 bg-red-600 text-white rounded-lg font-medium"
                 disabled={loading}
               >
@@ -383,7 +383,7 @@ const OrderDetailsPage = () => {
               </button>
             </div>
           ) : null}
-          {error && <p className="text-red-600">{error}</p>} {/* Show error */}
+          {error && <p className="text-red-600">{error}</p>}
         </div>
       </div>
 
