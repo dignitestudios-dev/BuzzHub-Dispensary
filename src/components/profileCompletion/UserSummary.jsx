@@ -15,7 +15,9 @@ const UserSummary = ({
   selectedState,
   setValue,
   pickupType,
+  dispensaryType,
 }) => {
+  console.log("dispensaryType-- ", dispensaryType);
   const navigate = useNavigate();
   const formData = watch();
 
@@ -156,6 +158,21 @@ const UserSummary = ({
           isDisabled={true}
           register={register("zipCode")}
         />
+      </div>
+      {/* New Section: Show Dispensary Type */}
+      <div className="w-full h-auto flex flex-col justify-start items-start my-4">
+        <div className="flex items-center">
+          <label className="text-[14px] text-secondary pl-1">
+            Dispensary Type :
+          </label>
+          <p className="ml-2 text-sm font-semibold text-[#1D7C42]">
+            {dispensaryType === "REC"
+              ? "Recreational"
+              : dispensaryType === "MED"
+              ? "Medical"
+              : "Not Selected"}
+          </p>
+        </div>
       </div>
 
       <div className="mt-4 mx-1">

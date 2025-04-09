@@ -25,6 +25,7 @@ const ProfileCompletion = () => {
   const [city, setCity] = useState("");
   const [selectedState, setSelectedState] = useState("");
   const [pickupType, setPickupType] = useState("");
+  const [dispensaryType, setDispensaryType] = useState("");
 
   const {
     register,
@@ -213,6 +214,8 @@ const ProfileCompletion = () => {
               setValue={setValue}
               pickupType={pickupType}
               setPickupType={setPickupType}
+              setDispensaryType={setDispensaryType}
+              dispensaryType={dispensaryType}
               fileNames={profileImg}
               setFileNames={setProfileImg}
             />
@@ -241,6 +244,7 @@ const ProfileCompletion = () => {
               selectedState={selectedState}
               city={city}
               pickupType={pickupType}
+              dispensaryType={dispensaryType}
             />
           )}
         </div>
