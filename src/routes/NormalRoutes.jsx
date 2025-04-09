@@ -24,6 +24,7 @@ import Wallet from "../pages/wallet/Wallet";
 import ChangePassword from "../pages/settings/ChangePassword";
 import PageNotFound from "../pages/onboarding/PageNotFound";
 import { Navigate } from "react-router-dom";
+import ManageSubscripiton from "../pages/subscription/ManageSubscripiton";
 
 export const normalRoutes = [
   {
@@ -130,6 +131,12 @@ export const normalRoutes = [
     title: "Notifications",
     url: "/notifications",
     page: <GlobalLayout page={<Notifications />} />,
+  },
+
+  {
+    title: "Subscription",
+    url: "/manage-subscription",
+    page: <GlobalLayout page={<ManageSubscripiton />} />,
   },
 
   {

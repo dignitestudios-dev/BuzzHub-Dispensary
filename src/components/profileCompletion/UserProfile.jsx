@@ -331,6 +331,7 @@ const UserProfile = ({
           </p>
         )}
       </div>
+
       <div className="mt-8">
         <AuthSubmitBtn text={"Next"} />
       </div>

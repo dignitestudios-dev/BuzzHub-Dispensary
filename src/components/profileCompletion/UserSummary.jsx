@@ -17,7 +17,6 @@ const UserSummary = ({
   pickupType,
   dispensaryType,
 }) => {
-  console.log("dispensaryType-- ", dispensaryType);
   const navigate = useNavigate();
   const formData = watch();
 
