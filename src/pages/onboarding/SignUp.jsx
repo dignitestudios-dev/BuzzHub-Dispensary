@@ -105,7 +105,7 @@ const SignUp = () => {
           confirmPassword: formData?.confirmPassword,
           phoneNumber: formData?.phoneNumber,
           idToken: idToken,
-          isWebUser: true,
+          // isWebUser: true,
         };
         const response = await axios.post("/auth/dispansory-signup", obj);
 
