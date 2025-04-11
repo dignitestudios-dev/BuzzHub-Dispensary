@@ -15,6 +15,7 @@ import {
 } from "firebase/firestore";
 import { getExistingChatRoom } from "../../firebase/firestoreService";
 import { FiPhone } from "react-icons/fi";
+import { IoLocationOutline } from "react-icons/io5";
 
 const OrderDetailsPage = () => {
   const location = useLocation();
@@ -260,6 +261,14 @@ const OrderDetailsPage = () => {
                   <FiPhone className="mr-2" /> +1{" "}
                   {formatPhoneNumber(order?.phoneNumber)}
                 </p>
+
+                {/* Shipping Address */}
+                {order.fulfillmentMethod !== "Self Pickup" && (
+                  <div className="flex items-center text-gray-600 text-sm">
+                    <IoLocationOutline className="mr-2" />
+                    <span>Shipping Address: {order.shippingAddress}</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -342,13 +351,7 @@ const OrderDetailsPage = () => {
               </div>
             ))}
           </div>
-          {/* Shipping Address */}
-          {order.fulfillmentMethod !== "Self Pickup" && (
-            <div>
-              <h2 className="text-2xl font-semibold mb-4">Shipping Address</h2>
-              <p className="text-sm text-gray-600">{order.shippingAddress}</p>
-            </div>
-          )}
+
           <div className="w-full grid grid-cols-2 justify-center space-x-2">
             {order.orderStatus === "Approved" ? (
               <div>
