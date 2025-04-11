@@ -54,7 +54,7 @@ const ManageSubscription = () => {
         alert("Your subscription has been cancelled.");
 
         // Redirect user to login page after successful cancellation
-        navigate("/login");
+        // navigate("/login");
       }
     } catch (error) {
       console.error("Error cancelling subscription:", error);
