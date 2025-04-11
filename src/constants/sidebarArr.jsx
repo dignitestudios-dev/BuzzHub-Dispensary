@@ -3,11 +3,8 @@ import { RxDashboard } from "react-icons/rx";
 import { RiNotificationLine } from "react-icons/ri";
 import { IoCartOutline } from "react-icons/io5";
 
-
 import { MdChatBubbleOutline } from "react-icons/md";
 import { AiOutlineShopping } from "react-icons/ai";
-
-
 
 import { BsCartCheck } from "react-icons/bs";
 
@@ -16,15 +13,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 
 import { IoWalletOutline } from "react-icons/io5";
 
-
-
-
-
-
-
-
-
-
+import { IoCardOutline } from "react-icons/io5";
 
 export const sidebarArr = [
   {
@@ -39,7 +28,6 @@ export const sidebarArr = [
     icon: <IoCartOutline />,
   },
 
-
   {
     title: "Order Tracking",
     url: "/track-orders",
@@ -53,12 +41,10 @@ export const sidebarArr = [
   },
 
   {
-    title: "Notifications",
-    url: "/notifications",
-    icon: <RiNotificationLine />,
+    title: "Subscriptions",
+    url: "/manage-subscription",
+    icon: <IoCardOutline />,
   },
-
- 
 
   {
     title: "Messages",
@@ -72,7 +58,6 @@ export const sidebarArr = [
     icon: <FaRegStar />,
   },
 
-  
   {
     title: "Wallet",
     url: "/wallet",
@@ -84,7 +69,4 @@ export const sidebarArr = [
     url: "/profile",
     icon: <IoSettingsOutline />,
   },
-
-  
- 
 ];

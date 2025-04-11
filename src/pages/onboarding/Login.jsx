@@ -26,8 +26,8 @@ const Login = () => {
     const requestBody = {
       email: formData.email,
       password: formData.password,
-      fcmToken: "000056",
-      deviceIdentity: "123",
+      fcmToken: "000056", // Replace with actual token
+      deviceIdentity: "123", // Replace with actual device identity
     };
 
     try {
@@ -35,9 +35,25 @@ const Login = () => {
       const response = await axios.post("/auth/login-dispensary", requestBody);
 
       if (response.status === 200) {
-        const { status, isSubscribed, rejectionReason, isSessionComplete } =
-          response?.data?.data;
+        const {
+          status,
+          isSubscribed,
+          rejectionReason,
+          isSessionComplete,
+          subscriptionPlan,
+        } = response?.data?.data;
+
+        // Sign in logic
         signIn(response?.data);
+
+        // Save user data in localStorage, including subscription plan
+        const userData = {
+          ...response.data.data, // Save all user data
+          subscriptionPlan: response.data.subscriptionPlan, // Add subscription plan here
+        };
+
+        localStorage.setItem("userData", JSON.stringify(userData)); // Save to localStorage
+
         // Check if session is complete
         if (!isSessionComplete) {
           navigate("/profile-completion");

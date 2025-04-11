@@ -14,6 +14,7 @@ import {
   doc,
 } from "firebase/firestore";
 import { getExistingChatRoom } from "../../firebase/firestoreService";
+import { FiPhone } from "react-icons/fi";
 
 const OrderDetailsPage = () => {
   const location = useLocation();
@@ -63,6 +64,21 @@ const OrderDetailsPage = () => {
       setLoading(false); // Stop loading state
       setShowAcceptModal(false); // Close the accept modal
     }
+  };
+
+  const formatPhoneNumber = (phoneNumber) => {
+    if (!phoneNumber) return ""; // return an empty string if phoneNumber is not provided
+
+    // Removing any non-digit characters (optional, in case you have a formatted number)
+    const cleaned = ("" + phoneNumber).replace(/\D/g, "");
+
+    // Apply the USA format (XXX) XXX-XXXX
+    const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+    if (match) {
+      return `(${match[1]}) ${match[2]}-${match[3]}`;
+    }
+
+    return phoneNumber; // Return the original phone number if it doesn't match the expected pattern
   };
 
   // Function to handle rejecting the order
@@ -239,8 +255,10 @@ const OrderDetailsPage = () => {
                 <p className="text-sm text-gray-600">
                   {/* User ID: {order.OrderBy.uid} */}
                 </p>
-                <p className="text-sm text-gray-600">
-                  Phone: {order.phoneNumber}
+
+                <p className="flex items-center text-gray-600 text-sm">
+                  <FiPhone className="mr-2" /> +1{" "}
+                  {formatPhoneNumber(order?.phoneNumber)}
                 </p>
               </div>
             </div>
@@ -331,59 +349,61 @@ const OrderDetailsPage = () => {
               <p className="text-sm text-gray-600">{order.shippingAddress}</p>
             </div>
           )}
-          {order.orderStatus === "Approved" ? (
-            <div className="w-full">
+          <div className="w-full grid grid-cols-2 justify-center space-x-2">
+            {order.orderStatus === "Approved" ? (
+              <div>
+                <div className="w-full">
+                  <button
+                    disabled={chatLoading}
+                    onClick={() =>
+                      handleSubmit(
+                        user?.uid,
+                        order?.userId,
+                        user?.dispensaryName,
+                        user?.profilePicture
+                      )
+                    }
+                    className="w-full py-3 bg-green-600 text-white rounded-lg font-medium"
+                  >
+                    {chatLoading ? "Loading..." : "Chat with Buyer"}
+                  </button>
+                </div>
+              </div>
+            ) : null}
+            {order.orderStatus === "In Process" ||
+            order.orderStatus === "Ready" ||
+            order.orderStatus === "Out for Delivery" ||
+            order.orderStatus === "Approved" ||
+            order.orderStatus === "Completed" ? (
               <div className="w-full">
                 <button
-                  disabled={chatLoading}
-                  onClick={() =>
-                    handleSubmit(
-                      user?.uid,
-                      order?.userId,
-                      user?.dispensaryName,
-                      user?.profilePicture
-                    )
-                  }
+                  onClick={() => setShowTrackOrderModal(true)}
                   className="w-full py-3 bg-green-600 text-white rounded-lg font-medium"
                 >
-                  {chatLoading ? "Loading..." : "Chat with Buyer"}
+                  Track Order
                 </button>
               </div>
-            </div>
-          ) : null}
-          {order.orderStatus === "In Process" ||
-          order.orderStatus === "Ready" ||
-          order.orderStatus === "Out for Delivery" ||
-          order.orderStatus === "Approved" ||
-          order.orderStatus === "Completed" ? (
-            <div className="w-full">
-              <button
-                onClick={() => setShowTrackOrderModal(true)}
-                className="w-full py-3 bg-green-600 text-white rounded-lg font-medium"
-              >
-                Track Order
-              </button>
-            </div>
-          ) : null}
-          {order.orderStatus === "Pending" ? (
-            <div className="flex justify-between space-x-4">
-              <button
-                onClick={() => setShowAcceptModal(true)}
-                className="w-1/2 py-3 bg-green-600 text-white rounded-lg font-medium"
-                disabled={loading}
-              >
-                {loading ? "Updating..." : "Accept Order"}
-              </button>
-              <button
-                onClick={() => setShowRejectModal(true)}
-                className="w-1/2 py-3 bg-red-600 text-white rounded-lg font-medium"
-                disabled={loading}
-              >
-                {loading ? "Updating..." : "Reject Order"}
-              </button>
-            </div>
-          ) : null}
-          {error && <p className="text-red-600">{error}</p>}
+            ) : null}
+            {order.orderStatus === "Pending" ? (
+              <div className="flex justify-between space-x-4">
+                <button
+                  onClick={() => setShowAcceptModal(true)}
+                  className="w-1/2 py-3 bg-green-600 text-white rounded-lg font-medium"
+                  disabled={loading}
+                >
+                  {loading ? "Updating..." : "Accept Order"}
+                </button>
+                <button
+                  onClick={() => setShowRejectModal(true)}
+                  className="w-1/2 py-3 bg-red-600 text-white rounded-lg font-medium"
+                  disabled={loading}
+                >
+                  {loading ? "Updating..." : "Reject Order"}
+                </button>
+              </div>
+            ) : null}
+            {error && <p className="text-red-600">{error}</p>}
+          </div>
         </div>
       </div>
 

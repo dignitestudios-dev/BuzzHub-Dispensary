@@ -94,7 +94,7 @@ const Wallet = () => {
   const transactions = walletData?.transactions?.data;
 
   return (
-    <div className="p-6 w-full mx-auto bg-white min-h-screen">
+    <div className="p-6 w-full mx-auto bg-white h-full overflow-auto">
       <h1 className="text-black text-3xl font-bold mb-4">Wallet Management</h1>
 
       <div className="space-y-4">
