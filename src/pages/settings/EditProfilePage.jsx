@@ -14,6 +14,7 @@ const EditProfilePage = () => {
   const [closingTimeValue, setClosingTimeValue] = useState("");
   const [pickupType, setPickupType] = useState("");
   const [loading, setLoading] = useState(false);
+  const [addressSuggestions, setAddressSuggestions] = useState([]);
 
   const [fileNames, setFileNames] = useState({
     front: "",
@@ -116,8 +117,32 @@ const EditProfilePage = () => {
     setClosingTimeValue(e.target.value);
   };
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = async (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (name === "streetAddress" && value.trim() !== "") {
+      setFormData((prev) => ({ ...prev, streetAddress: value }));
+
+      try {
+        const apiKey = import.meta.env.VITE_APP_GOOGLE_MAP_API_KEY;
+        const res = await fetch(
+          `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(
+            value
+          )}&components=country:us&key=${apiKey}`
+        );
+        const data = await res.json();
+
+        if (data.status === "OK") {
+          setAddressSuggestions(data.predictions);
+        } else {
+          setAddressSuggestions([]);
+        }
+      } catch (err) {
+        console.error("Autocomplete error:", err);
+        setAddressSuggestions([]);
+      }
+    }
   };
 
   const handleCheckboxChange = (type) => {
@@ -153,7 +178,10 @@ const EditProfilePage = () => {
 
       data.append(
         "location[coordinates]",
-        JSON.stringify([-74.0059413, 40.7127837])
+        JSON.stringify([
+          formData.longitude || -74.0059413,
+          formData.latitude || 40.7127837,
+        ])
       );
       // data.append("location[type]", "Point");
 
