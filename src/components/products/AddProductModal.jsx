@@ -355,12 +355,13 @@ const AddProductModal = ({ onClose }) => {
             />
           </div>
 
-          {/* Fulfillment Method */}
           <div className="mb-4">
             {fullfillmentMethod ? (
               <p className="w-full p-2">
                 Fulfillment Method <br />
-                {fullfillmentMethod}
+                {fullfillmentMethod == "Deliever at home" && "Deliver at home"}
+                {fullfillmentMethod == "Self Pickup" && "Self Pickup"}
+                {fullfillmentMethod == "Both" && "Both"}
               </p>
             ) : (
               <p className="text-gray-500">No Fulfillment Method Selected</p>
