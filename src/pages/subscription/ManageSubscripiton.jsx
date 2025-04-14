@@ -11,6 +11,16 @@ const ManageSubscription = () => {
   const [loading, setLoading] = useState(false); // Track loading state
   const navigate = useNavigate(); // Initialize useNavigate hook for navigation
 
+  // Plan descriptions based on plan names
+  const planDescriptions = {
+    basic: "3-Month Plan – Mobile App Only",
+    standard: "3-Month Plan – Mobile App + Web Platform",
+    bronze: "6-Month Plan – Mobile App Only",
+    bronzePlus: "6-Month Plan – Mobile App + Web Platform",
+    premium: "12-Month Plan – Mobile App Only",
+    premiumPlus: "12-Month Plan – Mobile App + Web Platform",
+  };
+
   useEffect(() => {
     // Retrieve the user data from localStorage
     const userData = JSON.parse(localStorage?.getItem("userData"));
@@ -69,6 +79,11 @@ const ManageSubscription = () => {
     setShowConfirmation(false); // Close the confirmation modal
   };
 
+  // Get description based on the plan name
+  const planDescription =
+    planDescriptions[subscriptionPlan?.SubscriptionPlan] ||
+    "No description available";
+
   return (
     <div className="flex flex-col w-full justify-start h-full bg-gray-100 px-4 py-10">
       {/* Subscription Plan Card */}
@@ -107,7 +122,15 @@ const ManageSubscription = () => {
         <div className="space-y-4 ">
           <div className="space-y-2 border-b pb-4">
             <p className="text-md text-gray-600">
-              <strong>Plan:</strong> {subscriptionPlan?.SubscriptionPlan} Plan
+              <strong>Plan:</strong>
+              <span className="uppercase">
+                {" "}
+                {subscriptionPlan?.SubscriptionPlan}{" "}
+              </span>{" "}
+              Plan
+            </p>
+            <p className="text-sm text-gray-500">
+              <strong>Description:</strong> {planDescription}
             </p>
             <div className="flex items-center gap-2">
               <p className="text-gray-600">Amount</p>
