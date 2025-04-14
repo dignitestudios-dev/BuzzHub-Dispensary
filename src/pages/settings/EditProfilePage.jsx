@@ -263,6 +263,8 @@ const EditProfilePage = () => {
 
       {/* Form Fields */}
       <div className="space-y-4">
+        <p className="text-[13px] font-[600]">Name</p>
+
         <div className="flex items-center border-b border-gray-300 py-2">
           <FiMail className="text-gray-500" />
           <input
@@ -286,6 +288,8 @@ const EditProfilePage = () => {
             placeholder="Phone Number"
           />
         </div> */}
+        <p className="text-[13px] font-[600]">Location</p>
+
         <div className="flex items-center border-b border-gray-300 py-2">
           <FiMapPin className="text-gray-500" />
           <input
@@ -297,6 +301,8 @@ const EditProfilePage = () => {
             placeholder="Address"
           />
         </div>
+        <p className="text-[13px] font-[600]">Bio</p>
+
         <div className="flex items-center border-b border-gray-300 py-2">
           <textarea
             name="bio"
@@ -309,26 +315,48 @@ const EditProfilePage = () => {
         </div>
 
         {/* Opening and Closing Hours */}
-        <div className="flex space-x-4 mt-4">
-          <div className="flex items-center border-b border-gray-300 py-2 w-1/2">
+        <p className="text-[13px] font-[600]">Opening and Closing Time</p>
+
+        <div className="flex space-x-4 mt-4 ">
+          <div className="flex items-center  border-gray-300 py-2 w-1/2">
             <input
               type="time"
               value={timeValue}
               onChange={handleOpeningTimeChange}
               className="w-[98%] text-sm text-[#1D7C42] placeholder:font-normal h-[56px] font-medium 
-                px-4 lg:py-3 md:py-2 py-3 my-1 rounded-xl outline-none bg-light shadow-sm"
+                px-4 lg:py-3  border border-gray-300 md:py-2 py-3 my-1 rounded-xl outline-none bg-light shadow-sm"
             />
           </div>
-          <div className="flex items-center border-b border-gray-300 py-2 w-1/2">
+          <div className="flex items-center  border-gray-300 py-2 w-1/2">
             <input
               type="time"
               value={closingTimeValue}
               onChange={handleClosingTimeChange}
-              className="w-[98%] text-sm text-[#1D7C42] placeholder:font-normal h-[56px] font-medium 
+              className="w-[98%] border border-gray-300 text-sm text-[#1D7C42] placeholder:font-normal h-[56px] font-medium 
                 px-4 lg:py-3 md:py-2 py-3 my-1 rounded-xl outline-none bg-light shadow-sm"
             />
           </div>
         </div>
+
+        {/* Dispensary Type Selection */}
+        <p className="text-[13px] font-[600]">Dispensary Type</p>
+
+        <select
+          name="disType"
+          value={formData.disType}
+          onChange={handleDispensaryTypeChange}
+          className="w-full text-sm border border-gray-300 text-[#1D7C42] font-medium px-4 py-3 rounded-xl outline-none bg-white shadow-sm"
+        >
+          <option value="">Select Type</option>
+          <option value="MED">Medical</option>
+          <option value="REC">Recreational</option>
+        </select>
+        {/* {formData.disType && (
+          <p className="text-[13px] mt-1 text-[#1D7C42]">
+            You selected:{" "}
+            {formData.disType === "MED" ? "Medical" : "Recreational"}
+          </p>
+        )} */}
 
         <div className="mt-4 mx-1">
           <p className="text-[13px] font-[600]">Fulfillment Method</p>
@@ -362,26 +390,6 @@ const EditProfilePage = () => {
             <label className="text-[13px] ml-1">Both</label>
           </div>
         </div>
-
-        {/* Dispensary Type Selection */}
-        <p className="text-[13px] font-[600]">Dispensary type</p>
-
-        <select
-          name="disType"
-          value={formData.disType}
-          onChange={handleDispensaryTypeChange}
-          className="w-full text-sm text-[#1D7C42] font-medium px-4 py-3 rounded-xl outline-none bg-light shadow-sm"
-        >
-          <option value="">Select Type</option>
-          <option value="MED">Medical</option>
-          <option value="REC">Recreational</option>
-        </select>
-        {formData.disType && (
-          <p className="text-[13px] mt-1 text-[#1D7C42]">
-            You selected:{" "}
-            {formData.disType === "MED" ? "Medical" : "Recreational"}
-          </p>
-        )}
 
         <div className="pt-2 pb-1">
           <p className="text-[12px] font-bold text-center justify-center">
