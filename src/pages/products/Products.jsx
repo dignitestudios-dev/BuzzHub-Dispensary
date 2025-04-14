@@ -132,7 +132,10 @@ const Products = () => {
                 </div>
               ))
             ) : (
-              <p>No products available</p> // Show message if no products are available
+              <p className="text-black">
+                Your shelves are empty , time to stock up! 🌿 Add your first
+                product and start growing your business today.
+              </p> // Show message if no products are available
             )}
           </div>
 
