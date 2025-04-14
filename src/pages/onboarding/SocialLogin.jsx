@@ -25,6 +25,7 @@ const SocialLogin = () => {
     try {
       setAppleLoading(true);
       const result = await signInWithPopup(auth, appleProvider);
+      console.log("Result00", result);
 
       if (result) {
         // const token = await result?.user?.getIdToken();
@@ -73,7 +74,8 @@ const SocialLogin = () => {
     try {
       setGoogleLoading(true);
       const result = await signInWithPopup(auth, googleProvider);
-
+      console.log("first", result);
+      console.log("Result00", result);
       if (result) {
         const token = await result?.user?.getIdToken();
 
@@ -94,6 +96,8 @@ const SocialLogin = () => {
                     "Login failed:",
                     response?.data?.message || "Unknown error"
                   );
+                  console.log("error", response);
+
                   ErrorToast(
                     response?.data?.message || "Login failed. Please try again."
                   );
