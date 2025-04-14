@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import { googleIcon } from "../assets/export";
+import { googleIcon } from "../../assets/export";
 import { FaApple } from "react-icons/fa";
-import app, { auth, googleProvider, appleProvider } from "../firebase/firebase";
+import app, {
+  auth,
+  googleProvider,
+  appleProvider,
+} from "../../firebase/firebase";
 import { FacebookAuthProvider } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { FiLoader } from "react-icons/fi";
-import axios from "../axios";
-import { ErrorToast } from "../components/Toaster";
+import axios from "../../axios";
+import { ErrorToast } from "../../components/global/Toaster";
 
 const SocialLogin = () => {
   const navigate = useNavigate();
@@ -34,7 +38,7 @@ const SocialLogin = () => {
               (response) => {
                 sessionStorage.setItem("token", response?.data?.data?.token);
                 if (response?.data?.success === true) {
-                  navigate("/userinfo");
+                  navigate("/profile-completion");
                 } else {
                   console.error(
                     "Login failed:",
@@ -128,7 +132,7 @@ const SocialLogin = () => {
     <div className="md:flex md:justify-center w-full">
       <div
         onClick={() => handleGoogleLogin()}
-        className=" flex justify-between items-center bg-light text-black font-medium text-[14px]
+        className=" flex justify-between items-center bg-white border border-gray-300 text-black font-medium text-[14px]
        text-center md:w-[400px] md:px-4 py-2.5 mt-2 md:mx-2 rounded-2xl cursor-pointer"
       >
         <div>
@@ -144,7 +148,7 @@ const SocialLogin = () => {
         )}
       </div>
       <div
-        className="flex justify-between items-center bg-dark text-white font-medium text-[14px]
+        className="flex justify-between items-center bg-black text-white font-medium text-[14px]
        text-center md:w-[400px] md:px-4 py-2.5 mt-2 md:mx-2 rounded-2xl"
         onClick={() => handleAppleLogin()}
       >

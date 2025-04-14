@@ -328,13 +328,26 @@ const SignUp = () => {
               <hr className="w-full border-t border-[#959393]" />
             </div>
             <SocialLogin />
-            <div className="flex items-center mt-2">
+            {/* <div className="flex items-center mt-2">
               <p className="text-secondary sm:ml-6 text-[13px] text-center">
                 By registering, you accept our{" "}
-                <span className="text-primary">Terms & services</span> &{" "}
-                <span className="text-primary">Privacy policy</span>
+                <span
+        className="text-primary"
+        onClick={() => navigate('/termsandconditions2')}
+        style={{ cursor: 'pointer' }}
+      >
+        Terms & Services
+      </span>
+      &{" "}
+      <span
+        className="text-primary"
+        onClick={() => navigate('/privacypolicy2')}
+        style={{ cursor: 'pointer' }}
+      >
+        Privacy Policy
+      </span>
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
 
