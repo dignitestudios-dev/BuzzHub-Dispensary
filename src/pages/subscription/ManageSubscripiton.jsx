@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Logo } from "../../assets/export"; // Ensure this is the correct path
-import { FaMobileAlt } from "react-icons/fa"; // icon for mobile app access
-import { MdCheckCircle, MdCancel } from "react-icons/md"; // icons for status
-import axios from "../../axios"; // import axios for API calls
-import { useNavigate } from "react-router-dom"; // import useNavigate from React Router
+import { Logo } from "../../assets/export";
+import { FaMobileAlt } from "react-icons/fa";
+import { MdCheckCircle, MdCancel } from "react-icons/md";
+import axios from "../../axios";
+import { useNavigate } from "react-router-dom";
 
 const ManageSubscription = () => {
   const [subscriptionPlan, setSubscriptionPlan] = useState(null);
-  const [showConfirmation, setShowConfirmation] = useState(false); // Track modal visibility
-  const [loading, setLoading] = useState(false); // Track loading state
-  const navigate = useNavigate(); // Initialize useNavigate hook for navigation
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  // Plan descriptions based on plan names
   const planDescriptions = {
     basic: "3-Month Plan – Mobile App Only",
     standard: "3-Month Plan – Mobile App + Web Platform",
@@ -51,16 +50,14 @@ const ManageSubscription = () => {
         subscriptionId: userData.subscriptionPlan.subscriptionId,
       });
 
-      // If API call is successful, update subscription state
       if (response.status === 200) {
-        // Assuming backend returns updated subscription data
         const updatedSubscription = response.data;
         setSubscriptionPlan(updatedSubscription);
         localStorage.setItem(
           "userData",
           JSON.stringify({ ...userData, subscriptionPlan: updatedSubscription })
         );
-        setShowConfirmation(false); // Close the confirmation modal
+        setShowConfirmation(false);
         alert("Your subscription has been cancelled.");
 
         // Redirect user to login page after successful cancellation
@@ -86,11 +83,8 @@ const ManageSubscription = () => {
 
   return (
     <div className="flex flex-col w-full justify-start h-full bg-gray-100 px-4 py-10">
-      {/* Subscription Plan Card */}
       <div className="w-full bg-white rounded-2xl shadow-lg p-8 space-y-6 border border-gray-200">
-        {/* Header */}
         <div className="flex items-center justify-between mb-6 border-b pb-4">
-          {/* Left Side: Logo and Title */}
           <div className="flex items-center space-x-4 ">
             <img
               src={Logo}
@@ -105,7 +99,6 @@ const ManageSubscription = () => {
             </div>
           </div>
 
-          {/* Right Side: Status */}
           <div className="flex items-center gap-2">
             {subscriptionPlan?.status === "active" ? (
               <MdCheckCircle size={20} color="green" />
@@ -118,7 +111,6 @@ const ManageSubscription = () => {
           </div>
         </div>
 
-        {/* Subscription Info */}
         <div className="space-y-4 ">
           <div className="space-y-2 border-b pb-4">
             <p className="text-md text-gray-600">
@@ -159,7 +151,6 @@ const ManageSubscription = () => {
           </div>
         </div>
 
-        {/* Cancel Subscription Button */}
         <div className="flex justify-left mt-6">
           <button
             onClick={handleCancelSubscription}
@@ -170,7 +161,6 @@ const ManageSubscription = () => {
         </div>
       </div>
 
-      {/* Confirmation Modal */}
       {showConfirmation && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white rounded-lg p-6 space-y-4 w-96">

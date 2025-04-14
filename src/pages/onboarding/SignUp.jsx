@@ -18,6 +18,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../../firebase/firebase";
+import SocialLogin from "./SocialLogin";
 
 // import {
 //   getAuth,
@@ -321,18 +322,19 @@ const SignUp = () => {
               </div>
             </form>
 
-            {/* <div className="flex items-center mt-2">
-          <hr className="w-full border-t border-[#959393]" />
-          <p className="px-2 text-[#959393]">OR</p>
-          <hr className="w-full border-t border-[#959393]" />
-        </div>
-        <div className="flex items-center mt-2">
-          <p className="text-secondary sm:ml-6 text-[13px] text-center">
-            By registering, you accept our{" "}
-            <span className="text-primary">Terms & services</span> &{" "}
-            <span className="text-primary">Privacy policy</span>
-          </p>
-        </div> */}
+            <div className="flex items-center mt-2">
+              <hr className="w-full border-t border-[#959393]" />
+              <p className="px-2 text-[#959393]">OR</p>
+              <hr className="w-full border-t border-[#959393]" />
+            </div>
+            <SocialLogin />
+            <div className="flex items-center mt-2">
+              <p className="text-secondary sm:ml-6 text-[13px] text-center">
+                By registering, you accept our{" "}
+                <span className="text-primary">Terms & services</span> &{" "}
+                <span className="text-primary">Privacy policy</span>
+              </p>
+            </div>
           </div>
         </div>
 
