@@ -113,15 +113,15 @@ const ManageSubscription = () => {
 
         <div className="space-y-4 ">
           <div className="space-y-2 border-b pb-4">
-            <p className="text-md text-gray-600">
+            {/* <p className="text-md text-gray-600">
               <strong>Plan: </strong>
               {subscriptionPlan?.SubscriptionPlan.toLowerCase()} Plan{" "}
-            </p>
-            <p className="text-sm text-gray-500">
-              <strong>Description:</strong> {planDescription}
+            </p> */}
+            <p className="text-md text-gray-500">
+              <strong>Plan : </strong> {planDescription}
             </p>
             <div className="flex items-center gap-2">
-              <p className="text-gray-600">Amount</p>
+              <p className="text-gray-600">Amount : </p>
               <span className="text-xl font-bold text-green-600">
                 ${subscriptionPlan?.totalAmount}
               </span>
