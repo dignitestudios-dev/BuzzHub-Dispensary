@@ -374,8 +374,8 @@ const EditProfilePage = () => {
             <input
               type="checkbox"
               className="w-[16px] h-[16px] accent-primary"
-              checked={pickupType === "Deliver at home"}
-              onChange={() => handleCheckboxChange("Deliver at home")}
+              checked={pickupType === "Deliever at home"}
+              onChange={() => handleCheckboxChange("Deliever at home")}
             />
             <label className="text-[13px] ml-1">Deliver at home</label>
           </div>
