@@ -338,7 +338,7 @@ const EditProfilePage = () => {
               className="w-full text-sm text-[#1D7C42] placeholder:text-black ml-2 placeholder:font-normal 
               font-normal px-4 lg:py-3 md:py-2 py-3 my-2 rounded-xl outline-none bg-gray-50"
               value={startAddress}
-              name="startAddress"
+              name="streetAddress"
               onChange={handleChange}
               maxLength={100}
             />
