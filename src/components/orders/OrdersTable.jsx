@@ -118,7 +118,7 @@ const OrdersTable = () => {
           <>
             {orders.length === 0 ? (
               <div className="text-center p-6 text-gray-500">
-                No orders to show.
+                No orders have been placed at your dispensary yet.
               </div>
             ) : (
               <table className="min-w-full text-black bg-white border border-gray-200">
