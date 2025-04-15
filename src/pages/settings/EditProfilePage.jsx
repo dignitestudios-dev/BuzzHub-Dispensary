@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { FiMail, FiPhone, FiClock, FiMapPin } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import axios from "../../axios";
 import { ErrorToast, SuccessToast } from "../../components/global/Toaster";
+import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
 
 const EditProfilePage = () => {
   const navigate = useNavigate();
   const [startingTime, setStartingTime] = useState("");
-
   const [timeValue, setTimeValue] = useState("");
   const [closingTime, setClosingTime] = useState("");
   const [closingTimeValue, setClosingTimeValue] = useState("");
   const [pickupType, setPickupType] = useState("");
   const [loading, setLoading] = useState(false);
-
   const [fileNames, setFileNames] = useState({
     front: "",
     back: "",
@@ -95,6 +94,43 @@ const EditProfilePage = () => {
       });
     }
   }, []);
+
+  const [startAddress, setStartAddress] = useState();
+
+  useEffect(() => {
+    setStartAddress(formData?.streetAddress);
+  }, [formData]);
+
+  const [originCoords, setOriginCoords] = useState([30.0444, 31.2357]);
+  const [coordinatesMessage, setCoordinatesMessage] = useState(null);
+  const [coordinates, setCoordinates] = useState({
+    type: "Point",
+    coordinates: { lat: 0, lng: 0 },
+  });
+
+  const startLocationRef = useRef();
+
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: import.meta.env.VITE_APP_GOOGLE_MAP_API_KEY,
+    libraries: ["places"],
+  });
+
+  const handleStartPlaceChanged = () => {
+    const place = startLocationRef.current.getPlace();
+    if (place.geometry) {
+      const lat = place.geometry.location.lat();
+      const lng = place.geometry.location.lng();
+      setStartAddress(place.formatted_address || "");
+      setCoordinates({
+        type: "Point",
+        coordinates: { lat, lng },
+      });
+      setOriginCoords([lat, lng]);
+      setCoordinatesMessage(null);
+    } else {
+      setCoordinatesMessage("Please select a valid location from suggestions.");
+    }
+  };
 
   const handleOpeningTimeChange = (e) => {
     const formattedTimeWithDate = moment()
@@ -264,7 +300,6 @@ const EditProfilePage = () => {
       {/* Form Fields */}
       <div className="space-y-4">
         <p className="text-[13px] font-[600]">Name</p>
-
         <div className="flex items-center border-b border-gray-300 py-2">
           <FiMail className="text-gray-500" />
           <input
@@ -289,20 +324,25 @@ const EditProfilePage = () => {
           />
         </div> */}
         <p className="text-[13px] font-[600]">Location</p>
-
-        <div className="flex items-center border-b border-gray-300 py-2">
-          <FiMapPin className="text-gray-500" />
-          <input
-            type="text"
-            name="streetAddress"
-            value={formData.streetAddress}
-            onChange={handleChange}
-            className="ml-2 w-full p-2 outline-none"
-            placeholder="Address"
-          />
-        </div>
+        {isLoaded ? (
+          <Autocomplete
+            onLoad={(autocomplete) => (startLocationRef.current = autocomplete)}
+            onPlaceChanged={handleStartPlaceChanged}
+          >
+            <input
+              type="text"
+              placeholder="Enter start location"
+              className="w-full text-sm text-[#1D7C42] placeholder:text-black ml-2 placeholder:font-normal 
+              font-normal px-4 lg:py-3 md:py-2 py-3 my-2 rounded-xl outline-none bg-gray-50"
+              value={startAddress}
+              onChange={(e) => setStartAddress(e.target.value)}
+              maxLength={100}
+            />
+          </Autocomplete>
+        ) : (
+          <p>Loading Google Maps...</p>
+        )}
         <p className="text-[13px] font-[600]">Bio</p>
-
         <div className="flex items-center border-b border-gray-300 py-2">
           <textarea
             name="bio"
@@ -313,10 +353,8 @@ const EditProfilePage = () => {
             rows={4}
           />
         </div>
-
         {/* Opening and Closing Hours */}
         <p className="text-[13px] font-[600]">Opening and Closing Time</p>
-
         <div className="flex space-x-4 mt-4 ">
           <div className="flex items-center  border-gray-300 py-2 w-1/2">
             <input
@@ -337,10 +375,8 @@ const EditProfilePage = () => {
             />
           </div>
         </div>
-
         {/* Dispensary Type Selection */}
         <p className="text-[13px] font-[600]">Dispensary Type</p>
-
         <select
           name="disType"
           value={formData.disType}
@@ -357,7 +393,6 @@ const EditProfilePage = () => {
             {formData.disType === "MED" ? "Medical" : "Recreational"}
           </p>
         )} */}
-
         <div className="mt-4 mx-1">
           <p className="text-[13px] font-[600]">Fulfillment Method</p>
           <div className="flex items-center my-2">
@@ -390,13 +425,11 @@ const EditProfilePage = () => {
             <label className="text-[13px] ml-1">Both</label>
           </div>
         </div>
-
         <div className="pt-2 pb-1">
           <p className="text-[12px] font-bold text-center justify-center">
             License
           </p>
         </div>
-
         {/* License Upload Buttons */}
         <div className="flex justify-center space-x-4">
           <div
@@ -462,13 +495,11 @@ const EditProfilePage = () => {
             />
           </div>
         </div>
-
         <div className="pt-4 pb-1">
           <p className="text-[12px] font-bold text-center justify-center">
             Registration
           </p>
         </div>
-
         {/* Registration Upload Buttons */}
         <div className="flex justify-center space-x-4">
           <div className="w-[330px] h-[140px] bg-white border-dashed border-2 border-primary cursor-pointer rounded-xl flex flex-col gap-1 justify-center items-center relative">
