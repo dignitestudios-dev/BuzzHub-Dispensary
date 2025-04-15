@@ -359,7 +359,7 @@ const AddProductModal = ({ onClose }) => {
             {fullfillmentMethod ? (
               <p className="w-full p-2">
                 Fulfillment Method <br />
-                {fullfillmentMethod == "Deliever at home" && "Deliver at home"}
+                {fullfillmentMethod == "Deliver at home" && "Deliver at home"}
                 {fullfillmentMethod == "Self Pickup" && "Self Pickup"}
                 {fullfillmentMethod == "Both" && "Both"}
               </p>

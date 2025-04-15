@@ -189,7 +189,7 @@ const UserSummary = ({
           <input
             type="checkbox"
             className="w-[16px] h-[16px] accent-primary"
-            checked={pickupType === "Deliever at home"}
+            checked={pickupType === "Deliver at home"}
             disabled
           />
           <label className="text-[12px] ml-1">Deliver at home</label>

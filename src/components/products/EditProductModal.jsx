@@ -37,6 +37,7 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
     // Retrieve the fulfillment method from localStorage (if exists)
     const userData = JSON.parse(localStorage.getItem("userData"));
     if (userData && userData.fulfillmentMethod) {
+      console.log(userData.fulfillmentMethod, "method");
       setFullfillmentMethod(userData.fulfillmentMethod); // Set the fulfillment method from localStorage
     }
     if (productData) {
@@ -50,7 +51,7 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
       setSubTypes(productData.subTypes || []);
       setWeightQuantity(productData.weightQuantity || "");
       setWeightType(productData.weightType || "");
-      setFullfillmentMethod(productData.fullfillmentMethod || "");
+      // setFullfillmentMethod(productData.fullfillmentMethod || "");
     }
   }, [productData]); // Empty dependency array to run once when component mounts
 
@@ -102,7 +103,10 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
 
     formData.append("weightQuantity", weightQuantity);
     formData.append("weightType", weightType);
-    formData.append("fullfillmentMethod", fullfillmentMethod); // Use stored fulfillment method
+    formData.append(
+      "fullfillmentMethod",
+      fullfillmentMethod == "Pickup" ? "Self Pickup" : fullfillmentMethod
+    ); // Use stored fulfillment method
 
     images.forEach((image) => {
       if (typeof image !== "string") {
@@ -172,7 +176,7 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
     );
   }
 
-  const MAX_IMAGES = 4; // Maximum number of images allowed
+  const MAX_IMAGES = 4;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 overflow-auto z-10">
@@ -318,10 +322,10 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
             {/* Display Fulfillment Method as Text */}
             {fullfillmentMethod ? (
               <p className="w-full p-2">
-                Fullfillment Method <br />
-                {fullfillmentMethod == "Deliever at home" && "Deliver at home"}
-                {fullfillmentMethod == "Self Pickup" && "Self Pickup"}
-                {fullfillmentMethod == "Both" && "Both"}
+                Fulfillment Method <br />
+                {fullfillmentMethod === "Deliver at home" && "Deliver at home"}
+                {fullfillmentMethod === "Pickup" && "Self Pickup"}
+                {fullfillmentMethod === "Both" && "Both"}
               </p>
             ) : (
               <p className="text-gray-500">No Fulfillment Method Selected</p>

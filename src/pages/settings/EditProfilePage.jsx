@@ -40,31 +40,39 @@ const EditProfilePage = () => {
 
     // Check if userData exists before setting the state
     if (userData) {
-      const openingTime = moment(userData.openingHourTime)
+      // Convert opening and closing times from UTC (or any base timezone) to user's local time
+      const openingTimeLocal = moment
+        .utc(userData.openingHourTime)
         .local()
         .format("HH:mm");
-      const closingTime = moment(userData.closingHourTime)
+      const closingTimeLocal = moment
+        .utc(userData.closingHourTime)
         .local()
         .format("HH:mm");
-      setTimeValue(openingTime);
-      setClosingTimeValue(closingTime);
 
+      // Set time values in input fields (local time)
+      setTimeValue(openingTimeLocal);
+      setClosingTimeValue(closingTimeLocal);
+
+      // Build ISO string for user's local date with selected times
       const formattedOpeningTimeWithDate = moment()
         .set({
-          hour: moment(openingTime, "HH:mm").hour(),
-          minute: moment(openingTime, "HH:mm").minute(),
+          hour: moment(openingTimeLocal, "HH:mm").hour(),
+          minute: moment(openingTimeLocal, "HH:mm").minute(),
           second: 0,
         })
-        .toISOString();
+        .toISOString(); // Converts local time to ISO in user's timezone
+
       setStartingTime(formattedOpeningTimeWithDate);
 
       const formattedClosingTimeWithDate = moment()
         .set({
-          hour: moment(closingTime, "HH:mm").hour(),
-          minute: moment(closingTime, "HH:mm").minute(),
+          hour: moment(closingTimeLocal, "HH:mm").hour(),
+          minute: moment(closingTimeLocal, "HH:mm").minute(),
           second: 0,
         })
         .toISOString();
+
       setClosingTime(formattedClosingTimeWithDate);
 
       setFormData({
@@ -328,21 +336,24 @@ const EditProfilePage = () => {
           />
         </div> */}
         <p className="text-[13px] font-[600]">Location</p>
+
         {isLoaded ? (
           <Autocomplete
             onLoad={(autocomplete) => (startLocationRef.current = autocomplete)}
             onPlaceChanged={handleStartPlaceChanged}
           >
-            <input
-              type="text"
-              placeholder="Enter start location"
-              className="w-full text-sm text-[#1D7C42] placeholder:text-black ml-2 placeholder:font-normal 
-              font-normal px-4 lg:py-3 md:py-2 py-3 my-2 rounded-xl outline-none bg-gray-50"
-              value={startAddress}
-              name="streetAddress"
-              onChange={handleChange}
-              // maxLength={100}
-            />
+            <div className="flex items-center border-b border-gray-300 py-2">
+              <input
+                type="text"
+                placeholder="Enter start location"
+                className="w-full text-sm text-black ml-2 placeholder:font-normal 
+              font-normal px-4 lg:py-3 md:py-2 py-3 my-2 rounded-xl outline-none "
+                value={startAddress}
+                name="streetAddress"
+                onChange={handleChange}
+                // maxLength={100}
+              />
+            </div>
           </Autocomplete>
         ) : (
           <p>Loading Google Maps...</p>
@@ -414,8 +425,8 @@ const EditProfilePage = () => {
             <input
               type="checkbox"
               className="w-[16px] h-[16px] accent-primary"
-              checked={pickupType === "Deliever at home"}
-              onChange={() => handleCheckboxChange("Deliever at home")}
+              checked={pickupType === "Deliver at home"}
+              onChange={() => handleCheckboxChange("Deliver at home")}
             />
             <label className="text-[13px] ml-1">Deliver at home</label>
           </div>

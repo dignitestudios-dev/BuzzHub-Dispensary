@@ -292,8 +292,8 @@ const UserProfile = ({
           <input
             type="checkbox"
             className="w-[16px] h-[16px] accent-primary"
-            checked={pickupType === "Deliever at home"}
-            onChange={() => handleCheckboxChange("Deliever at home")}
+            checked={pickupType === "Deliver at home"}
+            onChange={() => handleCheckboxChange("Deliver at home")}
           />
           <label className="text-[13px] ml-1">Deliver at home</label>
         </div>
