@@ -14,6 +14,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { IoWalletOutline } from "react-icons/io5";
 
 import { IoCardOutline } from "react-icons/io5";
+import { IoStorefrontOutline } from "react-icons/io5";
 
 export const sidebarArr = [
   {
@@ -65,8 +66,8 @@ export const sidebarArr = [
   },
 
   {
-    title: "Settings",
+    title: "Dispensary Profile",
     url: "/profile",
-    icon: <IoSettingsOutline />,
+    icon: <IoStorefrontOutline />,
   },
 ];
