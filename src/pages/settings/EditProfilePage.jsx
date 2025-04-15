@@ -175,6 +175,9 @@ const EditProfilePage = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (e.target.name == "streetAddress") {
+      setStartAddress(e.target.value);
+    }
   };
 
   const handleCheckboxChange = (type) => {
