@@ -226,7 +226,9 @@ const Profile = () => {
 
       {/* Bio Section */}
       <div className="mt-6 bg-gray-50 p-6 rounded-lg shadow-sm">
-        <h3 className="text-gray-700 text-xl font-medium">Bio</h3>
+        <h3 className="text-gray-700 text-xl font-medium">
+          About The Dispensary
+        </h3>
         <p className="text-gray-500 text-sm mt-2">
           {dispensaryDetails?.bio || "No bio available"}
         </p>
