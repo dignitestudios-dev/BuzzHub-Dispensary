@@ -112,10 +112,17 @@ const Profile = () => {
           <h2 className="text-2xl font-semibold">
             {dispensaryDetails?.dispensaryName}
           </h2>
+
           <p className="flex items-center text-gray-600 text-sm mt-2">
             <FiMapPin className="mr-2" /> {dispensaryDetails?.city},{" "}
             {dispensaryDetails?.state}
           </p>
+          {dispensaryDetails?.disType && (
+            <p className="flex items-center text-gray-600 text-sm">
+              <span className="mr-2">Type:</span>
+              {dispensaryDetails.disType === "MED" ? "Medical" : "Recreational"}
+            </p>
+          )}
           <p className="flex items-center text-gray-600 text-sm">
             <FiPhone className="mr-2" /> +1{" "}
             {formatPhoneNumber(dispensaryDetails?.phoneNumber)}

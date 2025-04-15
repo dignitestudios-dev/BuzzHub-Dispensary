@@ -339,7 +339,7 @@ const ReviewSection = () => {
       <div className="w-full p-4 text-center">
         <p className=" text-gray-500">
           No reviews yet! As customers complete their orders, their feedback
-          will show up here.
+          will show up here🌿
         </p>
       </div>
     );

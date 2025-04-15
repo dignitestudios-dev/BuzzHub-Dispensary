@@ -4,14 +4,13 @@ import { Logo } from "../../src/assets/export";
 import { sidebarArr } from "../constants/sidebarArr";
 import { RiLogoutCircleLine, RiMenuLine, RiCloseLine } from "react-icons/ri";
 import { AuthContext } from "../contexts/AuthContext";
-// import axios from "../axios";
 
 const Sidebar = () => {
   const { signOut } = useContext(AuthContext);
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
   const [activeLink, setActiveLink] = useState(null);
+  const [showModal, setShowModal] = useState(false); // State for controlling the modal visibility
 
   const navigate = useNavigate();
 
@@ -27,21 +26,17 @@ const Sidebar = () => {
     setActiveLink(url);
   };
 
-  // const handleLogout = async () => {
-  //   try {
-  //     await axios.post("auth/logout-dispensary");
-
-  //     localStorage.removeItem("token");
-
-  //     navigate("/login");
-  //   } catch (error) {
-  //     console.error("Error logging out", error);
-  //   }
-  // };
-
   const handleLogout = async () => {
     signOut();
     navigate("/");
+  };
+
+  const handleLogoutClick = () => {
+    setShowModal(true); // Show the confirmation modal
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false); // Close the modal without logging out
   };
 
   return (
@@ -59,13 +54,12 @@ const Sidebar = () => {
         } lg:translate-x-0 z-40 h-screen overflow-y-auto`}
       >
         <div className="flex justify-center items-center w-full">
-          <Link to="/">
-            <img
-              src={Logo}
-              alt="perfectboat_logo"
-              className="h-[100px] bg-[#1D7C42] rounded-full"
-            />
-          </Link>
+          {" "}
+          <img
+            src={Logo}
+            alt="perfectboat_logo"
+            className="h-[100px] bg-[#1D7C42] rounded-full"
+          />
         </div>
 
         <div className="w-full flex-grow mt-4 scrollbar-hide">
@@ -102,7 +96,7 @@ const Sidebar = () => {
             <li className="w-full flex justify-start items-center gap-3">
               <span className="w-2 h-3 rounded-r-full bg-[#074F5730] border border-[#074F57]"></span>
               <button
-                onClick={handleLogout}
+                onClick={handleLogoutClick} // Show modal on click
                 className="flex items-center gap-3 px-8 py-3 bg-[#1D7C4230] border border-[#074F57] text-[#074F57] hover:bg-[#1D7C42]  hover:text-white rounded-md transition-all w-[calc(100%-1.9rem)]"
               >
                 <RiLogoutCircleLine className="text-xl" />
@@ -118,6 +112,31 @@ const Sidebar = () => {
           onClick={handleCloseDrawer}
           className="fixed inset-0 bg-black opacity-50 lg:hidden z-30"
         ></div>
+      )}
+
+      {/* Logout confirmation modal */}
+      {showModal && (
+        <div className="fixed inset-0 flex justify-center items-center z-50 bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg w-80">
+            <h2 className="text-lg font-semibold">
+              Are you sure you want to logout?
+            </h2>
+            <div className="mt-4 flex space-x-2">
+              <button
+                onClick={handleCloseModal}
+                className="bg-gray-300 px-4 py-2 rounded-md text-sm text-BLACK hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleLogout}
+                className="bg-[#1D7C42] px-4 py-2 rounded-md text-sm text-white hover:bg-[#21653b]"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
