@@ -3,7 +3,7 @@ import { FiEdit2, FiMail, FiPhone, FiClock, FiMapPin } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import axios from "../../axios";
 import { ErrorToast, SuccessToast } from "../../components/global/Toaster";
-import { MdOutlineDeleteOutline } from "react-icons/md";
+import { MdLocalHospital, MdOutlineDeleteOutline, MdSpa } from "react-icons/md";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -97,81 +97,90 @@ const Profile = () => {
     return phoneNumber; // Return the original phone number if it doesn't match the expected pattern
   };
 
+  // Function to map dispensary type abbreviation to full form and add icon
+  const getDispensaryType = (disType) => {
+    switch (disType) {
+      case "REC":
+        return (
+          <span className="flex items-center text-gray-600 text-sm">
+            <MdSpa className="mr-2 text-gray-600" /> Recreational
+          </span>
+        );
+      case "MED":
+        return (
+          <span className="flex items-center text-gray-600 text-sm">
+            <MdLocalHospital className="mr-2 text-blue-600" /> Medical
+          </span>
+        );
+      default:
+        return <span className="text-gray-600 text-sm">Unknown</span>;
+    }
+  };
+
   return (
     <div className="w-full text-black mx-auto p-6 bg-white overflow-auto">
       {/* Profile Header */}
-      <div className="flex items-center space-x-6">
-        <img
-          src={
-            dispensaryDetails?.profilePicture || "https://i.pravatar.cc/?img=12"
-          } // Fallback image if profilePicture is not available
-          alt="Profile"
-          className="w-32 h-32 rounded-full object-cover border-4 border-gray-300"
-        />
-        <div>
-          <h2 className="text-2xl font-semibold">
-            {dispensaryDetails?.dispensaryName}
-          </h2>
+      <div className="flex flex-col sm:flex-row items-center justify-between sm:space-x-6 space-y-4 sm:space-y-0">
+        <div className="flex items-center gap-4">
+          <img
+            src={
+              dispensaryDetails?.profilePicture ||
+              "https://i.pravatar.cc/?img=12"
+            } // Fallback image if profilePicture is not available
+            alt="Profile"
+            className="w-32 h-32 rounded-full object-cover border-4 border-gray-300"
+          />
+          <div>
+            <h2 className="text-2xl font-semibold">
+              {dispensaryDetails?.dispensaryName}
+            </h2>
 
-          <p className="flex items-center text-gray-600 text-sm mt-2">
-            <FiMapPin className="mr-2" /> {dispensaryDetails?.city},{" "}
-            {dispensaryDetails?.state}
-          </p>
-          {dispensaryDetails?.disType && (
-            <p className="flex items-center text-gray-600 text-sm">
-              <span className="mr-2">Type:</span>
-              {dispensaryDetails.disType === "MED" ? "Medical" : "Recreational"}
+            <p className="flex items-center text-gray-600 text-sm mt-2">
+              <FiMapPin className="mr-2" /> {dispensaryDetails?.city},{" "}
+              {dispensaryDetails?.state}
             </p>
-          )}
-          <p className="flex items-center text-gray-600 text-sm">
-            <FiPhone className="mr-2" /> +1{" "}
-            {formatPhoneNumber(dispensaryDetails?.phoneNumber)}
-          </p>
-          <p className="flex items-center text-gray-600 text-sm">
-            <FiMail className="mr-2" /> {dispensaryDetails?.email}
-          </p>
-          <p className="flex items-center text-gray-600 text-sm">
-            <FiClock className="mr-2" />{" "}
-            {new Date(dispensaryDetails?.openingHourTime).toLocaleTimeString()}{" "}
-            -{" "}
-            {new Date(dispensaryDetails?.closingHourTime).toLocaleTimeString()}
-          </p>
+            <p className="text-gray-600 text-sm">
+              {getDispensaryType(dispensaryDetails?.disType)}
+            </p>
+            <p className="flex items-center text-gray-600 text-sm">
+              <FiPhone className="mr-2" /> +1{" "}
+              {formatPhoneNumber(dispensaryDetails?.phoneNumber)}
+            </p>
+            <p className="flex items-center text-gray-600 text-sm">
+              <FiMail className="mr-2" /> {dispensaryDetails?.email}
+            </p>
+            <p className="flex items-center text-gray-600 text-sm">
+              <FiClock className="mr-2" />{" "}
+              {new Date(
+                dispensaryDetails?.openingHourTime
+              ).toLocaleTimeString()}{" "}
+              -{" "}
+              {new Date(
+                dispensaryDetails?.closingHourTime
+              ).toLocaleTimeString()}
+            </p>
+          </div>
         </div>
-      </div>
 
-      {/* Buttons Section */}
-      <div className="flex gap-4 mt-6">
-        {/* Edit Profile Button */}
-        <button
-          onClick={() => navigate("/edit-profile")}
-          className="w-full bg-green-600 text-white py-3 rounded-lg flex items-center justify-center hover:bg-green-700 transition duration-300"
-        >
-          <FiEdit2 className="mr-2" /> Edit Profile
-        </button>
+        <div className="flex gap-4 flex-wrap justify-center sm:justify-start">
+          {/* Edit Profile Button */}
+          <button
+            onClick={() => navigate("/edit-profile")}
+            className="bg-gradient-to-r from-green-500 to-green-600 text-white py-2 px-6 rounded-full flex items-center justify-center gap-3 shadow-lg transform transition duration-300 focus:outline-none focus:ring-2 focus:ring-green-300 w-full sm:w-auto mb-2 sm:mb-0"
+          >
+            <FiEdit2 className="text-xl" />
+            <span className="text-lg font-semibold">Edit</span>
+          </button>
 
-        {/* Change Password Button */}
-        <button
-          onClick={() => navigate("/change-password")}
-          className="w-full bg-green-600 text-white py-3 rounded-lg flex items-center justify-center hover:bg-green-700 transition duration-300"
-        >
-          <FiEdit2 className="mr-2" /> Change Password
-        </button>
-
-        {/* Delete Profile Button */}
-        <button
-          onClick={() => setIsModalOpen(true)} // Open the modal when clicked
-          className="w-full bg-red-600 text-white py-3 rounded-lg flex items-center justify-center hover:bg-red-700 transition duration-300"
-        >
-          <MdOutlineDeleteOutline className="mr-2 text-xl" /> Delete Profile
-        </button>
-      </div>
-
-      {/* Bio Section */}
-      <div className="mt-6 bg-gray-50 p-6 rounded-lg shadow-sm">
-        <h3 className="text-gray-700 text-xl font-medium">Bio</h3>
-        <p className="text-gray-500 text-sm mt-2">
-          {dispensaryDetails?.bio || "No bio available"}
-        </p>
+          {/* Delete Profile Button */}
+          <button
+            onClick={() => setIsModalOpen(true)} // Open the modal when clicked
+            className="bg-gradient-to-r from-red-500 to-red-600 text-white py-2 px-6 rounded-full flex items-center justify-center gap-3 shadow-lg transform transition duration-300 focus:outline-none focus:ring-2 focus:ring-red-300 w-full sm:w-auto"
+          >
+            <MdOutlineDeleteOutline className="text-xl" />
+            <span className="text-lg font-semibold">Delete</span>
+          </button>
+        </div>
       </div>
 
       {/* Modal for Deleting Profile */}
@@ -214,6 +223,14 @@ const Profile = () => {
           </div>
         </div>
       )}
+
+      {/* Bio Section */}
+      <div className="mt-6 bg-gray-50 p-6 rounded-lg shadow-sm">
+        <h3 className="text-gray-700 text-xl font-medium">Bio</h3>
+        <p className="text-gray-500 text-sm mt-2">
+          {dispensaryDetails?.bio || "No bio available"}
+        </p>
+      </div>
 
       {/* Licenses and Registration Documents Section */}
       <div className="mt-4 bg-gray-50 p-6 rounded-lg shadow-sm">

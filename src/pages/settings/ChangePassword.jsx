@@ -28,11 +28,14 @@ const ChangePassword = () => {
 
     setLoading(true);
     try {
-      const response = await axios.post("dispensary/change-password-dispensary", {
-        currentPassword,
-        newPassword,
-        confirmPassword,
-      });
+      const response = await axios.post(
+        "dispensary/change-password-dispensary",
+        {
+          currentPassword,
+          newPassword,
+          confirmPassword,
+        }
+      );
 
       setSuccess(true);
       setTimeout(() => navigate("/dashboard"), 2000); // Redirect after 2 seconds
@@ -51,10 +54,12 @@ const ChangePassword = () => {
       >
         {/* Back Button and Heading */}
         <div className="flex items-center w-full justify-start space-x-3">
-          <button type="button" onClick={() => navigate(-1)} className="text-gray-500">
+          {/* <button type="button" onClick={() => navigate(-1)} className="text-gray-500">
             <BiArrowBack className="text-2xl" />
-          </button>
-          <h1 className="text-3xl font-semibold text-gray-800">Change Your Password</h1>
+          </button> */}
+          <h1 className="text-3xl font-semibold text-gray-800">
+            Change Your Password
+          </h1>
         </div>
 
         {/* Current Password Input */}
@@ -120,7 +125,11 @@ const ChangePassword = () => {
         {error && <p className="text-red-500 text-sm">{error}</p>}
 
         {/* Success Message */}
-        {success && <p className="text-green-500 text-sm">Password updated successfully! Redirecting...</p>}
+        {success && (
+          <p className="text-green-500 text-sm">
+            Password updated successfully! Redirecting...
+          </p>
+        )}
 
         {/* Submit Button */}
         <button

@@ -117,22 +117,22 @@ const Sidebar = () => {
       {/* Logout confirmation modal */}
       {showModal && (
         <div className="fixed inset-0 flex justify-center items-center z-50 bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg w-80">
-            <h2 className="text-lg font-semibold">
+          <div className="bg-white p-8 rounded-2xl w-80">
+            <h2 className="text-xl font-semibold text-black text-center">
               Are you sure you want to logout?
             </h2>
-            <div className="mt-4 flex space-x-2">
+            <div className="mt-6 space-x-4 flex justify-center">
               <button
                 onClick={handleCloseModal}
-                className="bg-gray-300 px-4 py-2 rounded-md text-sm text-BLACK hover:bg-gray-400"
+                className="px-6 py-3 text-sm font-medium text-black bg-white rounded-full border border-gray-300 hover:bg-gray-400 hover:text-white transition duration-300"
               >
                 Cancel
               </button>
               <button
                 onClick={handleLogout}
-                className="bg-[#1D7C42] px-4 py-2 rounded-md text-sm text-white hover:bg-[#21653b]"
+                className="px-6 py-3 text-sm font-medium text-white bg-red-600 rounded-full  hover:bg-red-800 transition duration-300"
               >
-                Confirm
+                Logout
               </button>
             </div>
           </div>
