@@ -154,7 +154,7 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
   const handleWeightChange = (e) => {
     const value = e.target.value;
 
-    if (value > 300) {
+    if (value > 100000) {
       setWeightError("Quantity cannot be more than 300 grams.");
     } else {
       setWeightError(""); // Clear error if valid
@@ -319,7 +319,9 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
             {fullfillmentMethod ? (
               <p className="w-full p-2">
                 Fullfillment Method <br />
-                {fullfillmentMethod}
+                {fullfillmentMethod == "Deliever at home" && "Deliver at home"}
+                {fullfillmentMethod == "Self Pickup" && "Self Pickup"}
+                {fullfillmentMethod == "Both" && "Both"}
               </p>
             ) : (
               <p className="text-gray-500">No Fulfillment Method Selected</p>
