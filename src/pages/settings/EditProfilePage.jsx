@@ -121,6 +121,7 @@ const EditProfilePage = () => {
       const lat = place.geometry.location.lat();
       const lng = place.geometry.location.lng();
       setStartAddress(place.formatted_address || "");
+      setFormData({ ...formData, ["streetAddress"]: place.formatted_address });
       setCoordinates({
         type: "Point",
         coordinates: { lat, lng },
