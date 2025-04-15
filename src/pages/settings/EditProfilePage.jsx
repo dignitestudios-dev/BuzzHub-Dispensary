@@ -340,7 +340,7 @@ const EditProfilePage = () => {
               value={startAddress}
               name="streetAddress"
               onChange={handleChange}
-              maxLength={100}
+              // maxLength={100}
             />
           </Autocomplete>
         ) : (

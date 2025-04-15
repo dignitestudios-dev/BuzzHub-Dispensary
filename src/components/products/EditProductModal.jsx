@@ -155,7 +155,7 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
     const value = e.target.value;
 
     if (value > 100000) {
-      setWeightError("Quantity cannot be more than 300 grams.");
+      setWeightError("Quantity cannot be more than 100000 grams.");
     } else {
       setWeightError(""); // Clear error if valid
       setWeightQuantity(value);
