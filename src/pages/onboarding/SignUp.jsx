@@ -301,6 +301,23 @@ const SignUp = () => {
             </div>
           </form>
 
+          <div className="w-full h-auto flex flex-col gap-1 justify-center items-center">
+            <div className="w-full lg:w-[434px] flex gap-1 justify-center items-center">
+              <span className="text-[13px] font-medium text-[#C2C6CB]">
+                Already have an account?
+              </span>
+              <button
+                type="button"
+                className="outline-none text-[13px] border-none text-green-600 font-bold"
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                Login
+              </button>
+            </div>
+          </div>
+
           <div className="flex items-center mt-4">
             <hr className="w-full border-t border-[#959393]" />
             <p className="px-2 text-[#959393]">OR</p>
@@ -308,10 +325,10 @@ const SignUp = () => {
           </div>
           <SocialLogin />
 
-          <div className="flex items-center mt-4">
+          <div className="flex items-center justify-items-center justify-center mt-4">
             <p className="text-secondary text-xs text-center">
-              By registering, you accept our{" "}
-              <span className="text-primary">
+              By Registering, You Accept Our{" "}
+              <span className="text-primary text-green-500">
                 <a
                   href="https://buzzhub-landing.vercel.app/termsandconditions2"
                   target="_blank"
@@ -320,8 +337,8 @@ const SignUp = () => {
                   Terms & Services
                 </a>
               </span>
-              &{" "}
-              <span className="text-primary">
+              <span className="text-secondary"> & </span>
+              <span className="text-primary text-green-500">
                 <a
                   href="https://buzzhub-landing.vercel.app/privacypolicy2"
                   target="_blank"

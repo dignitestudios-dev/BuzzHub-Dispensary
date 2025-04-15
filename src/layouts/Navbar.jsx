@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { Logo } from "../assets/export";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { GlobalContext } from "../contexts/GlobalContext";
 import axios from "../axios";
@@ -43,7 +44,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.clear(); // Clear local storage
-    navigate("/login"); // Navigate to login page after logout
+    navigate("/"); // Navigate to login page after logout
   };
 
   const handleLogoutClick = () => {
@@ -72,12 +73,9 @@ const Navbar = () => {
             className="flex items-center gap-2"
           >
             <img
-              src={
-                dispensaryDetails?.profilePicture ||
-                "https://i.pravatar.cc/?img=12"
-              }
+              src={dispensaryDetails?.profilePicture || Logo}
               alt="Profile"
-              className="w-[35px] h-[35px] rounded-full cursor-pointer"
+              className="w-[35px] h-[35px] rounded-full cursor-pointer bg-green-600"
             />
             <div className="flex flex-col items-start text-left">
               <p className="text-[11px] text-black">Welcome back,</p>
