@@ -37,11 +37,14 @@ const OrderDetailsPage = () => {
   const [orderDetails, setOrderDetails] = useState(order); // State to store order details
   const [reason, setReason] = useState("");
 
+  const [acceptLoading, setAcceptLoading] = useState(false);
+  const [rejectLoading, setRejectLoading] = useState(false);
+
   const totalProducts = order?.products.length || 0; // Count number of products
 
   // Function to handle accepting the order
   const handleAcceptOrder = async () => {
-    setLoading(true); // Set loading state
+    setAcceptLoading(true); // Set loading state
     setError(null); // Reset any previous errors
 
     try {
@@ -66,7 +69,7 @@ const OrderDetailsPage = () => {
     } catch (err) {
       setError("An error occurred while updating the order status.");
     } finally {
-      setLoading(false); // Stop loading state
+      setAcceptLoading(false);
       setShowAcceptModal(false); // Close the accept modal
     }
   };
@@ -92,7 +95,7 @@ const OrderDetailsPage = () => {
 
   // Function to handle rejecting the order
   const handleRejectOrder = async () => {
-    setLoading(true); // Set loading state
+    setRejectLoading(true);
     setError(null); // Reset any previous errors
 
     try {
@@ -117,7 +120,7 @@ const OrderDetailsPage = () => {
     } catch (err) {
       setError("An error occurred while updating the order status.");
     } finally {
-      setLoading(false); // Stop loading state
+      setRejectLoading(false);
       setShowRejectModal(false); // Close the reject modal
     }
   };
@@ -417,10 +420,14 @@ const OrderDetailsPage = () => {
             ))}
           </div>
 
-          <span className="max-w-[300px] border border-red-300 p-2 rounded-lg  text-black sm:max-w-[400px] md:max-w-full">
-            Rejection Reason:
-            <span className="text-red-500 ml-1">{order?.rejectionReason}</span>
-          </span>
+          {orderDetails.orderStatus === "Rejected" && (
+            <span className="max-w-[300px] border border-red-300 p-2 rounded-lg text-black sm:max-w-[400px] md:max-w-full">
+              Rejection Reason:
+              <span className="text-red-500 ml-1">
+                {order?.rejectionReason || "No rejection reason provided"}
+              </span>
+            </span>
+          )}
 
           <div className="w-full grid grid-cols-2 justify-center space-x-2">
             {order.orderStatus === "Approved" ? (
@@ -489,11 +496,11 @@ const OrderDetailsPage = () => {
             </h2>
             <div className="flex justify-between space-x-4">
               <button
-                disabled={loading}
+                disabled={acceptLoading}
                 onClick={handleAcceptOrder}
                 className="w-1/2 py-2 bg-green-600 text-white rounded-lg font-medium"
               >
-                {loading ? "loading..." : "Accept"}
+                {acceptLoading ? "loading..." : "Accept"}
               </button>
               <button
                 onClick={() => setShowAcceptModal(false)}
@@ -533,14 +540,14 @@ const OrderDetailsPage = () => {
             <div className="flex justify-between space-x-4 pt-2">
               <button
                 onClick={handleRejectOrder}
-                disabled={loading}
+                disabled={rejectLoading}
                 className={`${
                   loading
                     ? "bg-red-300 cursor-not-allowed"
                     : "bg-red-500 hover:bg-red-600"
                 } text-white px-4 py-2 rounded transition duration-200`}
               >
-                {loading ? "Rejecting..." : "Reject Order"}
+                {rejectLoading ? "Rejecting..." : "Reject Order"}
               </button>
               <button
                 onClick={() => setShowRejectModal(false)}
