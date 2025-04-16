@@ -14,6 +14,7 @@ const EditProfilePage = () => {
   const [closingTimeValue, setClosingTimeValue] = useState("");
   const [pickupType, setPickupType] = useState("");
   const [loading, setLoading] = useState(false);
+  const [latLong, setlatLong] = useState("");
   const [fileNames, setFileNames] = useState({
     front: "",
     back: "",
@@ -37,7 +38,7 @@ const EditProfilePage = () => {
   useEffect(() => {
     // Retrieve userData from localStorage
     const userData = JSON.parse(localStorage.getItem("userData"));
-
+    console.log("userData 00--", userData.location.coordinates);
     // Check if userData exists before setting the state
     if (userData) {
       // Convert opening and closing times from UTC (or any base timezone) to user's local time
@@ -94,6 +95,7 @@ const EditProfilePage = () => {
 
       setPickupType(userData?.fulfillmentMethod);
       setProfileImg(userData?.profilePicture);
+      setlatLong(userData?.location?.coordinates);
       setFileNames({
         back: userData.licenseBack,
         front: userData.licenseFront,
@@ -220,10 +222,7 @@ const EditProfilePage = () => {
       data.append("zipCode", formData.zipCode);
       data.append("disType", formData.disType);
 
-      // data.append(
-      //   "location[coordinates]",
-      //   JSON.stringify([-74.0059413, 40.7127837])
-      // );
+      data.append("location[coordinates]", JSON.stringify(latLong));
       // data.append("location[type]", "Point");
 
       // Append file data (if exists)

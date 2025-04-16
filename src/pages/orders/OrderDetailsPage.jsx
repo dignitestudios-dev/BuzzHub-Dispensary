@@ -35,6 +35,8 @@ const OrderDetailsPage = () => {
   const [showTrackOrderModal, setShowTrackOrderModal] = useState(false);
   const [orderDetails, setOrderDetails] = useState(order); // State to store order details
 
+  const totalProducts = order?.products.length || 0; // Count number of products
+
   // Function to handle accepting the order
   const handleAcceptOrder = async () => {
     setLoading(true); // Set loading state
@@ -195,127 +197,179 @@ const OrderDetailsPage = () => {
 
         {/* Order Details */}
         <div className="p-6 space-y-8 ">
-          <div>
-            <h2 className="text-2xl font-semibold mb-6 ">Order Information</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-600">
-              <div className="flex justify-between">
-                <span>Order ID</span>
-                <span className="font-medium">{order.orderUvid}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Placed On</span>
-                <span className="font-medium">
-                  {new Date(order.createdAt).toLocaleDateString()}
+          <div className="rounded-lg  mx-auto">
+            <h2 className="text-4xl font-extrabold text-black mb-6 text-left">
+              Order Information
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-gray-800">
+              {/* Order ID */}
+              <div className="flex justify-between py-4 px-6 rounded-lg shadow-md transition-all duration-300">
+                <span className="font-semibold text-gray-600">Order ID</span>
+                <span className="font-bold text-teal-700">
+                  {order.orderUvid}
                 </span>
               </div>
-              <div className="flex justify-between">
-                <span>Order Status</span>
-                <span className={`font-semibold ${orderDetails.orderStatus}`}>
+
+              {/* Placed On */}
+              <div className="flex justify-between py-4 px-6 rounded-lg shadow-md transition-all duration-300">
+                <span className="font-semibold text-gray-600">
+                  Total Amount
+                </span>
+                <span className="font-bold text-teal-700">
+                  ${(order?.totalAmount * 1.02).toFixed(2)}
+                </span>
+              </div>
+
+              {/* Order Status */}
+              <div className="flex justify-between py-4 px-6 rounded-lg shadow-md transition-all duration-300">
+                <span className="font-semibold text-gray-600">
+                  Order Status
+                </span>
+                <span className="font-bold text-teal-700">
                   {orderDetails.orderStatus}
                 </span>
               </div>
 
-              <div className="flex justify-between">
-                <span>Platform Fee</span>$
-                {(order?.totalAmount * 0.02).toFixed(2)}
+              {/* Total Grams */}
+              <div className="flex justify-between py-4 px-6 rounded-lg shadow-md transition-all duration-300">
+                <span className="font-semibold text-gray-600">Total Grams</span>
+                <span className="font-bold text-teal-700">
+                  {totalGrams} grams
+                </span>
               </div>
-              <div className="flex justify-between">
-                <span>Total Grams</span>
-                <span className="font-medium">{totalGrams} grams</span>
+
+              {/* Total Products Ordered */}
+              <div className="flex justify-between py-4 px-6 rounded-lg shadow-md transition-all duration-300">
+                <span className="font-semibold text-gray-600">
+                  Total Products
+                </span>
+                <span className="font-bold text-teal-700">
+                  {totalProducts} products
+                </span>
               </div>
-              <div className="flex justify-between">
-                <span>Subtotal</span>
-                <span className="font-medium">${order?.totalAmount} </span>
+
+              {/* Platform Fee */}
+              <div className="flex justify-between py-4 px-6 rounded-lg shadow-md transition-all duration-300">
+                <span className="font-semibold text-gray-600">
+                  Platform Fee
+                </span>
+                <span className="font-bold text-teal-700">
+                  ${(order?.totalAmount * 0.02).toFixed(2)}
+                </span>
               </div>
-              <div className="flex justify-between">
-                <span>Fulfillment Method</span>
-                <span className="font-medium">{order?.fulfillmentMethod}</span>
+
+              {/* Subtotal */}
+              <div className="flex justify-between py-4 px-6 rounded-lg shadow-md transition-all duration-300">
+                <span className="font-semibold text-gray-600">
+                  Fulfillment Method
+                </span>
+                <span className="font-bold text-teal-700">
+                  {order?.fulfillmentMethod}
+                </span>
               </div>
-              <div className="flex justify-between">
-                <span>Total Amount</span>
-                <span className="font-medium">
-                  ${(order?.totalAmount * 1.02).toFixed(2)}
+
+              {/* Fulfillment Method */}
+              <div className="flex justify-between py-4 px-6 rounded-lg shadow-md transition-all duration-300">
+                <span className="font-semibold text-gray-600">Subtotal</span>
+                <span className="font-bold text-teal-700">
+                  ${order?.totalAmount}
+                </span>
+              </div>
+
+              {/* Total Amount */}
+              <div className="flex justify-between py-4 px-6 rounded-lg shadow-md transition-all duration-300">
+                <span className="font-semibold text-gray-600">Placed On</span>
+                <span className="font-bold text-teal-700">
+                  {new Date(order.createdAt).toLocaleDateString()}
                 </span>
               </div>
             </div>
           </div>
+
           {/* User Information */}
-          <div className="border-b border-gray-200"></div>
-          <div>
-            <h2 className="text-2xl font-semibold mb-4 ">User Information</h2>
-            <div className="flex items-center mb-6">
-              <img
-                src={order.OrderBy.profilePicture}
-                alt={order.OrderBy.Username}
-                className="w-16 h-16 rounded-full mr-6"
-              />
-              <div>
-                <p className="text-lg font-semibold">
-                  {order.OrderBy.Username}
-                </p>
-                <p className="text-sm text-gray-600">
-                  {/* User ID: {order.OrderBy.uid} */}
-                </p>
+          {/* <div className="border-b border-gray-200"></div> */}
+          <div className="bg-white ">
+            {/* Section Header */}
+            <h2 className="text-2xl font-bold text-gray-900 mb-8 border-b pb-4">
+              User Information
+            </h2>
 
-                <p className="flex items-center text-gray-600 text-sm">
-                  <FiPhone className="mr-2" /> +1{" "}
-                  {formatPhoneNumber(order?.phoneNumber)}
-                </p>
+            {/* Main Info Section */}
+            <div className="flex flex-col md:flex-row gap-8 items-start">
+              {/* Left: Profile & Contact Info */}
+              <div className="flex items-start">
+                <img
+                  src={order.OrderBy.profilePicture}
+                  alt={order.OrderBy.Username}
+                  className="w-20 h-20 rounded-full object-cover mr-6 ring-2 ring-gray-300"
+                />
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-1">
+                    {order.OrderBy.Username}
+                  </h3>
 
-                {/* Shipping Address */}
-                {order.fulfillmentMethod !== "Self Pickup" && (
-                  <div className="flex items-center text-gray-600 text-sm">
-                    <IoLocationOutline className="mr-2" />
-                    <span>Shipping Address: {order.shippingAddress}</span>
+                  <div className="flex items-center text-sm text-gray-600 mb-1">
+                    <FiPhone className="mr-2 text-gray-500" />
+                    +1 {formatPhoneNumber(order?.phoneNumber)}
                   </div>
-                )}
+
+                  {order.fulfillmentMethod !== "Self Pickup" && (
+                    <div className="flex items-start text-sm text-gray-600">
+                      <IoLocationOutline className="mr-2 mt-0.5 text-gray-500" />
+                      <span>{order.shippingAddress}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Right: Medical & License Info */}
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 flex-1">
+                {/* Medical Card */}
+                <div>
+                  <h4 className="text-lg font-semibold text-gray-800 mb-4">
+                    Medical Card
+                  </h4>
+                  <div className="flex space-x-4">
+                    {[
+                      order.OrderBy.medicalCardFront,
+                      order.OrderBy.medicalCardBack,
+                    ].map((img, idx) => (
+                      <img
+                        key={idx}
+                        src={img}
+                        alt={`Medical Card ${idx === 0 ? "Front" : "Back"}`}
+                        className="w-32 h-20 rounded-lg object-cover border border-gray-200 shadow-sm cursor-pointer hover:scale-105 transition-transform duration-300"
+                        onClick={() => handleImageClick(img)}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Driver’s License */}
+                <div>
+                  <h4 className="text-lg font-semibold text-gray-800 mb-4">
+                    Driver’s License
+                  </h4>
+                  <div className="flex space-x-4">
+                    {[
+                      order.OrderBy.drivingLicenseFront,
+                      order.OrderBy.drivingLicenseBack,
+                    ].map((img, idx) => (
+                      <img
+                        key={idx}
+                        src={img}
+                        alt={`License ${idx === 0 ? "Front" : "Back"}`}
+                        className="w-32 h-20 rounded-lg object-cover border border-gray-200 shadow-sm cursor-pointer hover:scale-105 transition-transform duration-300"
+                        onClick={() => handleImageClick(img)}
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Medical Details</h3>
-              <div className="flex space-x-4">
-                <img
-                  src={order.OrderBy.medicalCardFront}
-                  alt="Medical Card Front"
-                  className="w-24 h-16 object-cover rounded-md cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
-                  onClick={() =>
-                    handleImageClick(order.OrderBy.medicalCardFront)
-                  }
-                />
-                <img
-                  src={order.OrderBy.medicalCardBack}
-                  alt="Medical Card Back"
-                  className="w-24 h-16 object-cover rounded-md cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
-                  onClick={() =>
-                    handleImageClick(order.OrderBy.medicalCardBack)
-                  }
-                />
-              </div>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-2">License</h3>
-              <div className="flex space-x-4">
-                <img
-                  src={order.OrderBy.drivingLicenseFront}
-                  alt="Driving License Front"
-                  className="w-24 h-16 object-cover rounded-md cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
-                  onClick={() =>
-                    handleImageClick(order.OrderBy.drivingLicenseFront)
-                  }
-                />
-                <img
-                  src={order.OrderBy.drivingLicenseBack}
-                  alt="Driving License Back"
-                  className="w-24 h-16 object-cover rounded-md cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
-                  onClick={() =>
-                    handleImageClick(order.OrderBy.drivingLicenseBack)
-                  }
-                />
-              </div>
-            </div>
-          </div>
+
           {/* Product Details */}
           <div className="border-b border-gray-200"></div>
           <div>
