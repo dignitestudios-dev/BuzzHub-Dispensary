@@ -224,7 +224,7 @@ const EditProfilePage = () => {
 
       data.append(
         "location[coordinates]",
-        JSON.stringify(coordinates ? coordinates : latLong)
+        JSON.stringify(originCoords ? originCoords : latLong)
       );
       // data.append("location[type]", "Point");
 
