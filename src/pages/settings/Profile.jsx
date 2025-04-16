@@ -21,6 +21,10 @@ const Profile = () => {
           const response = await axios.get(`/dispensary/details/${userId}`);
           if (response.data.success) {
             setDispensaryDetails(response.data.data.dispensary);
+            localStorage.setItem(
+              "userData",
+              JSON.stringify(response.data.data.dispensary)
+            );
           } else {
             console.error("Failed to fetch dispensary details.");
           }
