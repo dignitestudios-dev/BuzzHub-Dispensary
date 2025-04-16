@@ -16,6 +16,7 @@ import {
 import { getExistingChatRoom } from "../../firebase/firestoreService";
 import { FiPhone } from "react-icons/fi";
 import { IoLocationOutline } from "react-icons/io5";
+import { SuccessToast } from "../../components/global/Toaster";
 
 const OrderDetailsPage = () => {
   const location = useLocation();
@@ -34,6 +35,7 @@ const OrderDetailsPage = () => {
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [showTrackOrderModal, setShowTrackOrderModal] = useState(false);
   const [orderDetails, setOrderDetails] = useState(order); // State to store order details
+  const [reason, setReason] = useState("");
 
   const totalProducts = order?.products.length || 0; // Count number of products
 
@@ -72,11 +74,15 @@ const OrderDetailsPage = () => {
   const formatPhoneNumber = (phoneNumber) => {
     if (!phoneNumber) return ""; // return an empty string if phoneNumber is not provided
 
-    // Removing any non-digit characters (optional, in case you have a formatted number)
-    const cleaned = ("" + phoneNumber).replace(/\D/g, "");
+    let cleaned = ("" + phoneNumber).replace(/\D/g, "");
 
-    // Apply the USA format (XXX) XXX-XXXX
+    if (cleaned.length === 11 && cleaned.startsWith("1")) {
+      cleaned = cleaned.slice(1); // Remove the leading '1'
+    }
+
     const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+    console.log("match is -- ", match);
+
     if (match) {
       return `(${match[1]}) ${match[2]}-${match[3]}`;
     }
@@ -105,7 +111,7 @@ const OrderDetailsPage = () => {
           orderStatus: "Rejected",
         }));
 
-        alert(`Order ${orderDetails.orderUvid} has been Rejected`);
+        SuccessToast(`Order ${orderDetails.orderUvid} has been Rejected`);
         navigate("/orders"); // Navigate to the orders page
       }
     } catch (err) {
@@ -372,9 +378,13 @@ const OrderDetailsPage = () => {
           </div>
 
           {/* Product Details */}
+
           <div className="border-b border-gray-200"></div>
+
           <div>
-            <h2 className="text-2xl font-semibold mb-4">Product Details</h2>
+            <h2 className="text-2xl font-semibold mb-4 mt-4">
+              Product Details
+            </h2>
             {order.products.map((product) => (
               <div key={product.productId} className="flex items-center mb-6">
                 <img
@@ -406,6 +416,11 @@ const OrderDetailsPage = () => {
               </div>
             ))}
           </div>
+
+          <span className="max-w-[300px] border border-red-300 p-2 rounded-lg  text-black sm:max-w-[400px] md:max-w-full">
+            Rejection Reason:
+            <span className="text-red-500 ml-1">{order?.rejectionReason}</span>
+          </span>
 
           <div className="w-full grid grid-cols-2 justify-center space-x-2">
             {order.orderStatus === "Approved" ? (
@@ -493,20 +508,43 @@ const OrderDetailsPage = () => {
 
       {showRejectModal && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
-          <div className="bg-white p-8 rounded-lg max-w-sm w-full">
-            <h2 className="text-xl font-semibold mb-4">
+          <div className="bg-white p-6 rounded-lg max-w-sm w-full space-y-4">
+            <h2 className="text-xl font-semibold">
               Are you sure you want to reject this order?
             </h2>
-            <div className="flex justify-between space-x-4">
+
+            <div>
+              <label
+                htmlFor="reason"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Reason for Rejection <span className="text-red-500">*</span>
+              </label>
+              <textarea
+                id="reason"
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+                placeholder="Enter reason..."
+                className="w-full border border-gray-300 rounded-lg p-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-red-400"
+                rows={3}
+              />
+            </div>
+
+            <div className="flex justify-between space-x-4 pt-2">
               <button
                 onClick={handleRejectOrder}
-                className="w-1/2 py-2 bg-red-600 text-white rounded-lg font-medium"
+                disabled={loading}
+                className={`${
+                  loading
+                    ? "bg-red-300 cursor-not-allowed"
+                    : "bg-red-500 hover:bg-red-600"
+                } text-white px-4 py-2 rounded transition duration-200`}
               >
-                Reject
+                {loading ? "Rejecting..." : "Reject Order"}
               </button>
               <button
                 onClick={() => setShowRejectModal(false)}
-                className="w-1/2 py-2 bg-gray-300 text-black rounded-lg font-medium"
+                className="w-1/2 py-2 bg-gray-300 text-black rounded-lg font-medium hover:bg-gray-400"
               >
                 Cancel
               </button>
