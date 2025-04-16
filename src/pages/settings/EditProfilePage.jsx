@@ -222,7 +222,10 @@ const EditProfilePage = () => {
       data.append("zipCode", formData.zipCode);
       data.append("disType", formData.disType);
 
-      data.append("location[coordinates]", JSON.stringify(latLong));
+      data.append(
+        "location[coordinates]",
+        JSON.stringify(originCoords ? originCoords : latLong)
+      );
       // data.append("location[type]", "Point");
 
       // Append file data (if exists)
