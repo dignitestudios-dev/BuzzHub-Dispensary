@@ -136,7 +136,7 @@ const EditProfilePage = () => {
         type: "Point",
         coordinates: { lat, lng },
       });
-      setOriginCoords([lat, lng]);
+      setOriginCoords([lng, lat]);
       setCoordinatesMessage(null);
     } else {
       setCoordinatesMessage("Please select a valid location from suggestions.");
@@ -221,11 +221,11 @@ const EditProfilePage = () => {
       data.append("streetAddress", formData.streetAddress);
       data.append("zipCode", formData.zipCode);
       data.append("disType", formData.disType);
-      data.append("location[coordinates]", JSON.stringify(latLong));
-      // data.append(
-      //   "location[coordinates]",
-      //   JSON.stringify(originCoords ? originCoords : latLong)
-      // );
+      // data.append("location[coordinates]", JSON.stringify(latLong));
+      data.append(
+        "location[coordinates]",
+        JSON.stringify(originCoords ? originCoords : latLong)
+      );
       // data.append("location[type]", "Point");
 
       // Append file data (if exists)
