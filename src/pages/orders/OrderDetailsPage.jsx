@@ -289,82 +289,83 @@ const OrderDetailsPage = () => {
 
           {/* User Information */}
           {/* <div className="border-b border-gray-200"></div> */}
-          <div className="bg-white ">
+          <div className="rounded-xl ">
             {/* Section Header */}
-            <h2 className="text-2xl font-bold text-gray-900 mb-8 border-b pb-4">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 border-b pb-4">
               User Information
             </h2>
 
-            {/* Main Info Section */}
-            <div className="flex flex-col md:flex-row gap-8 items-start">
-              {/* Left: Profile & Contact Info */}
-              <div className="flex items-start">
-                <img
-                  src={order.OrderBy.profilePicture}
-                  alt={order.OrderBy.Username}
-                  className="w-20 h-20 rounded-full object-cover mr-6 ring-2 ring-gray-300"
-                />
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-1">
-                    {order.OrderBy.Username}
-                  </h3>
+            {/* Top: Profile & Contact Info */}
+            <div className="flex items-start gap-4 md:gap-6 mb-8 flex-col sm:flex-row">
+              <img
+                src={order.OrderBy.profilePicture}
+                alt={order.OrderBy.Username}
+                className="w-20 h-20 rounded-full object-cover ring-2 ring-gray-300"
+              />
+              <div className="flex flex-col overflow-hidden">
+                <h3 className="text-xl font-semibold text-gray-800 truncate">
+                  {order.OrderBy.Username}
+                </h3>
 
-                  <div className="flex items-center text-sm text-gray-600 mb-1">
-                    <FiPhone className="mr-2 text-gray-500" />
+                <div className="flex items-center text-sm text-gray-600 mt-1 truncate">
+                  <FiPhone className="mr-2 text-gray-500 flex-shrink-0" />
+                  <span className="truncate">
                     +1 {formatPhoneNumber(order?.phoneNumber)}
-                  </div>
+                  </span>
+                </div>
 
-                  {order.fulfillmentMethod !== "Self Pickup" && (
-                    <div className="flex items-start text-sm text-gray-600">
-                      <IoLocationOutline className="mr-2 mt-0.5 text-gray-500" />
-                      <span>{order.shippingAddress}</span>
-                    </div>
-                  )}
+                {order.fulfillmentMethod !== "Self Pickup" && (
+                  <div className="flex items-start text-sm text-gray-600 mt-1">
+                    <IoLocationOutline className="mr-2 mt-0.5 text-gray-500 flex-shrink-0" />
+                    <span className="truncate max-w-[300px] sm:max-w-[400px] md:max-w-full">
+                      {order.shippingAddress}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Bottom: Medical & License side by side */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Medical Card */}
+              <div>
+                <h4 className="text-lg font-semibold text-gray-800 mb-3">
+                  Medical Card
+                </h4>
+                <div className="flex flex-wrap gap-4">
+                  {[
+                    order.OrderBy.medicalCardFront,
+                    order.OrderBy.medicalCardBack,
+                  ].map((img, idx) => (
+                    <img
+                      key={idx}
+                      src={img}
+                      alt={`Medical Card ${idx === 0 ? "Front" : "Back"}`}
+                      className="w-32 h-20 rounded-lg object-cover border border-gray-200 shadow hover:scale-105 transition-transform duration-300 cursor-pointer"
+                      onClick={() => handleImageClick(img)}
+                    />
+                  ))}
                 </div>
               </div>
 
-              {/* Right: Medical & License Info */}
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 flex-1">
-                {/* Medical Card */}
-                <div>
-                  <h4 className="text-lg font-semibold text-gray-800 mb-4">
-                    Medical Card
-                  </h4>
-                  <div className="flex space-x-4">
-                    {[
-                      order.OrderBy.medicalCardFront,
-                      order.OrderBy.medicalCardBack,
-                    ].map((img, idx) => (
-                      <img
-                        key={idx}
-                        src={img}
-                        alt={`Medical Card ${idx === 0 ? "Front" : "Back"}`}
-                        className="w-32 h-20 rounded-lg object-cover border border-gray-200 shadow-sm cursor-pointer hover:scale-105 transition-transform duration-300"
-                        onClick={() => handleImageClick(img)}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                {/* Driver’s License */}
-                <div>
-                  <h4 className="text-lg font-semibold text-gray-800 mb-4">
-                    Driver’s License
-                  </h4>
-                  <div className="flex space-x-4">
-                    {[
-                      order.OrderBy.drivingLicenseFront,
-                      order.OrderBy.drivingLicenseBack,
-                    ].map((img, idx) => (
-                      <img
-                        key={idx}
-                        src={img}
-                        alt={`License ${idx === 0 ? "Front" : "Back"}`}
-                        className="w-32 h-20 rounded-lg object-cover border border-gray-200 shadow-sm cursor-pointer hover:scale-105 transition-transform duration-300"
-                        onClick={() => handleImageClick(img)}
-                      />
-                    ))}
-                  </div>
+              {/* Driver’s License */}
+              <div>
+                <h4 className="text-lg font-semibold text-gray-800 mb-3">
+                  Driver’s License
+                </h4>
+                <div className="flex flex-wrap gap-4">
+                  {[
+                    order.OrderBy.drivingLicenseFront,
+                    order.OrderBy.drivingLicenseBack,
+                  ].map((img, idx) => (
+                    <img
+                      key={idx}
+                      src={img}
+                      alt={`License ${idx === 0 ? "Front" : "Back"}`}
+                      className="w-32 h-20 rounded-lg object-cover border border-gray-200 shadow hover:scale-105 transition-transform duration-300 cursor-pointer"
+                      onClick={() => handleImageClick(img)}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
