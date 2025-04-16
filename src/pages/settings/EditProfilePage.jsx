@@ -77,8 +77,8 @@ const EditProfilePage = () => {
 
       setFormData({
         dispensaryName: userData.dispensaryName || "Dispensary Name", // Fallback to default if undefined
-        phoneNumber: `+1 ${userData.phoneNumber || "8340570746"}`, // Fallback phone format
-        streetAddress: `${userData.streetAddress || "Toronto"}`,
+        phoneNumber: `+1 ${userData.phoneNumber || "add you number"}`, // Fallback phone format
+        streetAddress: `${userData.streetAddress || "Select Location"}`,
         bio:
           userData.bio ||
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -220,10 +220,10 @@ const EditProfilePage = () => {
       data.append("zipCode", formData.zipCode);
       data.append("disType", formData.disType);
 
-      data.append(
-        "location[coordinates]",
-        JSON.stringify([-74.0059413, 40.7127837])
-      );
+      // data.append(
+      //   "location[coordinates]",
+      //   JSON.stringify([-74.0059413, 40.7127837])
+      // );
       // data.append("location[type]", "Point");
 
       // Append file data (if exists)
