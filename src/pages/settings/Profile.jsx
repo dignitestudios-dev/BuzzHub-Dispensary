@@ -9,41 +9,37 @@ const Profile = () => {
   const navigate = useNavigate();
   const [dispensaryDetails, setDispensaryDetails] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [password, setPassword] = useState(""); // State to store password
-  const [passwordError, setPasswordError] = useState(""); // State for password error message
+  const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   useEffect(() => {
-    const fetchDispensaryDetails = async () => {
-      const userId = localStorage.getItem("userId");
-      if (userId) {
-        try {
-          // Fetch dispensary details using the userId
-          const response = await axios.get(`/dispensary/details/${userId}`);
-          if (response.data.success) {
-            setDispensaryDetails(response.data.data.dispensary);
-            localStorage.setItem(
-              "userData",
-              JSON.stringify(response.data.data.dispensary)
-            );
-          } else {
-            console.error("Failed to fetch dispensary details.");
-          }
-        } catch (error) {
-          console.error("Error fetching dispensary details:", error);
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          ErrorToast("Token missing. Please login again.");
+          return;
         }
+
+        const response = await axios.get("/dispensary/get-dispensary-profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.data.success) {
+          setDispensaryDetails(response.data.data);
+        } else {
+          ErrorToast("Failed to fetch profile");
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+        ErrorToast("Something went wrong while fetching profile");
       }
     };
-    fetchDispensaryDetails();
-  }, []);
 
-  // If dispensaryDetails is not yet fetched, show a loading state
-  if (!dispensaryDetails) {
-    return (
-      <div className="w-full h-screen flex items-center justify-center">
-        <div className="spinner"></div>
-      </div>
-    );
-  }
+    fetchProfile();
+  }, []);
 
   const handleDeleteProfile = async () => {
     if (!password) {
@@ -87,21 +83,15 @@ const Profile = () => {
   };
 
   const formatPhoneNumber = (phoneNumber) => {
-    if (!phoneNumber) return ""; // return an empty string if phoneNumber is not provided
-
-    // Removing any non-digit characters (optional, in case you have a formatted number)
+    if (!phoneNumber) return "";
     const cleaned = ("" + phoneNumber).replace(/\D/g, "");
-
-    // Apply the USA format (XXX) XXX-XXXX
     const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
     if (match) {
       return `(${match[1]}) ${match[2]}-${match[3]}`;
     }
-
-    return phoneNumber; // Return the original phone number if it doesn't match the expected pattern
+    return phoneNumber;
   };
 
-  // Function to map dispensary type abbreviation to full form and add icon
   const getDispensaryType = (disType) => {
     switch (disType) {
       case "REC":
@@ -121,6 +111,14 @@ const Profile = () => {
     }
   };
 
+  if (!dispensaryDetails) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full text-black mx-auto p-6 bg-white overflow-auto">
       {/* Profile Header */}
@@ -130,7 +128,7 @@ const Profile = () => {
             src={
               dispensaryDetails?.profilePicture ||
               "https://i.pravatar.cc/?img=12"
-            } // Fallback image if profilePicture is not available
+            }
             alt="Profile"
             className="w-32 h-32 rounded-full object-cover border-4 border-gray-300"
           />
@@ -138,7 +136,6 @@ const Profile = () => {
             <h2 className="text-2xl font-semibold">
               {dispensaryDetails?.dispensaryName}
             </h2>
-
             <p className="flex items-center text-gray-600 text-sm mt-2">
               <FiMapPin className="mr-2" /> {dispensaryDetails?.city},{" "}
               {dispensaryDetails?.state}
@@ -167,7 +164,6 @@ const Profile = () => {
         </div>
 
         <div className="flex gap-4 flex-wrap justify-center sm:justify-start">
-          {/* Edit Profile Button */}
           <button
             onClick={() => navigate("/edit-profile")}
             className="bg-gradient-to-r from-green-500 to-green-600 text-white py-2 px-6 rounded-full flex items-center justify-center gap-3 shadow-lg transform transition duration-300 focus:outline-none focus:ring-2 focus:ring-green-300 w-full sm:w-auto mb-2 sm:mb-0"
@@ -176,9 +172,8 @@ const Profile = () => {
             <span className="text-lg font-semibold">Edit</span>
           </button>
 
-          {/* Delete Profile Button */}
           <button
-            onClick={() => setIsModalOpen(true)} // Open the modal when clicked
+            onClick={() => setIsModalOpen(true)}
             className="bg-gradient-to-r from-red-500 to-red-600 text-white py-2 px-6 rounded-full flex items-center justify-center gap-3 shadow-lg transform transition duration-300 focus:outline-none focus:ring-2 focus:ring-red-300 w-full sm:w-auto"
           >
             <MdOutlineDeleteOutline className="text-xl" />
@@ -187,7 +182,6 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* Modal for Deleting Profile */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
@@ -212,13 +206,13 @@ const Profile = () => {
             </div>
             <div className="flex justify-end gap-4">
               <button
-                onClick={() => setIsModalOpen(false)} // Close the modal without deleting
+                onClick={() => setIsModalOpen(false)}
                 className="bg-gray-300 text-gray-800 px-6 py-2 rounded-lg"
               >
                 Cancel
               </button>
               <button
-                onClick={handleDeleteProfile} // Proceed to delete the profile
+                onClick={handleDeleteProfile}
                 className="bg-red-600 text-white px-6 py-2 rounded-lg"
               >
                 Delete
@@ -228,7 +222,6 @@ const Profile = () => {
         </div>
       )}
 
-      {/* Bio Section */}
       <div className="mt-6 bg-gray-50 p-6 rounded-lg shadow-sm">
         <h3 className="text-gray-700 text-xl font-medium">
           About The Dispensary
@@ -238,13 +231,11 @@ const Profile = () => {
         </p>
       </div>
 
-      {/* Licenses and Registration Documents Section */}
       <div className="mt-4 bg-gray-50 p-6 rounded-lg shadow-sm">
         <h3 className="text-gray-700 text-xl font-medium">
           Licenses & Registration
         </h3>
         <div className="space-y-4 mt-4">
-          {/* License Front */}
           {dispensaryDetails?.licenseFront && (
             <div>
               <h4 className="text-gray-600 text-sm">License Front</h4>
@@ -259,7 +250,6 @@ const Profile = () => {
             </div>
           )}
 
-          {/* License Back */}
           {dispensaryDetails?.licenseBack && (
             <div>
               <h4 className="text-gray-600 text-sm">License Back</h4>
@@ -274,7 +264,6 @@ const Profile = () => {
             </div>
           )}
 
-          {/* Registration License Front */}
           {dispensaryDetails?.registrationLicenseFront && (
             <div>
               <h4 className="text-gray-600 text-sm">
@@ -291,7 +280,6 @@ const Profile = () => {
             </div>
           )}
 
-          {/* Registration License Back */}
           {dispensaryDetails?.registrationLicenseBack && (
             <div>
               <h4 className="text-gray-600 text-sm">
