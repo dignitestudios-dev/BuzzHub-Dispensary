@@ -5,25 +5,24 @@ import { normalRoutes } from "./routes/NormalRoutes";
 import { useContext } from "react";
 import { AuthContext } from "./contexts/AuthContext";
 import { ProtectedRoute, PublicRoute } from "./routes/ProtectedRoutes";
+
 function App() {
-  const { token } = useContext(AuthContext);
+  const { token, userData } = useContext(AuthContext);
 
   return (
     <Routes>
-      <Route>
-        {AuthenticationRoutes.map((route) => {
-          return (
-            <Route path={route?.url} element={route?.page} key={route?.title} />
-          );
-        })}
+      {/* Public / Auth Routes */}
+      <Route element={<PublicRoute token={token} userData={userData} />}>
+        {AuthenticationRoutes.map((route) => (
+          <Route path={route?.url} element={route?.page} key={route?.title} />
+        ))}
       </Route>
 
-      <Route>
-        {normalRoutes.map((route) => {
-          return (
-            <Route path={route?.url} element={route?.page} key={route?.title} />
-          );
-        })}
+      {/* Protected Routes (only accessible if token exists) */}
+      <Route element={<ProtectedRoute token={token} />}>
+        {normalRoutes.map((route) => (
+          <Route path={route?.url} element={route?.page} key={route?.title} />
+        ))}
       </Route>
     </Routes>
   );

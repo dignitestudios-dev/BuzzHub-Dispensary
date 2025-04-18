@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import { FiLoader } from "react-icons/fi";
 // import { FiLoader } from "react-icons/fi";
@@ -6,13 +6,15 @@ import { MdCancel } from "react-icons/md";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ErrorToast } from "../../components/global/Toaster";
 import axios from "../../axios";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const RequestSuccessScreen = () => {
+  const { signOut } = useContext(AuthContext);
   const navigate = useNavigate();
   // const isStatus = "rejct";
-  const { state, rejectReason } = useLocation();
-
-  console.log(state)
+  const { state } = useLocation();
+  const rejectionReason = state?.rejectionReason || null;
+  console.log("rejectionReason request success screen", rejectionReason);
 
   const [loading, setLoading] = useState(false);
   const [infoLoading, setInfoLoading] = useState(false);
@@ -56,9 +58,13 @@ const RequestSuccessScreen = () => {
     getSubscriptionInfo();
   }, []);
 
+  const handleLogout = () => {
+    signOut();
+  };
+
   return (
     <div className="flex flex-col justify-center items-center w-screen h-screen text-center gap-4 relative">
-      {state === "Pending" ? (
+      {state?.status === "Pending" ? (
         <div>
           <div className="flex justify-center items-center">
             <FiLoader
@@ -74,12 +80,15 @@ const RequestSuccessScreen = () => {
               Your request is pending. We will email you once your request has
               been approved
             </p>
-            {/* <button className="bg-[#c00000] p-2 rounded-lg text-[16px] text-white mt-3 hover:bg-[#c00000cc]">
-            Back to signup
-          </button> */}
+            <button
+              onClick={handleLogout}
+              className="bg-green-600 p-2 rounded-lg text-[16px] text-white mt-3 hover:bg-[#c00000cc]"
+            >
+              Back to Login
+            </button>
           </div>
         </div>
-      ) : state === "Rejected" ? (
+      ) : state?.status === "Rejected" ? (
         <div>
           <div className="flex justify-center items-center">
             <MdCancel size={76} className="text-[#FF3B30] mx-auto" />
@@ -88,8 +97,8 @@ const RequestSuccessScreen = () => {
             <p className="text-[24px] font-semibold">Request Rejected</p>
           </div>
           <div className="px-24">
-            {rejectReason ? (
-              <p> {rejectReason}</p>
+            {rejectionReason ? (
+              <p> Your request has been rejected because : {rejectionReason}</p>
             ) : (
               <p className="text-[12px] text-secondary">
                 Your request has been rejected! Please verify your identity
@@ -97,7 +106,7 @@ const RequestSuccessScreen = () => {
               </p>
             )}
             <button
-              onClick={() => navigate("/userinfo")}
+              onClick={() => navigate("/profile-completion")}
               className="bg-[#FF3B30] p-2 rounded-lg text-[16px] text-white mt-3 hover:bg-[#c00000cc]"
             >
               Retry Submission
