@@ -133,6 +133,7 @@ const SignUp = () => {
         confirmPassword: getValues("confPassword"),
         phoneNumber: getValues("phoneNumber"),
         idToken: idToken,
+        isWebUser: true,
       };
       sendDataToBackend(obj);
     }
