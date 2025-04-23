@@ -142,6 +142,13 @@ const RequestSuccessScreen = () => {
                     )}
                   </div>
                 </button>
+
+                <button
+              onClick={handleLogout}
+              className="bg-green-600 p-2 rounded-lg text-[16px] text-white mt-3 hover:bg-[#c00000cc]"
+            >
+              Back to Login
+            </button>
               </div>
             </div>
           )}
