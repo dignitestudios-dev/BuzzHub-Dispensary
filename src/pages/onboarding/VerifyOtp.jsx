@@ -1,14 +1,16 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import CountDown from "../../components/onboarding/CountDown";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ErrorToast, SuccessToast } from "../../components/global/Toaster";
 import axios from "../../axios";
 import { FiLoader } from "react-icons/fi";
 import AuthSubmitBtn from "../../components/onboarding/AuthSubmitBtn";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const VerifyOtp = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
+  const {setToken} = useContext(AuthContext);
 
   const [otp, setOtp] = useState(Array(4).fill(""));
   const [isActive, setIsActive] = useState(true);
@@ -65,6 +67,7 @@ const VerifyOtp = () => {
         console.log(response.data)
         sessionStorage.setItem("token", response?.data?.token);
         localStorage.setItem('token', response?.data?.token);
+        setToken(response?.data?.token);
         setLoading(false);
         // navigate("/verify-success");
         navigate("/profile-completion");
