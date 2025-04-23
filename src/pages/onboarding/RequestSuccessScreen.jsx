@@ -130,6 +130,10 @@ const RequestSuccessScreen = () => {
                   Your subscription has been activated successfully!
                 </p>
 
+                <p className="text-[20px]">
+                To ensure you receive the amount in your wallet, it is mandatory to set up your wallet right now. This step cannot be skipped or done later.
+
+⚠️ Do not close this browser window until your wallet is successfully connected and set up.                </p>
                 {/* <RiLoader3Line className="animate-spin mx-auto text-[42px]" /> */}
                 <button
                   onClick={createConnect}
@@ -143,12 +147,12 @@ const RequestSuccessScreen = () => {
                   </div>
                 </button>
 
-                <button
+                {/* <button
               onClick={handleLogout}
               className="bg-green-600 p-2 rounded-lg text-[16px] text-white mt-3 hover:bg-[#c00000cc]"
             >
               Back to Login
-            </button>
+            </button> */}
               </div>
             </div>
           )}
