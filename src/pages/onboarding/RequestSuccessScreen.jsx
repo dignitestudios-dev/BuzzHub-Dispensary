@@ -13,8 +13,8 @@ const RequestSuccessScreen = () => {
   const navigate = useNavigate();
   // const isStatus = "rejct";
   const { state } = useLocation();
+  console.log("state request success screen", state);
   const rejectionReason = state?.rejectionReason || null;
-  console.log("rejectionReason request success screen", rejectionReason);
 
   const [loading, setLoading] = useState(false);
   const [infoLoading, setInfoLoading] = useState(false);

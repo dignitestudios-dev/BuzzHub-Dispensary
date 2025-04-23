@@ -108,7 +108,10 @@ const ProfileCompletion = () => {
       if (response.status === 200) {
         setLoading(false);
         SuccessToast("Information Submitted");
-        navigate("/req-success", { state: "Pending" });
+        navigate("/req-success", {
+          state: "Pending",
+          rejectReason: null,
+        });
       }
     } catch (err) {
       console.log("🚀 ~ handleApiCall ~ err:", err);
