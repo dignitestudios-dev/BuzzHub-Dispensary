@@ -130,11 +130,21 @@ const RequestSuccessScreen = () => {
                   Your subscription has been activated successfully!
                 </p>
 
-                <p className="text-[20px]">
-                To ensure you receive the amount in your wallet, it is mandatory to set up your wallet right now.</p> <br/>
-                This step cannot be skipped or done later.
+                <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 rounded-md w-full max-w-2xl mx-auto mt-4">
+  <div className="flex items-start gap-2">
+    <span className="text-xl">⚠️</span>
+    <div className="text-sm sm:text-base md:text-lg leading-relaxed">
+      <p className="font-semibold">
+        To ensure you receive the amount in your wallet, it is <span className="underline">mandatory</span> to set up your wallet right now.
+      </p>
+      <p className="mt-2">This step cannot be skipped or done later.</p>
+      <p className="mt-4 font-bold">
+        ⚠️ Do <span className="uppercase underline">not</span> close this browser window until your wallet is successfully connected and set up.
+      </p>
+    </div>
+  </div>
+</div>
 
-⚠️ Do not close this browser window until your wallet is successfully connected and set up.  
                 {/* <RiLoader3Line className="animate-spin mx-auto text-[42px]" /> */}
                 <button
                   onClick={createConnect}
