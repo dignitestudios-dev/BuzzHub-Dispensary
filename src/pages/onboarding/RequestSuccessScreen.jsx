@@ -64,7 +64,7 @@ const RequestSuccessScreen = () => {
 
   return (
     <div className="flex flex-col justify-center items-center w-screen h-screen text-center gap-4 relative">
-      {state?.status === "Pending" ? (
+      {state?.status === "Pending" || state === "Pending" ? (
         <div>
           <div className="flex justify-center items-center">
             <FiLoader
@@ -88,7 +88,7 @@ const RequestSuccessScreen = () => {
             </button>
           </div>
         </div>
-      ) : state?.status === "Rejected" ? (
+      ) : state?.status === "Rejected" || state === "Rejected" ? (
         <div>
           <div className="flex justify-center items-center">
             <MdCancel size={76} className="text-[#FF3B30] mx-auto" />
