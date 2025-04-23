@@ -131,9 +131,10 @@ const RequestSuccessScreen = () => {
                 </p>
 
                 <p className="text-[20px]">
-                To ensure you receive the amount in your wallet, it is mandatory to set up your wallet right now. This step cannot be skipped or done later.
+                To ensure you receive the amount in your wallet, it is mandatory to set up your wallet right now.</p> <br/>
+                This step cannot be skipped or done later.
 
-⚠️ Do not close this browser window until your wallet is successfully connected and set up.                </p>
+⚠️ Do not close this browser window until your wallet is successfully connected and set up.  
                 {/* <RiLoader3Line className="animate-spin mx-auto text-[42px]" /> */}
                 <button
                   onClick={createConnect}
