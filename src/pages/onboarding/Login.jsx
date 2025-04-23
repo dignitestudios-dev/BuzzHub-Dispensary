@@ -28,7 +28,7 @@ const Login = () => {
       password: formData.password,
       fcmToken: "000056", // Replace with actual token
       deviceIdentity: "123", // Replace with actual device identity
-      // isWebUser: false,
+      isWebUser: true,
     };
 
     try {
