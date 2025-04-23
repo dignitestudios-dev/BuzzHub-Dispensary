@@ -109,7 +109,7 @@ const ProfileCompletion = () => {
         setLoading(false);
         console.log("response== ", response?.data);
         SuccessToast("Information Submitted");
-        let status = response?.data?.status;
+        let status = response?.data?.data?.status;
         navigate("/req-success", {
           state: status,
           rejectReason: null,
