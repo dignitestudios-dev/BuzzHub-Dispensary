@@ -108,8 +108,9 @@ const ProfileCompletion = () => {
       if (response.status === 200) {
         setLoading(false);
         SuccessToast("Information Submitted");
+        let status = "Pending"
         navigate("/req-success", {
-          state: "Pending",
+          state: status,
           rejectReason: null,
         });
       }
