@@ -1,4 +1,5 @@
-import { db } from "./firebase";
+import { fetchAndActivate, getString } from "firebase/remote-config";
+import { db, remoteConfig } from "./firebase";
 import { collection, query, where, getDocs,orderBy, startAfter, onSnapshot, writeBatch,addDoc, serverTimestamp, doc, updateDoc, arrayRemove, Timestamp, arrayUnion, getDoc } from "firebase/firestore";
 
 // Get user's chat list
@@ -87,9 +88,6 @@ export const updateOrderStatus = async (chatRoomId, status) => {
     console.error("Error updating order status:", error);
   }
 };
-
-
-
 
 
 export const sendMessage = async (chatId, senderId, messageText) => {
@@ -248,3 +246,16 @@ export const listenToBlockedUsers = (chatId, callback) => {
     }
   }, error => console.error('Error listening to blocked users:', error));
 };
+
+
+export async function getRemoteConfigData() {
+      try {
+        await fetchAndActivate(remoteConfig);
+        const jsonString = getString(remoteConfig, "legal_cannabis_states" );
+        const jsonData = JSON.parse(jsonString);
+        return jsonData;
+      } catch (error) {
+        console.error("Error fetching or parsing remote config:", error);
+        return null;
+      }
+    }

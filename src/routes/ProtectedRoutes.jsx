@@ -12,7 +12,7 @@ export const ProtectedRoute = ({ token }) => {
 };
 
 export const PublicRoute = ({ token, userData }) => {
-  console.log(userData, "userData from public route");
+  
   if (token) {
     if (!userData?.isSessionComplete) {
       return <Navigate to="/profile-completion" replace />;

@@ -19,6 +19,7 @@ const UserInformation = ({
   setSelectedState,
   coordinates,
   setCoordinates,
+  stateNames
 }) => {
   const [coordinatesMessage, setCoordinatesMessage] = useState(null);
   const apiFields = [
@@ -56,6 +57,8 @@ const UserInformation = ({
     },
   ];
 
+  const [stateError,setStateError] = useState(null)
+
   const onSubmit = () => {
     if (Object.keys(coordinates).length === 0) {
       setCoordinatesMessage("Please select a valid location");
@@ -67,6 +70,11 @@ const UserInformation = ({
   // Handle state change
   const handleStateChange = (e) => {
     const selectedState = e.target.value;
+    if(!stateNames?.includes(selectedState)){
+      setStateError("This state is not legal");
+      return;
+    }
+      setStateError(null);
 
     setCities(stateCityData[selectedState] || []);
     setSelectedState(selectedState);
@@ -114,6 +122,7 @@ const UserInformation = ({
           error={errors.state?.message}
           disabled={false}
         />
+        {stateError&&<p className="text-red-500">{stateError}</p>}
       </div>
       <div className="w-full h-auto flex flex-col justify-start items-start my-4">
         <SelectField
