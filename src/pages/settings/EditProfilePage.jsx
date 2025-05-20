@@ -127,6 +127,7 @@ const EditProfilePage = () => {
 
   const handleStartPlaceChanged = () => {
     const place = startLocationRef.current.getPlace();
+    console.log("place--> ", place)
     if (place.geometry) {
       const lat = place.geometry.location.lat();
       const lng = place.geometry.location.lng();
