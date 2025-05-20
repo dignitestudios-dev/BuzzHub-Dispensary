@@ -9,7 +9,7 @@ import { GlobalContext } from "../../contexts/GlobalContext";
 
 const EditProfilePage = () => {
   const {stateNames} = useContext(GlobalContext)
-    console.log("stateNames are == ", stateNames)
+  
   const navigate = useNavigate();
   const [startingTime, setStartingTime] = useState("");
   const [timeValue, setTimeValue] = useState("");
@@ -38,14 +38,12 @@ const EditProfilePage = () => {
   const [formData, setFormData] = useState({});
 
 const [checkedState,setCheckedState] = useState("")
-  console.log("checkedState--> ", checkedState)
   const [checkStateErr, setCheckStateErr] = useState(null);
 
 
   useEffect(() => {
     // Retrieve userData from localStorage
     const userData = JSON.parse(localStorage.getItem("userData"));
-    console.log("userData 00--", userData.location.coordinates);
     // Check if userData exists before setting the state
     if (userData) {
       // Convert opening and closing times from UTC (or any base timezone) to user's local time
@@ -225,7 +223,7 @@ const getStateFromPlace = (place) => {
     setLoading(true);
     try {
 
-      if(stateNames.include(checkedState)){
+      if(stateNames.includes(checkedState)){
         setCheckStateErr("This state is not allowed")
         return;
       }
