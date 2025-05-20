@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import UserInformation from "../../components/profileCompletion/UserInformation";
 import UserProfile from "../../components/profileCompletion/UserProfile";
 import UserVerification from "../../components/profileCompletion/UserVerification";
@@ -9,9 +9,10 @@ import { ErrorToast, SuccessToast } from "../../components/global/Toaster";
 import { useNavigate } from "react-router-dom";
 import { Logo } from "../../assets/export";
 import { getRemoteConfigData } from "../../firebase/firestoreService";
+import { GlobalContext } from "../../contexts/GlobalContext";
 
 const ProfileCompletion = () => {
- const [stateNames, setStateNames] = useState(null);
+const {stateNames} = useContext(GlobalContext)
   
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
@@ -125,21 +126,6 @@ const ProfileCompletion = () => {
       setLoading(false);
     }
   };
-
-  const fetchData = async () => {
-    try {
-      const remoteData = await getRemoteConfigData();
-      setStateNames(remoteData);
-
-    } catch (err) {
-      console.log(err, "error in fetching remote config data");
-    }
-
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   return (
     <div className="flex flex-col justify-center bg-[#1d7c42] items-center h-full w-full  ">

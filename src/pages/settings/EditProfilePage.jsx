@@ -1,12 +1,15 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { FiMail, FiPhone, FiClock, FiMapPin } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import axios from "../../axios";
 import { ErrorToast, SuccessToast } from "../../components/global/Toaster";
 import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
+import { GlobalContext } from "../../contexts/GlobalContext";
 
 const EditProfilePage = () => {
+  const {stateNames} = useContext(GlobalContext)
+    console.log("stateNames are == ", stateNames)
   const navigate = useNavigate();
   const [startingTime, setStartingTime] = useState("");
   const [timeValue, setTimeValue] = useState("");
@@ -33,7 +36,10 @@ const EditProfilePage = () => {
   const [profileFile, setProfileFile] = useState("");
 
   const [formData, setFormData] = useState({});
-  console.log("fileNames 00--", fileNames);
+
+const [checkedState,setCheckedState] = useState("")
+  const [checkStateErr, setCheckStateErr] = useState(null);
+
 
   useEffect(() => {
     // Retrieve userData from localStorage
@@ -123,7 +129,6 @@ const getStateFromPlace = (place) => {
   );
   return component ? component.long_name : "";
 };
-
   const startLocationRef = useRef();
 
   const { isLoaded } = useJsApiLoader({
@@ -132,10 +137,12 @@ const getStateFromPlace = (place) => {
   });
 
   const handleStartPlaceChanged = () => {
+    setCheckStateErr(null)
     const place = startLocationRef.current.getPlace();
-    console.log("place--> ", place)
-const state = getStateFromPlace(place);
-    console.log("Extracted state:", state);
+    const state = getStateFromPlace(place)
+
+    setCheckedState(state)
+    
     if (place.geometry) {
       const lat = place.geometry.location.lat();
       const lng = place.geometry.location.lng();
@@ -194,6 +201,7 @@ const state = getStateFromPlace(place);
   };
 
   const handleChange = (e) => {
+
     setFormData({ ...formData, [e.target.name]: e.target.value });
     if (e.target.name == "streetAddress") {
       setStartAddress(e.target.value);
@@ -215,6 +223,12 @@ const state = getStateFromPlace(place);
   const handleApiCall = async () => {
     setLoading(true);
     try {
+
+      if(stateNames.include(checkedState)){
+        setCheckStateErr("This state is not allowed")
+        return;
+      }
+      
       // data
       const data = new FormData();
       data.append("dispensaryName", formData.dispensaryName);
@@ -369,6 +383,7 @@ const state = getStateFromPlace(place);
         ) : (
           <p>Loading Google Maps...</p>
         )}
+        {checkStateErr&&<p className="text-red-500">{checkStateErr}</p>}
         <p className="text-[13px] font-[600]">Bio</p>
         <div className="flex items-center border-b border-gray-300 py-2">
           <textarea
