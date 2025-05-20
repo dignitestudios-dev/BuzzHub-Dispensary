@@ -117,6 +117,12 @@ const EditProfilePage = () => {
     type: "Point",
     coordinates: { lat: 0, lng: 0 },
   });
+const getStateFromPlace = (place) => {
+  const component = place.address_components.find((comp) =>
+    comp.types.includes("administrative_area_level_1")
+  );
+  return component ? component.long_name : "";
+};
 
   const startLocationRef = useRef();
 
@@ -128,6 +134,8 @@ const EditProfilePage = () => {
   const handleStartPlaceChanged = () => {
     const place = startLocationRef.current.getPlace();
     console.log("place--> ", place)
+const state = getStateFromPlace(place);
+    console.log("Extracted state:", state);
     if (place.geometry) {
       const lat = place.geometry.location.lat();
       const lng = place.geometry.location.lng();
