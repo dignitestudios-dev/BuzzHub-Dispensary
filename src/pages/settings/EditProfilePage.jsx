@@ -38,6 +38,7 @@ const EditProfilePage = () => {
   const [formData, setFormData] = useState({});
 
 const [checkedState,setCheckedState] = useState("")
+  console.log("checkedState--> ", checkedState)
   const [checkStateErr, setCheckStateErr] = useState(null);
 
 
