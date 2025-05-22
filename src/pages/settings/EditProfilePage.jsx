@@ -223,7 +223,7 @@ const getStateFromPlace = (place) => {
     setLoading(true);
     try {
 
-      if(stateNames.includes(checkedState)){
+      if(!stateNames.includes(checkedState)){
         setCheckStateErr("This state is not allowed")
         return;
       }
