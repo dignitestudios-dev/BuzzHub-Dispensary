@@ -71,7 +71,7 @@ const UserInformation = ({
   const handleStateChange = (e) => {
     const selectedState = e.target.value;
     if(!stateNames?.includes(selectedState)){
-      setStateError("This state is not legal");
+      setStateError("The Illegal State cant be selected and wont appear in the field");
       return;
     }
       setStateError(null);
