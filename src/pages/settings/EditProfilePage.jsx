@@ -222,8 +222,9 @@ const getStateFromPlace = (place) => {
   const handleApiCall = async () => {
     setLoading(true);
     try {
-
-      if(!stateNames.includes(checkedState)){
+      console.log("00--> state",stateNames)
+console.log("00--> checkedState",checkedState)
+      if(stateNames.includes(checkedState)){
         setCheckStateErr("This state is not allowed")
         return;
       }
