@@ -224,7 +224,8 @@ const getStateFromPlace = (place) => {
     try {
       console.log("00--> state",stateNames)
 console.log("00--> checkedState",checkedState)
-      if(stateNames.includes(checkedState)){
+      if(!stateNames.includes(checkedState)){
+        console.log(checkedState)
         setCheckStateErr("This state is not allowed")
         return;
       }
