@@ -152,7 +152,7 @@ const Packages = () => {
                   Mobile App + Web Platform
                 </p>
                 <p className="text-xl font-bold text-green-600">
-                  $40.99/month – Total: $245.95
+                  $50.99/month – Total: $152.97
                 </p>
               </div>
               <div className="mt-4">
