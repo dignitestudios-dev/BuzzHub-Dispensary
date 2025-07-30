@@ -131,12 +131,13 @@ const OrdersTable = () => {
                     <th className="p-5 text-sm font-medium">Date</th>
                     <th className="p-5 text-sm font-medium">Amount</th>
                     <th className="p-5 text-sm font-medium">Status</th>
-                    <th className="p-5 text-sm font-medium">Actions</th>
+                    <th className="p-5 text-sm font-medium lg:block hidden">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {currentOrders.map((order) => (
-                    <tr key={order?._id} className="border-b hover:bg-gray-100">
+                    <tr key={order?._id} className="border-b hover:bg-gray-100"                           onClick={() => handleViewDetails(order)}
+>
                       {/* <td className="p-4 flex items-center space-x-3">
                             {order?.products?.length > 0 && (
                               <>
@@ -152,26 +153,31 @@ const OrdersTable = () => {
                             )}
                           </td> */}
                       {/* <td className="p-4 text-sm">{order?.OrderBy?.Username}</td> */}
-                      <td className="p-4 flex items-center space-x-3">
+                      <td className="p-4 flex items-center space-x-3"                          onClick={() => handleViewDetails(order)}
+>
                         <>
                           <img
                             src={order?.OrderBy?.profilePicture} // First image of the first product
                             alt={order?.products[0]?.name}
                             className="w-20 h-20 object-cover rounded-md"
                           />
-                          <span className="text-sm font-medium">
+                          <span className="text-sm font-medium"                           onClick={() => handleViewDetails(order)}
+>
                             {order?.OrderBy?.Username}
                           </span>
                         </>
                       </td>
-                      <td className="p-4 text-sm">{order?.orderUvid}</td>
+                      <td className="p-4 text-sm pl-12"                           onClick={() => handleViewDetails(order)}
+>{order?.orderUvid}</td>
                       <td className="p-4 text-sm">
                         {new Date(order?.createdAt).toLocaleDateString()}
                       </td>
-                      <td className="p-4 text-sm font-medium">
+                      <td className="p-4 text-sm font-medium"                           onClick={() => handleViewDetails(order)}
+>
                         ${order?.totalAmount?.toFixed(1)}
                       </td>
-                      <td className="p-4">
+                      <td className="p-4"                           onClick={() => handleViewDetails(order)}
+>
                         <span
                           className={`px-3 py-1 text-white rounded-full ${getStatusColor(
                             order?.orderStatus

@@ -158,8 +158,7 @@ const DashboardOrders = () => {
                       </>
                     </td>
 
-                    <td className="p-4 pl-12 text-sm"    onClick={() => handleViewDetails(order)}
->{order?.orderUvid}</td>
+                    <td className="p-4  text-sm pl-12"    onClick={() => handleViewDetails(order)}>{order?.orderUvid}</td>
                     <td className="p-4 text-sm"                                                   onClick={() => handleViewDetails(order)}
 >
                       {new Date(order?.createdAt).toLocaleDateString()}

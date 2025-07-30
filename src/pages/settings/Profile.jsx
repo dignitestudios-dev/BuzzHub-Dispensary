@@ -163,23 +163,25 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="flex gap-4 flex-wrap justify-center sm:justify-start">
-          <button
-            onClick={() => navigate("/edit-profile")}
-            className="bg-gradient-to-r from-green-500 to-green-600 text-white py-2 px-6 rounded-full flex items-center justify-center gap-3 shadow-lg transform transition duration-300 focus:outline-none focus:ring-2 focus:ring-green-300 w-full sm:w-auto mb-2 sm:mb-0"
-          >
-            <FiEdit2 className="text-xl" />
-            <span className="text-lg font-semibold">Edit</span>
-          </button>
+       <div className="flex gap-6 lg:justify-end justify-start items-center sm:justify-start sm:gap-2 w-full">
+  <button
+    onClick={() => navigate("/edit-profile")}
+    className="bg-gradient-to-r from-green-500 to-green-600 text-white py-2 px-6 rounded-full flex items-center justify-center gap-3 shadow-lg transform transition duration-300 focus:outline-none focus:ring-2 focus:ring-green-300 text-sm sm:text-base"
+  >
+    <FiEdit2 className="text-lg sm:text-xl" /> {/* Icon */}
+    <span className="text-xs sm:text-base font-semibold">Edit</span> {/* Text */}
+  </button>
 
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="bg-gradient-to-r from-red-500 to-red-600 text-white py-2 px-6 rounded-full flex items-center justify-center gap-3 shadow-lg transform transition duration-300 focus:outline-none focus:ring-2 focus:ring-red-300 w-full sm:w-auto"
-          >
-            <MdOutlineDeleteOutline className="text-xl" />
-            <span className="text-lg font-semibold">Delete</span>
-          </button>
-        </div>
+  <button
+    onClick={() => setIsModalOpen(true)}
+    className="bg-gradient-to-r from-red-500 to-red-600 text-white py-2 px-6 rounded-full flex items-center justify-center gap-3 shadow-lg transform transition duration-300 focus:outline-none focus:ring-2 focus:ring-red-300 text-sm sm:text-base"
+  >
+    <MdOutlineDeleteOutline className="text-lg sm:text-xl" /> {/* Icon */}
+    <span className="text-xs sm:text-base font-semibold">Delete</span> {/* Text */}
+  </button>
+</div>
+
+
       </div>
 
       {isModalOpen && (

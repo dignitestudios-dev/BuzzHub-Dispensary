@@ -82,7 +82,7 @@ const ItemDetails = () => {
     <div className="h-full w-full bg-white shadow-lg border flex justify-center p-6 overflow-auto text-black">
       <div className="w-full ">
         {/* Back Button */}
-    <div className="p-6 border-b border-gray-200 flex flex-col sm:flex-row items-center justify-between sm:space-x-4 space-y-4 sm:space-y-0">
+  <div className="p-6 border-b border-gray-200 flex flex-col sm:flex-row items-center justify-between sm:space-x-4 space-y-4 sm:space-y-0">
   {/* Header Section */}
   <div className="flex items-center w-full sm:w-auto">
     <FaArrowLeft
@@ -95,7 +95,7 @@ const ItemDetails = () => {
   </div>
 
   {/* Button Section */}
-  <div className="flex flex-col sm:flex-row items-center w-full sm:w-auto space-y-4 sm:space-y-0 sm:space-x-4">
+  <div className="flex items-center w-full sm:w-auto space-x-4">
     <button
       className="w-full sm:w-auto flex items-center justify-center px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition-all duration-300"
       onClick={() => setIsModalOpen(true)}
@@ -110,6 +110,7 @@ const ItemDetails = () => {
     </button>
   </div>
 </div>
+
 
 
 
@@ -138,7 +139,7 @@ const ItemDetails = () => {
               </Swiper>
             </div>
 
-            <div className="text-center md:text-left">
+            <div className="text-left md:text-left">
               <h2 className="text-4xl font-extrabold text-gray-800 mb-4">
                 {product?.productName}
               </h2>
