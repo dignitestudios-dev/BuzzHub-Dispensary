@@ -27,11 +27,7 @@ export const AuthenticationRoutes = [
       url: "/update-password",
       page: <UpdatePassword />,
     },
-    {
-      title: "Verify Otp",
-      url: "/verify-otp",
-      page: <VerifyOtp />,
-    },
+  
  {
     title: "Verification",
     url: "/verification",
