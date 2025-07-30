@@ -40,13 +40,13 @@ const UserInformation = ({
       type: "text",
       validation: { required: "Please enter the street address." },
     },
-    {
-      key: "apartmentOrSuite",
-      label: "Apartment or Suite",
-      placeholder: "Apartment or Suite",
-      type: "text",
-      validation: {},
-    },
+    // {
+    //   key: "apartmentOrSuite",
+    //   label: "Apartment or Suite",
+    //   placeholder: "Apartment or Suite",
+    //   type: "text",
+    //   validation: {},
+    // },
     {
       key: "country",
       label: "Country",
