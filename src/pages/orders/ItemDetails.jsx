@@ -79,34 +79,39 @@ const ItemDetails = () => {
   }
 
   return (
-    <div className="h-full w-full bg-white flex justify-center p-6 overflow-auto text-black">
-      <div className="w-full h-screen bg-white rounded-lg shadow-2xl ">
+    <div className="h-full w-full bg-white shadow-lg border flex justify-center p-6 overflow-auto text-black">
+      <div className="w-full ">
         {/* Back Button */}
-        <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-          <div className="flex items-center">
-            <FaArrowLeft
-              className="text-gray-600 cursor-pointer hover:text-indigo-600 transition-all duration-300"
-              onClick={() => navigate(-1)}
-            />
-            <h1 className="ml-4 text-3xl font-semibold text-gray-800">
-              Product Details
-            </h1>
-          </div>
-          <div className="flex items-center space-x-4">
-            <button
-              className="flex items-center px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition-all duration-300"
-              onClick={() => setIsModalOpen(true)}
-            >
-              <FaPlus className="mr-2" /> Edit Product
-            </button>
-            <button
-              className="flex items-center px-6 py-3 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-all duration-300"
-              onClick={() => setIsDeleteModalOpen(true)}
-            >
-              <FaTrash className="mr-2" /> Delete Product
-            </button>
-          </div>
-        </div>
+    <div className="p-6 border-b border-gray-200 flex flex-col sm:flex-row items-center justify-between sm:space-x-4 space-y-4 sm:space-y-0">
+  {/* Header Section */}
+  <div className="flex items-center w-full sm:w-auto">
+    <FaArrowLeft
+      className="text-gray-600 cursor-pointer hover:text-indigo-600 transition-all duration-300"
+      onClick={() => navigate(-1)}
+    />
+    <h1 className="ml-4 text-2xl sm:text-3xl font-semibold text-gray-800 w-full sm:w-auto text-center sm:text-left truncate">
+      Product Details
+    </h1>
+  </div>
+
+  {/* Button Section */}
+  <div className="flex flex-col sm:flex-row items-center w-full sm:w-auto space-y-4 sm:space-y-0 sm:space-x-4">
+    <button
+      className="w-full sm:w-auto flex items-center justify-center px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition-all duration-300"
+      onClick={() => setIsModalOpen(true)}
+    >
+      <FaPlus className="mr-2" /> Edit
+    </button>
+    <button
+      className="w-full sm:w-auto flex items-center justify-center px-6 py-3 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-all duration-300"
+      onClick={() => setIsDeleteModalOpen(true)}
+    >
+      <FaTrash className="mr-2" /> Delete
+    </button>
+  </div>
+</div>
+
+
 
         {/* Product Details */}
         <div className="p-6">

@@ -220,26 +220,25 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { FaStar, FaRegStar } from "react-icons/fa";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import axios from "../../axios"; // Assuming axios is configured
 import { Logo } from "../../assets/export";
 
 const ReviewSection = () => {
-  const [reviews, setReviews] = useState([]); // Store reviews data
-  const [loading, setLoading] = useState(true); // Loading state
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const startX = useRef(0);
   const isDragging = useRef(false);
 
-  // Initialize navigate
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get("dispensary/get-item-reviews"); // Adjust the API endpoint as needed
+        const response = await axios.get("dispensary/get-item-reviews");
         if (response?.data?.success) {
-          setReviews(response?.data?.data?.reviews); // Setting the reviews data
+          setReviews(response?.data?.data?.reviews);
         }
       } catch (error) {
         console.error("Error fetching reviews:", error);
@@ -273,19 +272,16 @@ const ReviewSection = () => {
     );
   };
 
-  // Auto slide every 3 seconds
   useEffect(() => {
-    const interval = setInterval(nextReview, 3000); // Change review every 3 seconds
+    const interval = setInterval(nextReview, 3000);
     return () => clearInterval(interval);
   }, []);
 
-  // Handle mouse down (start of drag)
   const handleMouseDown = (e) => {
     isDragging.current = true;
     startX.current = e.clientX;
   };
 
-  // Handle mouse move (dragging)
   const handleMouseMove = (e) => {
     if (!isDragging.current) return;
     const distance = startX.current - e.clientX;
@@ -298,18 +294,15 @@ const ReviewSection = () => {
     }
   };
 
-  // Handle mouse up (end of drag)
   const handleMouseUp = () => {
     isDragging.current = false;
   };
 
-  // Handle touch start (start of touch)
   const handleTouchStart = (e) => {
     isDragging.current = true;
     startX.current = e.touches[0].clientX;
   };
 
-  // Handle touch move (touching)
   const handleTouchMove = (e) => {
     if (!isDragging.current) return;
     const distance = startX.current - e.touches[0].clientX;
@@ -347,8 +340,8 @@ const ReviewSection = () => {
 
   return (
     <div className="w-full">
-      <div className="w-full flex justify-between items-center mb-4">
-        <h1 className="text-black text-3xl font-bold ml-2">Reviews</h1>
+      <div className="w-full flex justify-between items-center mb-4 px-4">
+        <h1 className="text-black text-3xl font-bold">Reviews</h1>
         <button
           className="text-green-600 font-medium hover:underline"
           onClick={() => navigate("/reviews")}
@@ -371,7 +364,10 @@ const ReviewSection = () => {
           style={{ transform: `translateX(-${currentIndex * 33.3333}%)` }}
         >
           {reviews?.map((review) => (
-            <div key={review?._id} className="flex-shrink-0 w-1/3 px-2">
+            <div
+              key={review?._id}
+              className="flex-shrink-0 w-full sm:w-1/3 px-2 mb-4 sm:mb-0"
+            >
               <div className="bg-gray-50 p-6 rounded-lg border space-y-4">
                 <div className="flex items-center space-x-4">
                   <img
@@ -399,7 +395,7 @@ const ReviewSection = () => {
 
                 <div className="flex items-center space-x-3">
                   <img
-                    src={review?.userProfilePicture} // User profile picture
+                    src={review?.userProfilePicture}
                     alt="User"
                     className="w-10 h-10 rounded-full object-cover"
                   />
@@ -437,3 +433,4 @@ const ReviewSection = () => {
 };
 
 export default ReviewSection;
+

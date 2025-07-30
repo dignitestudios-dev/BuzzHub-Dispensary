@@ -72,50 +72,48 @@ const OrderTrackingTable = () => {
   return (
     <div className="w-full">
       {/* Filter Buttons */}
-      <div className="flex justify-start mb-6 space-x-4">
-        <button
-          onClick={() => setFilter("All")}
-          className={`px-3 py-3 rounded-md text-sm font-semibold ${
-            filter === "All" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-          }`}
-        >
-          All Orders
-        </button>
-        <button
-          onClick={() => setFilter("Completed")}
-          className={`px-3 py-3 rounded-md text-sm font-semibold ${
-            filter === "Completed" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-          }`}
-        >
-          Completed
-        </button>
-        <button
-          onClick={() => setFilter("InProcess")}
-          className={`px-3 py-3 rounded-md text-sm font-semibold ${
-            filter === "InProcess" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-          }`}
-        >
-          In Process
-        </button>
-        <button
-          onClick={() => setFilter("OutForDelivery")}
-          className={`px-3 py-3 rounded-md text-sm font-semibold ${
-            filter === "OutForDelivery"
-              ? "bg-[#1D7C42] text-white"
-              : "bg-gray-300"
-          }`}
-        >
-          Out for Delivery
-        </button>
-        <button
-          onClick={() => setFilter("Ready")}
-          className={`px-3 py-3 rounded-md text-sm font-semibold ${
-            filter === "Ready" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-          }`}
-        >
-          Ready
-        </button>
-      </div>
+      <div className="flex justify-start mb-6 space-x-4 overflow-x-auto">
+  <button
+    onClick={() => setFilter("All")}
+    className={`px-4 py-3 rounded-md text-sm font-semibold ${
+      filter === "All" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+    }`}
+  >
+    All Orders
+  </button>
+  <button
+    onClick={() => setFilter("Completed")}
+    className={`px-4 py-3 rounded-md text-sm font-semibold ${
+      filter === "Completed" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+    }`}
+  >
+    Completed
+  </button>
+  <button
+    onClick={() => setFilter("InProcess")}
+    className={`px-4 py-3 rounded-md text-sm font-semibold ${
+      filter === "InProcess" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+    }`}
+  >
+    In Process
+  </button>
+  <button
+    onClick={() => setFilter("OutForDelivery")}
+    className={`px-4 py-3 rounded-md text-sm font-semibold ${
+      filter === "OutForDelivery" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+    }`}
+  >
+    Out for Delivery
+  </button>
+  <button
+    onClick={() => setFilter("Ready")}
+    className={`px-4 py-3 rounded-md text-sm font-semibold ${
+      filter === "Ready" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+    }`}
+  >
+    Ready
+  </button>
+</div>
 
       {/* Orders Table */}
       {loading ? (
@@ -141,7 +139,7 @@ const OrderTrackingTable = () => {
                   <th className="p-5 text-sm font-medium">Date</th>
                   <th className="p-5 text-sm font-medium">Amount</th>
                   <th className="p-5 text-sm font-medium">Status</th>
-                  <th className="p-5 text-sm font-medium">Actions</th>
+                  <th className="p-5 text-sm font-medium hidden lg:block">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -162,26 +160,32 @@ const OrderTrackingTable = () => {
                     )}
                   </td> */}
                     {/* <td className="p-4 text-sm">{order?.OrderBy?.Username}</td> */}
-                    <td className="p-4 flex items-center space-x-3">
+                    <td className="p-4 flex items-center space-x-3"                         onClick={() => handleViewDetails(order)}
+>
                       <>
                         <img
                           src={order?.OrderBy?.profilePicture} // First image of the first product
                           alt={order?.products[0]?.name}
                           className="w-20 h-20 object-cover rounded-md"
                         />
-                        <span className="text-sm font-medium">
+                        <span className="text-sm font-medium"                         onClick={() => handleViewDetails(order)}
+>
                           {order?.OrderBy?.Username}
                         </span>
                       </>
                     </td>
-                    <td className="p-4 text-sm">{order?.orderUvid}</td>
-                    <td className="p-4 text-sm">
+                    <td className="p-4 text-sm pl-12"                         onClick={() => handleViewDetails(order)}
+>{order?.orderUvid}</td>
+                    <td className="p-4 text-sm "                         onClick={() => handleViewDetails(order)}
+>
                       {new Date(order?.createdAt).toLocaleDateString()}
                     </td>
-                    <td className="p-4 text-sm font-medium">
+                    <td className="p-4 text-sm font-medium"                         onClick={() => handleViewDetails(order)}
+>
                       ${order?.totalAmount?.toFixed(1)}
                     </td>
-                    <td className="p-4">
+                    <td className="p-4"                         onClick={() => handleViewDetails(order)}
+>
                       <span
                         className={`px-3 py-1 text-white rounded-full ${getStatusColor(
                           order?.orderStatus
@@ -193,7 +197,7 @@ const OrderTrackingTable = () => {
                     <td className="p-4">
                       <button
                         onClick={() => handleViewDetails(order)}
-                        className="text-[#1D7C42] hover:text-green-500 transition duration-300"
+                        className="text-[#1D7C42] hover:text-green-500 transition duration-300 hidden lg:block"
                       >
                         <FaEye className="text-xl" />
                       </button>

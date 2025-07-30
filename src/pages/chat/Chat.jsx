@@ -41,10 +41,10 @@ const Chat = () => {
     : null;
 
   return (
-    <div className="w-full h-full p-6 mx-auto bg-white rounded-2xl shadow-lg flex space-x-6">
-      {/* Left Side - Chat List */}
-      <div className="w-1/3 bg-white p-6 rounded-lg border">
-        <h1 className="text-3xl font-bold text-gray-800 tracking-tight mb-6">
+    <div className="w-full h-full p-6 mx-auto bg-white rounded-2xl shadow-lg flex flex-col sm:flex-row space-y-6 sm:space-y-0 sm:space-x-6">
+      {/* Left Side - Chat List (Always Visible on Web, Hidden on Mobile when Chat is selected) */}
+      <div className={`w-full sm:w-1/3 bg-white p-6 rounded-lg border ${selectedChat ? 'hidden sm:block' : ''}`}>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 tracking-tight mb-6">
           Chats
         </h1>
 
@@ -57,9 +57,20 @@ const Chat = () => {
         />
       </div>
 
-      {/* Right Side - Chat Screen */}
-      {selectedChat ? (
-        <div className="w-2/3 bg-white p-4 rounded-lg border flex flex-col">
+      {/* Right Side - Chat Screen (Visible only when a chat is selected) */}
+      {selectedChat && (
+        <div className="w-full sm:w-2/3 bg-white p-4 rounded-lg border flex flex-col h-full">
+          {/* Back Button on Chat Screen */}
+          <div className="flex items-center mb-4 block lg:hidden">
+            <BsArrowLeft
+              className="text-gray-600 cursor-pointer hover:text-indigo-600 transition-all duration-300"
+              onClick={handleBackClick}
+            />
+            <h1 className="ml-4 text-md font-semibold text-gray-800 truncate ">
+              back
+            </h1>
+          </div>
+
           <ChatScreen
             selectedChat={selectedChat}
             chatId={selectedChat?.id}
@@ -67,12 +78,6 @@ const Chat = () => {
             setUpdate={setUpdate}
             update={update}
           />
-        </div>
-      ) : (
-        <div className="w-2/3 flex items-center justify-center bg-gray-100 p-4 rounded-lg shadow-md">
-          <p className="text-lg text-gray-500">
-            Select a chat to view the conversation
-          </p>
         </div>
       )}
     </div>

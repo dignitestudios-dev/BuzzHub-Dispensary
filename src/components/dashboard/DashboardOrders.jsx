@@ -53,49 +53,56 @@ const DashboardOrders = () => {
 
   return (
     <div className="w-full">
-      <div className="flex justify-between mb-6">
-        <div className="flex space-x-4">
-          <button
-            onClick={() => setFilter("All")}
-            className={`px-3 py-3 rounded-md text-sm font-semibold ${
-              filter === "All" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-            }`}
-          >
-            All Orders
-          </button>
-          <button
-            onClick={() => setFilter("Pending")}
-            className={`px-3 py-3 rounded-md text-sm font-semibold ${
-              filter === "Pending" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-            }`}
-          >
-            Pending
-          </button>
-          <button
-            onClick={() => setFilter("Approved")}
-            className={`px-3 py-3 rounded-md text-sm font-semibold ${
-              filter === "Approved" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-            }`}
-          >
-            Approved
-          </button>
-          <button
-            onClick={() => setFilter("Rejected")}
-            className={`px-3 py-3 rounded-md text-sm font-semibold ${
-              filter === "Rejected" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-            }`}
-          >
-            Rejected
-          </button>
-        </div>
+      <div className="flex flex-wrap justify-between mb-6">
+  <div className="flex space-x-2 flex-wrap mb-4 sm:mb-0">
+    <button
+      onClick={() => setFilter("All")}
+      className={`px-3 py-2 rounded-md text-sm font-semibold ${
+        filter === "All" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+      }`}
+    >
+      All Orders
+    </button>
+    <button
+      onClick={() => setFilter("Pending")}
+      className={`px-3 py-2 rounded-md text-sm font-semibold ${
+        filter === "Pending" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+      }`}
+    >
+      Pending
+    </button>
+    <button
+      onClick={() => setFilter("Approved")}
+      className={`px-3 py-2 rounded-md text-sm font-semibold ${
+        filter === "Approved" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+      }`}
+    >
+      Approved
+    </button>
+    <button
+      onClick={() => setFilter("Rejected")}
+      className={`px-3 py-2 rounded-md text-sm font-semibold ${
+        filter === "Rejected" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+      }`}
+    >
+      Rejected
+    </button>
+    <button
+    onClick={() => navigate("/orders")}
+    className="text-green-600 font-medium hover:underline mt-4 sm:mt-0 lg:hidden block "
+  >
+    See all
+  </button>
+  </div>
 
-        <button
-          onClick={() => navigate("/orders")}
-          className="text-green-600 font-medium hover:underline"
-        >
-          See all
-        </button>
-      </div>
+  <button
+    onClick={() => navigate("/orders")}
+    className="text-green-600 font-medium hover:underline mt-4 sm:mt-0 lg:block hidden"
+  >
+    See all
+  </button>
+</div>
+
       {loading ? (
         <div className="w-full flex justify-center items-center">
           <div className="spinner"></div>
@@ -111,12 +118,11 @@ const DashboardOrders = () => {
               <thead>
                 <tr className="text-left bg-[#1D7C42] text-white">
                   <th className="p-5 text-sm font-medium">Ordered By</th>
-
                   <th className="p-5 text-sm font-medium">Order ID</th>
                   <th className="p-5 text-sm font-medium">Date</th>
                   <th className="p-5 text-sm font-medium">Amount</th>
                   <th className="p-5 text-sm font-medium">Status</th>
-                  <th className="p-5 text-sm font-medium">Actions</th>
+                  <th className="p-5 text-sm font-medium hidden lg:block">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -142,21 +148,28 @@ const DashboardOrders = () => {
                           src={order?.OrderBy?.profilePicture} // First image of the first product
                           alt={order?.products[0]?.name}
                           className="w-20 h-20 object-cover rounded-md"
+                                                  onClick={() => handleViewDetails(order)}
+
                         />
-                        <span className="text-sm font-medium">
+                        <span className="text-sm font-medium" onClick={() => handleViewDetails(order)}
+>
                           {order?.OrderBy?.Username}
                         </span>
                       </>
                     </td>
 
-                    <td className="p-4 text-sm">{order?.orderUvid}</td>
-                    <td className="p-4 text-sm">
+                    <td className="p-4 pl-12 text-sm"    onClick={() => handleViewDetails(order)}
+>{order?.orderUvid}</td>
+                    <td className="p-4 text-sm"                                                   onClick={() => handleViewDetails(order)}
+>
                       {new Date(order?.createdAt).toLocaleDateString()}
                     </td>
-                    <td className="p-4 text-sm font-medium">
+                    <td className="p-4 text-sm font-medium"                                                   onClick={() => handleViewDetails(order)}
+>
                       ${order?.totalAmount?.toFixed(1)}
                     </td>
-                    <td className="p-4">
+                    <td className="p-4"                                                   onClick={() => handleViewDetails(order)}
+>
                       <span
                         className={`px-3 py-1 text-white rounded-full ${getStatusColor(
                           order?.orderStatus
@@ -165,14 +178,15 @@ const DashboardOrders = () => {
                         {order?.orderStatus}
                       </span>
                     </td>
-                    <td className="p-4">
-                      <button
-                        onClick={() => handleViewDetails(order)}
-                        className="text-[#1D7C42] hover:text-green-500 transition duration-300"
-                      >
-                        <FaEye className="text-xl" />
-                      </button>
-                    </td>
+                    <td className="p-4 hidden sm:table-cell" >
+  <button
+    onClick={() => handleViewDetails(order)}
+    className="text-[#1D7C42] hover:text-green-500 transition duration-300"
+  >
+    <FaEye className="text-xl" />
+  </button>
+</td>
+
                   </tr>
                 ))}
               </tbody>
