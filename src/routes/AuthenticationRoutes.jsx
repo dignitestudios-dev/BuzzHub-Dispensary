@@ -33,5 +33,9 @@ export const AuthenticationRoutes = [
     url: "/verification",
     page: <Verification />,
   },
-   
+   {
+      title: "Verify Otp",
+      url: "/verify-otp",
+      page: <VerifyOtp />,
+    },
 ]    

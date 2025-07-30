@@ -175,10 +175,5 @@ export const normalRoutes = [
     url: "/404",
     page: <PageNotFound />,
   },
-
-   {
-      title: "Verify Otp",
-      url: "/verify-otp",
-      page: <VerifyOtp />,
-    },
+  
 ];
