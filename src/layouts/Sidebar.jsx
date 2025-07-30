@@ -24,11 +24,12 @@ const Sidebar = () => {
 
   const handleLinkClick = (url) => {
     setActiveLink(url);
+    handleCloseDrawer(); // Close the drawer when a link is clicked
   };
 
   const handleLogout = async () => {
     signOut();
-    navigate("/");
+    navigate("/"); // Redirect to home after logging out
   };
 
   const handleLogoutClick = () => {
@@ -78,7 +79,7 @@ const Sidebar = () => {
                 ></span>
                 <Link
                   to={link.url}
-                  onClick={() => handleLinkClick(link.url)}
+                  onClick={() => handleLinkClick(link.url)} // Close sidebar on link click
                   className={`flex items-end w-[calc(100%-1.9rem)] gap-2 px-8 py-3 rounded-md transition-all relative ${
                     activeLink === link.url
                       ? "bg-[#1D7C42] text-white"
