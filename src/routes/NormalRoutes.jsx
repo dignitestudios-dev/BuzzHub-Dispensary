@@ -18,7 +18,6 @@ import ProfileCompletion from "../pages/onboarding/ProfileCompletion";
 import Packages from "../pages/subscription/Packages";
 import RequestSuccessScreen from "../pages/onboarding/RequestSuccessScreen";
 import AddCard from "../pages/subscription/AddCard";
-import Verification from "../pages/onboarding/Verification";
 import UpdatePassword from "../pages/onboarding/UpdatePassword";
 import Wallet from "../pages/wallet/Wallet";
 import ChangePassword from "../pages/settings/ChangePassword";
@@ -38,11 +37,7 @@ export const normalRoutes = [
     page: <RequestSuccessScreen />,
   },
 
-  {
-    title: "Verification",
-    url: "/verification",
-    page: <Verification />,
-  },
+ 
 
   {
     title: "Update Password",
