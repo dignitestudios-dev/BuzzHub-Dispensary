@@ -24,6 +24,8 @@ import ChangePassword from "../pages/settings/ChangePassword";
 import PageNotFound from "../pages/onboarding/PageNotFound";
 import { Navigate } from "react-router-dom";
 import ManageSubscripiton from "../pages/subscription/ManageSubscripiton";
+import VerifyOtp from "../pages/onboarding/VerifyOtp";
+
 
 export const normalRoutes = [
   {
@@ -174,4 +176,9 @@ export const normalRoutes = [
     url: "/404",
     page: <PageNotFound />,
   },
+  {
+      title: "Verify Otp",
+      url: "/verify-otp",
+      page: <VerifyOtp />,
+    },
 ];
