@@ -3,6 +3,8 @@ import ForgotPassword from "../pages/onboarding/ForgotPassword"
 import UpdatePassword from "../pages/onboarding/UpdatePassword";
 import VerifyOtp from "../pages/onboarding/VerifyOtp";
 import SignUp from "../pages/onboarding/SignUp";
+import Verification from "../pages/onboarding/Verification";
+
 
 export const AuthenticationRoutes = [
     {
@@ -30,5 +32,10 @@ export const AuthenticationRoutes = [
       url: "/verify-otp",
       page: <VerifyOtp />,
     },
+ {
+    title: "Verification",
+    url: "/verification",
+    page: <Verification />,
+  },
    
 ]    
