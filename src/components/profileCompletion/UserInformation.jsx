@@ -178,7 +178,7 @@ const UserInformation = ({
 )}
 
 
-      {/* <div className="w-full h-auto flex flex-col justify-start items-start my-4 border rounded-lg">
+      <div className="w-full h-auto flex flex-col justify-start items-start my-4 border rounded-lg">
         <InputField
           placeholder={"Enter zip code"}
           type={"text"}
@@ -195,13 +195,13 @@ const UserInformation = ({
             e.target.value = e.target.value.replace(/[^0-9]/g, "");
           }}
         />
-      </div> */}
+      </div>
 
       <div className="pt-2">
         <AuthSubmitBtn text={"Next"} 
                   disabled={stateError}
 
-        />
+        />git st
       </div>
     </form>
   );
