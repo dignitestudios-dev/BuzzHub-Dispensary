@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import InputField from "../onboarding/InputField";
+// import CustomButton from "./CustomButton";
 import SelectField from "../onboarding/SelectField";
+// import stateCityData from "../dataCountry/CountryData";
 import AuthSubmitBtn from "../onboarding/AuthSubmitBtn";
 import stateCityData from "../../components/profileCompletion/CountryData";
-
 const UserInformation = ({
   handleNext,
   register,
@@ -21,7 +22,42 @@ const UserInformation = ({
   stateNames
 }) => {
   const [coordinatesMessage, setCoordinatesMessage] = useState(null);
-  const [stateError, setStateError] = useState(null);
+  const apiFields = [
+    {
+      key: "dispensaryName",
+      label: "Dispensary Name",
+      placeholder: "Dispensary name",
+      type: "text",
+      validation: { required: "Please enter the dispensary name." },
+      onInput: (e) => {
+        e.target.value = e.target.value.replace(/[^A-Za-z\s]/g, "");
+      },
+    },
+    {
+      key: "streetAddress",
+      label: "Street Address",
+      placeholder: "Street address",
+      type: "text",
+      validation: { required: "Please enter the street address." },
+    },
+    // {
+    //   key: "apartmentOrSuite",
+    //   label: "Apartment or Suite",
+    //   placeholder: "Apartment or Suite",
+    //   type: "text",
+    //   validation: {},
+    // },
+    {
+      key: "country",
+      label: "Country",
+      placeholder: "Enter country",
+      type: "text",
+      validation: { required: "Please enter the country." },
+      disabled: true,
+    },
+  ];
+
+  const [stateError,setStateError] = useState(null)
 
   const onSubmit = () => {
     if (Object.keys(coordinates).length === 0) {
@@ -31,30 +67,18 @@ const UserInformation = ({
     handleNext();
   };
 
-  // Handle state change (for state dropdown)
+  // Handle state change
   const handleStateChange = (e) => {
     const selectedState = e.target.value;
-    if (!stateNames?.includes(selectedState)) {
-      setStateError("The Illegal State can't be selected and won't appear in the field");
+    if(!stateNames?.includes(selectedState)){
+      setStateError("The Illegal State cant be selected and wont appear in the field");
       return;
     }
-    setStateError(null);
+      setStateError(null);
 
     setCities(stateCityData[selectedState] || []);
     setSelectedState(selectedState);
-  };
-
-  // This function is called when street address is selected and coordinates are provided
-  const handleAddressSelection = (selectedCoordinates) => {
-    // Assuming `selectedCoordinates` has a `state` and `city` property
-    const { state, city } = selectedCoordinates;
-
-    // Set state and city
-    setSelectedState(state);
-    setCity(city);
-
-    // Update cities dropdown based on the selected state
-    setCities(stateCityData[state] || []);
+    // setValue("city", "");
   };
 
   useEffect(() => {
@@ -64,27 +88,30 @@ const UserInformation = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {/* Render Street Address Input */}
-      <div className="w-full h-auto flex flex-col justify-start items-start my-4 border rounded-lg">
-        <InputField
-          setCoordinates={setCoordinates}
-          setCoordinatesMessage={setCoordinatesMessage}
-          coordinatesMessage={coordinatesMessage}
-          text="Street Address"
-          placeholder="Street address"
-          type="text"
-          keyname="streetAddress"
-          error={errors.streetAddress}
-          register={register("streetAddress", { required: "Please enter the street address." })}
-          onInput={(e) => {
-            e.target.value = e.target.value.replace(/[^A-Za-z0-9\s,]/g, "");  // Prevent non-alphanumeric characters
-            // Call map logic here to get coordinates, state, and city.
-            handleAddressSelection(coordinates); // coordinates should be set when map selects an address
-          }}
-        />
-      </div>
+      {apiFields.map((field, i) => {
+        return (
+          <div
+            key={field.key}
+            className="w-full h-auto flex flex-col justify-start items-start my-4 border rounded-lg"
+          >
+            <InputField
+              setCoordinates={setCoordinates}
+              setCoordinatesMessage={setCoordinatesMessage}
+              coordinatesMessage={coordinatesMessage}
+              text={field.label}
+              placeholder={field.placeholder}
+              type={field.type}
+              keyname={field.key}
+              index={i}
+              error={errors[field.key]}
+              register={register(field.key, field.validation)}
+              isDisabled={field?.disabled ? field?.disabled : ""}
+              onInput={field.onInput && field.onInput}
+            />
+          </div>
+        );
+      })}
 
-      {/* Render State Select Input */}
       <div className="w-full h-auto flex flex-col justify-start items-start my-4">
         <SelectField
           value={selectedState}
@@ -95,10 +122,8 @@ const UserInformation = ({
           error={errors.state?.message}
           disabled={false}
         />
-        {stateError && <p className="text-red-500">{stateError}</p>}
+        {stateError&&<p className="text-red-500">{stateError}</p>}
       </div>
-
-      {/* Render City Select Input */}
       <div className="w-full h-auto flex flex-col justify-start items-start my-4">
         <SelectField
           value={city}
@@ -110,12 +135,10 @@ const UserInformation = ({
           disabled={cities?.length === 0}
         />
       </div>
-
-      {/* Render Zip Code Input */}
       <div className="w-full h-auto flex flex-col justify-start items-start my-4 border rounded-lg">
         <InputField
-          placeholder="Enter zip code"
-          type="text"
+          placeholder={"Enter zip code"}
+          type={"text"}
           error={errors?.zipCode}
           register={register("zipCode", {
             required: "Please enter your zip code.",
@@ -131,9 +154,8 @@ const UserInformation = ({
         />
       </div>
 
-      {/* Submit Button */}
       <div className="pt-2">
-        <AuthSubmitBtn text="Next" />
+        <AuthSubmitBtn text={"Next"} />
       </div>
     </form>
   );
