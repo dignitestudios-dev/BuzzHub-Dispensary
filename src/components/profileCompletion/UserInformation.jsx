@@ -5,6 +5,8 @@ import SelectField from "../onboarding/SelectField";
 // import stateCityData from "../dataCountry/CountryData";
 import AuthSubmitBtn from "../onboarding/AuthSubmitBtn";
 import stateCityData from "../../components/profileCompletion/CountryData";
+import { CiWarning } from "react-icons/ci";
+
 const UserInformation = ({
   handleNext,
   register,
@@ -136,32 +138,47 @@ const UserInformation = ({
           </div>
         );
       })}
+<div className="w-full h-auto flex flex-row justify-start items-start my-4 space-x-4">
+  {/* State SelectField */}
+  <div className="flex-1">
+    <SelectField
+      value={selectedState}
+      handleChange={handleStateChange}
+      label="State"
+      name="state"
+      options={Object.keys(stateCityData)}
+      error={errors.state?.message}
+      disabled={true}
+    />
+  </div>
+  
+  {/* City SelectField */}
+  <div className="flex-1">
+    <SelectField
+      value={city}
+      handleChange={(e) => setCity(e.target.value)}
+      label="City"
+      name="city"
+      options={cities}
+      error={errors.city?.message}
+      disabled={true}
+    />
+  </div>
+</div>
 
-      <div className="w-full h-auto flex flex-col justify-start items-start my-4">
-        <SelectField
-          value={selectedState}
-          handleChange={handleStateChange}
-          label="State"
-          name="state"
-          options={Object.keys(stateCityData)}
-          error={errors.state?.message}
-          disabled={true}
-        />
-        {stateError&&<p className="text-red-500">{stateError}</p>}
-      </div>
-      <div className="w-full h-auto flex flex-col justify-start items-start my-4">
-        <SelectField
-          value={city}
-          handleChange={(e) => setCity(e.target.value)}
-          label="City"
-          name="city"
-          options={cities}
-          error={errors.city?.message}
-          // disabled={cities?.length === 0}
-          disabled={true}
-        />
-      </div>
-      <div className="w-full h-auto flex flex-col justify-start items-start my-4 border rounded-lg">
+{/* State Error Message - Full Width */}
+{stateError && (
+  <div className="w-full mt-2">
+    <div className="flex items-center space-x-2 bg-red-100 border-l-4 border-red-500 p-3 rounded-md">
+      {/* <CiWarning /> */}
+
+      <p className="text-red-600 text-sm font-medium">{stateError}</p>
+    </div>
+  </div>
+)}
+
+
+      {/* <div className="w-full h-auto flex flex-col justify-start items-start my-4 border rounded-lg">
         <InputField
           placeholder={"Enter zip code"}
           type={"text"}
@@ -178,7 +195,7 @@ const UserInformation = ({
             e.target.value = e.target.value.replace(/[^0-9]/g, "");
           }}
         />
-      </div>
+      </div> */}
 
       <div className="pt-2">
         <AuthSubmitBtn text={"Next"} 
