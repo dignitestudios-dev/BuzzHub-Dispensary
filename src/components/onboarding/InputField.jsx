@@ -18,6 +18,7 @@ const InputField = ({
   setCoordinates,
   coordinatesMessage,
   setCoordinatesMessage,
+  getStateFromPlace=() => {},
 }) => {
   const [isPassVisible, setIsPassVisible] = useState(false);
   const startLocationRef = useRef();
@@ -31,6 +32,8 @@ const InputField = ({
 
   const handleStartPlaceChanged = () => {
     const place = startLocationRef.current.getPlace();
+    getStateFromPlace(place)
+
     if (place.geometry) {
       const lat = place.geometry.location.lat();
       const lng = place.geometry.location.lng();

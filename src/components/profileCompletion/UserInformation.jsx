@@ -56,6 +56,29 @@ const UserInformation = ({
       disabled: true,
     },
   ];
+  
+  const getStateFromPlace = (place) => {
+    console.log("place61-->", place);
+
+  const component = place.address_components.find((comp) =>
+    comp.types.includes("administrative_area_level_1")
+  );
+
+  const componentCity = place.address_components.find((comp) =>
+    comp.types.includes("locality")
+  );
+  
+   if(!stateNames?.includes(component.long_name)){
+      setStateError("The Illegal State cant be selected and wont appear in the field");
+      return;
+    }
+      setStateError(null);
+  setCities(stateCityData[component.long_name] || []);
+  setSelectedState(component.long_name);
+  setCity(componentCity ? componentCity.long_name : "");
+  
+};
+
 
   const [stateError,setStateError] = useState(null)
 
@@ -107,6 +130,7 @@ const UserInformation = ({
               register={register(field.key, field.validation)}
               isDisabled={field?.disabled ? field?.disabled : ""}
               onInput={field.onInput && field.onInput}
+              getStateFromPlace={getStateFromPlace}
             />
           </div>
         );
@@ -120,7 +144,7 @@ const UserInformation = ({
           name="state"
           options={Object.keys(stateCityData)}
           error={errors.state?.message}
-          disabled={false}
+          disabled={true}
         />
         {stateError&&<p className="text-red-500">{stateError}</p>}
       </div>
@@ -132,7 +156,8 @@ const UserInformation = ({
           name="city"
           options={cities}
           error={errors.city?.message}
-          disabled={cities?.length === 0}
+          // disabled={cities?.length === 0}
+          disabled={true}
         />
       </div>
       <div className="w-full h-auto flex flex-col justify-start items-start my-4 border rounded-lg">
