@@ -21,6 +21,8 @@ const UserInformation = ({
   setCoordinates,
   stateNames
 }) => {
+
+  
   const [coordinatesMessage, setCoordinatesMessage] = useState(null);
   const apiFields = [
     {
@@ -58,7 +60,6 @@ const UserInformation = ({
   ];
   
   const getStateFromPlace = (place) => {
-    console.log("place61-->", place);
 
   const component = place.address_components.find((comp) =>
     comp.types.includes("administrative_area_level_1")
@@ -74,8 +75,8 @@ const UserInformation = ({
     }
       setStateError(null);
   setCities(stateCityData[component.long_name] || []);
-  setSelectedState(component.long_name);
   setCity(componentCity ? componentCity.long_name : "");
+    setSelectedState(component.long_name);
   
 };
 
@@ -180,10 +181,14 @@ const UserInformation = ({
       </div>
 
       <div className="pt-2">
-        <AuthSubmitBtn text={"Next"} />
+        <AuthSubmitBtn text={"Next"} 
+                  disabled={stateError}
+
+        />
       </div>
     </form>
   );
 };
 
 export default UserInformation;
+
