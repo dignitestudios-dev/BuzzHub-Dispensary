@@ -79,7 +79,7 @@ const ItemDetails = () => {
   }
 
   return (
-    <div className="h-full w-full bg-white shadow-lg border flex justify-center p-6 overflow-auto text-black">
+    <div className="h-full w-full bg-white shadow-lg border flex justify-center p-6 overflow-auto text-black mb-16">
       <div className="w-full ">
         {/* Back Button */}
   <div className="p-6 border-b border-gray-200 flex flex-col sm:flex-row items-center justify-between sm:space-x-4 space-y-4 sm:space-y-0">

@@ -43,7 +43,7 @@ const OrderTracking = () => {
             className="text-gray-600 cursor-pointer hover:text-green-600 transition duration-200"
             onClick={() => navigate(-1)}
           />
-          <h1 className="ml-4 text-2xl font-semibold text-gray-800">Order Tracking</h1>
+          <h1 className="ml-4 lg:text-3xl text-xl font-semibold text-gray-800">Order Tracking</h1>
         </div>
 
         <div className="w-full shadow-sm p-6 space-y-6 flex flex-col">

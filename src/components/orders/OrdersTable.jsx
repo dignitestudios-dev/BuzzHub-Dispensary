@@ -69,7 +69,7 @@ const OrdersTable = () => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full mb-16">
       {/* Filter Buttons */}
      <div className="flex justify-start mb-6 space-x-4">
   <button

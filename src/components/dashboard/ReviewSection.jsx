@@ -339,7 +339,7 @@ const ReviewSection = () => {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full ">
       <div className="w-full flex justify-between items-center mb-4 px-4">
         <h1 className="text-black text-3xl font-bold">Reviews</h1>
         <button

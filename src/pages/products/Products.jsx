@@ -67,7 +67,7 @@ const Products = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="w-full p-8 overflow-auto">
+    <div className="w-full p-8 overflow-auto mb-16">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-black text-3xl font-bold">Products</h1>
         <button

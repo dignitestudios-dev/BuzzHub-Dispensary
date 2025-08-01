@@ -120,7 +120,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="w-full text-black mx-auto p-6 bg-white overflow-auto">
+    <div className="w-full text-black mx-auto p-6 mb-16 bg-white overflow-auto">
       {/* Profile Header */}
       <div className="flex flex-col sm:flex-row items-center justify-between sm:space-x-6 space-y-4 sm:space-y-0">
         <div className="flex items-center gap-4">

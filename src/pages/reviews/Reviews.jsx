@@ -55,7 +55,7 @@ const Reviews = () => {
   };
 
   return (
-    <div className="w-full mx-auto p-4 overflow-auto text-black">
+    <div className="w-full mx-auto p-4 overflow-auto text-black mb-16">
       {/* Overall Review Summary */}
       <div className="bg-gray-50 p-4 rounded-lg border mb-4">
         <h2 className="text-lg font-semibold">Customer Reviews</h2>
