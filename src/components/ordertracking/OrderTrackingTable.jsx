@@ -72,10 +72,10 @@ const OrderTrackingTable = () => {
   return (
     <div className="w-full">
       {/* Filter Buttons */}
-      <div className="flex justify-start mb-6 space-x-4 overflow-x-auto">
+    <div className="flex justify-start mb-6 space-x-4 overflow-x-auto">
   <button
     onClick={() => setFilter("All")}
-    className={`px-4 py-3 rounded-md text-sm font-semibold ${
+    className={`px-2 py-1 text-xs sm:px-4 sm:py-3 rounded-md font-semibold ${
       filter === "All" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
     }`}
   >
@@ -83,7 +83,7 @@ const OrderTrackingTable = () => {
   </button>
   <button
     onClick={() => setFilter("Completed")}
-    className={`px-4 py-3 rounded-md text-sm font-semibold ${
+    className={`px-2 py-1 text-xs sm:px-4 sm:py-3 rounded-md font-semibold ${
       filter === "Completed" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
     }`}
   >
@@ -91,7 +91,7 @@ const OrderTrackingTable = () => {
   </button>
   <button
     onClick={() => setFilter("InProcess")}
-    className={`px-4 py-3 rounded-md text-sm font-semibold ${
+    className={`px-2 py-1 text-xs sm:px-4 sm:py-3 rounded-md font-semibold ${
       filter === "InProcess" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
     }`}
   >
@@ -99,7 +99,7 @@ const OrderTrackingTable = () => {
   </button>
   <button
     onClick={() => setFilter("OutForDelivery")}
-    className={`px-4 py-3 rounded-md text-sm font-semibold ${
+    className={`px-2 py-1 text-xs sm:px-4 sm:py-3 rounded-md font-semibold ${
       filter === "OutForDelivery" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
     }`}
   >
@@ -107,7 +107,7 @@ const OrderTrackingTable = () => {
   </button>
   <button
     onClick={() => setFilter("Ready")}
-    className={`px-4 py-3 rounded-md text-sm font-semibold ${
+    className={`px-2 py-1 text-xs sm:px-4 sm:py-3 rounded-md font-semibold ${
       filter === "Ready" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
     }`}
   >
@@ -140,6 +140,8 @@ const OrderTrackingTable = () => {
                   <th className="p-5 text-sm font-medium">Amount</th>
                   <th className="p-5 text-sm font-medium">Status</th>
                   <th className="p-5 text-sm font-medium hidden lg:block">Actions</th>
+                                    <th className="p-5 text-sm font-medium block lg:hidden"></th>
+
                 </tr>
               </thead>
               <tbody>

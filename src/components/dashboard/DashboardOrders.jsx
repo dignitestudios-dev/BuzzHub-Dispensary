@@ -55,45 +55,46 @@ const DashboardOrders = () => {
     <div className="w-full">
       <div className="flex flex-wrap justify-between mb-6">
   <div className="flex space-x-2 flex-wrap mb-4 sm:mb-0">
-    <button
-      onClick={() => setFilter("All")}
-      className={`px-3 py-2 rounded-md text-sm font-semibold ${
-        filter === "All" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-      }`}
-    >
-      All Orders
-    </button>
-    <button
-      onClick={() => setFilter("Pending")}
-      className={`px-3 py-2 rounded-md text-sm font-semibold ${
-        filter === "Pending" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-      }`}
-    >
-      Pending
-    </button>
-    <button
-      onClick={() => setFilter("Approved")}
-      className={`px-3 py-2 rounded-md text-sm font-semibold ${
-        filter === "Approved" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-      }`}
-    >
-      Approved
-    </button>
-    <button
-      onClick={() => setFilter("Rejected")}
-      className={`px-3 py-2 rounded-md text-sm font-semibold ${
-        filter === "Rejected" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-      }`}
-    >
-      Rejected
-    </button>
-    <button
+  <button
+    onClick={() => setFilter("All")}
+    className={`px-2 py-1 text-xs sm:px-3 sm:py-2 rounded-md font-semibold ${
+      filter === "All" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+    }`}
+  >
+    All Orders
+  </button>
+  <button
+    onClick={() => setFilter("Pending")}
+    className={`px-2 py-1 text-xs sm:px-3 sm:py-2 rounded-md font-semibold ${
+      filter === "Pending" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+    }`}
+  >
+    Pending
+  </button>
+  <button
+    onClick={() => setFilter("Approved")}
+    className={`px-2 py-1 text-xs sm:px-3 sm:py-2 rounded-md font-semibold ${
+      filter === "Approved" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+    }`}
+  >
+    Approved
+  </button>
+  <button
+    onClick={() => setFilter("Rejected")}
+    className={`px-2 py-1 text-xs sm:px-3 sm:py-2 rounded-md font-semibold ${
+      filter === "Rejected" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+    }`}
+  >
+    Rejected
+  </button>
+  <button
     onClick={() => navigate("/orders")}
-    className="text-green-600 font-medium hover:underline mt-4 sm:mt-0 lg:hidden block "
+    className="text-green-600 font-medium hover:underline mt-4 sm:mt-0 lg:hidden block"
   >
     See all
   </button>
-  </div>
+</div>
+
 
   <button
     onClick={() => navigate("/orders")}

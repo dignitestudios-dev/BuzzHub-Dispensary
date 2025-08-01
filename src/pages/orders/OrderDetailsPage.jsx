@@ -305,13 +305,13 @@ const OrderDetailsPage = () => {
             </h2>
 
             {/* Top: Profile & Contact Info */}
-            <div className="flex items-start gap-4 md:gap-6 mb-8 flex-col sm:flex-row">
+            <div className="flex items-start gap-4 md:gap-6 mb-8 sm:flex-row">
               <img
                 src={order.OrderBy.profilePicture}
                 alt={order.OrderBy.Username}
                 className="w-20 h-20 rounded-full object-cover ring-2 ring-gray-300"
               />
-              <div className="flex flex-col overflow-hidden">
+              <div className="flex flex-col overflow-hidden mt-3">
                 <h3 className="text-xl font-semibold text-gray-800 truncate">
                   {order.OrderBy.Username}
                 </h3>
@@ -335,7 +335,7 @@ const OrderDetailsPage = () => {
             </div>
 
             {/* Bottom: Medical & License side by side */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-2  gap-8">
               {/* Medical Card */}
               <div>
                 <h4 className="text-lg font-semibold text-gray-800 mb-3">
@@ -360,7 +360,7 @@ const OrderDetailsPage = () => {
               {/* Driver’s License */}
               <div>
                 <h4 className="text-lg font-semibold text-gray-800 mb-3">
-                  Driver’s License
+                  Driver License
                 </h4>
                 <div className="flex flex-wrap gap-4">
                   {[
@@ -382,43 +382,45 @@ const OrderDetailsPage = () => {
 
           {/* Product Details */}
 
-          <div className="border-b border-gray-200"></div>
+          <div className="border-b border-gray-200 "></div>
 
-          <div>
-            <h2 className="text-2xl font-semibold mb-4 mt-4">
-              Product Details
-            </h2>
-            {order.products.map((product) => (
-              <div key={product.productId} className="flex items-center mb-6">
-                <img
-                  src={product.productImage[0]} // First product image
-                  alt={product.name}
-                  className="w-36 h-36 rounded-lg mr-6"
-                />
-                <div>
-                  <p className="text-lg font-semibold">{product.name}</p>
-                  <p className="text-sm text-gray-600">
-                    Type: {product.productType}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    Sub-Types: {product.subTypes.join(", ")}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    Total Grams: {product.weightQuantity} {product.weightType}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    Ordered Grams: {product.gram} grams
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    Price: ${product.price}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    {product.warningDescription}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <div className="">
+  <h2 className="text-2xl font-semibold mb-4 ">Product Details</h2>
+  {order.products.map((product) => (
+    <div
+      key={product.productId}
+      className="flex flex-col sm:flex-row items-start sm:items-center mb-6 border-b pb-4 sm:pb-0"
+    >
+      <img
+        src={product.productImage[0]} // First product image
+        alt={product.name}
+        className="w-24 h-24 sm:w-36 sm:h-36 rounded-lg mb-4 sm:mb-0 sm:mr-6"
+      />
+      <div>
+        <p className="text-lg font-semibold mb-1">{product.name}</p>
+        <p className="text-sm text-gray-600 mb-1">
+          Type: {product.productType}
+        </p>
+        <p className="text-sm text-gray-600 mb-1">
+          Sub-Types: {product.subTypes.join(", ")}
+        </p>
+        <p className="text-sm text-gray-600 mb-1">
+          Total Grams: {product.weightQuantity} {product.weightType}
+        </p>
+        <p className="text-sm text-gray-600 mb-1">
+          Ordered Grams: {product.gram} grams
+        </p>
+        <p className="text-sm text-gray-600 mb-1">
+          Price: ${product.price}
+        </p>
+        {product.warningDescription && (
+          <p className="text-sm text-red-500 mt-2 mb-4">{product.warningDescription}</p>
+        )}
+      </div>
+    </div>
+  ))}
+</div>
+
 
           {orderDetails.orderStatus === "Rejected" && (
             <span className="max-w-[300px] border border-red-300 p-2 rounded-lg text-black sm:max-w-[400px] md:max-w-full">

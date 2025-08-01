@@ -201,7 +201,7 @@ const UserInformation = ({
         <AuthSubmitBtn text={"Next"} 
                   disabled={stateError}
 
-        />git st
+        />
       </div>
     </form>
   );

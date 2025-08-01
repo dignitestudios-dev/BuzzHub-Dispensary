@@ -71,40 +71,41 @@ const OrdersTable = () => {
   return (
     <div className="w-full">
       {/* Filter Buttons */}
-      <div className="flex justify-start mb-6 space-x-4">
-        <button
-          onClick={() => setFilter("All")}
-          className={`px-3 py-3 rounded-md text-sm font-semibold ${
-            filter === "All" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-          }`}
-        >
-          All Orders
-        </button>
-        <button
-          onClick={() => setFilter("Pending")}
-          className={`px-3 py-3 rounded-md text-sm font-semibold ${
-            filter === "Pending" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-          }`}
-        >
-          Pending
-        </button>
-        <button
-          onClick={() => setFilter("Approved")}
-          className={`px-3 py-3 rounded-md text-sm font-semibold ${
-            filter === "Approved" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-          }`}
-        >
-          Approved
-        </button>
-        <button
-          onClick={() => setFilter("Rejected")}
-          className={`px-3 py-3 rounded-md text-sm font-semibold ${
-            filter === "Rejected" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-          }`}
-        >
-          Rejected
-        </button>
-      </div>
+     <div className="flex justify-start mb-6 space-x-4">
+  <button
+    onClick={() => setFilter("All")}
+    className={`px-2 py-3 text-xs sm:px-3 sm:py-3 rounded-md font-semibold ${
+      filter === "All" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+    }`}
+  >
+    All Orders
+  </button>
+  <button
+    onClick={() => setFilter("Pending")}
+    className={`px-2 py-3 text-xs sm:px-3 sm:py-3 rounded-md font-semibold ${
+      filter === "Pending" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+    }`}
+  >
+    Pending
+  </button>
+  <button
+    onClick={() => setFilter("Approved")}
+    className={`px-2 py-3 text-xs sm:px-3 sm:py-3 rounded-md font-semibold ${
+      filter === "Approved" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+    }`}
+  >
+    Approved
+  </button>
+  <button
+    onClick={() => setFilter("Rejected")}
+    className={`px-2 py-3 text-xs sm:px-3 sm:py-3 rounded-md font-semibold ${
+      filter === "Rejected" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+    }`}
+  >
+    Rejected
+  </button>
+</div>
+
 
       {/* Orders Table */}
       {loading ? (
@@ -132,6 +133,8 @@ const OrdersTable = () => {
                     <th className="p-5 text-sm font-medium">Amount</th>
                     <th className="p-5 text-sm font-medium">Status</th>
                     <th className="p-5 text-sm font-medium lg:block hidden">Actions</th>
+                                        <th className="p-5 text-sm font-medium block lg:hidden"></th>
+
                   </tr>
                 </thead>
                 <tbody>
@@ -189,7 +192,7 @@ const OrdersTable = () => {
                       <td className="p-4">
                         <button
                           onClick={() => handleViewDetails(order)}
-                          className="text-[#1D7C42] hover:text-green-500 transition duration-300"
+                          className="text-[#1D7C42] hover:text-green-500 hidden lg:block transition duration-300"
                         >
                           <FaEye className="text-xl" />
                         </button>
