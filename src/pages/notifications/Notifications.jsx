@@ -60,7 +60,7 @@ const Notifications = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="p-6 w-full h-auto overflow-auto">
+    <div className="p-6 pb-20 w-full h-auto overflow-auto">
       <div className="mb-8 flex justify-between items-center">
         <h1 className="text-3xl font-bold text-gray-800">Notifications</h1>
       </div>

@@ -2,11 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
-import DashboardBottomBar from "./DashboardBottomBar"; // Import the BottomBar
+import DashboardBottomBar from "./DashboardBottomBar";
 
 const GlobalLayout = ({ page }) => {
   return (
-    <div className="w-full h-screen overflow-y-hidden flex justify-start items-start">
+    <div className="w-full h-screen z-50 overflow-y-hidden flex justify-start items-start">
       <Sidebar />
       <div className="w-full lg:w-[calc(100%-280px)] h-full relative flex flex-col justify-start items-start">
         <Navbar />
