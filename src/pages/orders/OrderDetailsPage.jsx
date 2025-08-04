@@ -191,7 +191,7 @@ const OrderDetailsPage = () => {
   };
 
   return (
-    <div className="h-auto w-full bg-gray-100 flex justify-center p-6 overflow-auto text-black">
+    <div className="h-auto w-full pb-20 bg-gray-100 flex justify-center p-6 overflow-auto text-black">
       <div className="w-full bg-white rounded-lg shadow-xl overflow-y-auto">
         {/* Back Button */}
         <div className="p-6 border-b border-gray-200 flex items-center">
