@@ -43,7 +43,8 @@ const Navbar = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.clear(); // Clear local storage
+    localStorage.clear();
+    sessionStorage.clear(); // Clear session storage
     navigate("/"); // Navigate to login page after logout
   };
 
