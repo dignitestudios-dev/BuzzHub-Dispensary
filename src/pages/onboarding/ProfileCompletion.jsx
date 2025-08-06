@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import { Logo } from "../../assets/export";
 import { getRemoteConfigData } from "../../firebase/firestoreService";
 import { GlobalContext } from "../../contexts/GlobalContext";
+import { GiExitDoor } from "react-icons/gi";
+
 
 const ProfileCompletion = () => {
 const {stateNames} = useContext(GlobalContext)
@@ -157,7 +159,8 @@ const {stateNames} = useContext(GlobalContext)
           <h3 className="text-lg font-medium text-white">Buzzhub Dispensary</h3>
           <p className="text-sm text-white">Fill the form below to continue</p>
         </div>
-        <button onClick={handleLogout} className="bg-red-500 text-white py-2 px-4 rounded-md">Logout</button>
+        <button onClick={handleLogout} className=" text-white text-3xl"><GiExitDoor />
+</button>
       </div>
 
       <div className="flex pt-5 gap-10">
