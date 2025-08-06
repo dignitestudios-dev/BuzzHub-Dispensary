@@ -19,6 +19,7 @@ const SubscriptionSuccess = () => {
     });
     // Optionally, redirect to login or home page after logout
     navigate("/"); // or you can redirect to your home page like navigate("/")
+    document.location.reload(); // Reload the page to reflect the logout
   };                                                                                                                        
 
   return (
