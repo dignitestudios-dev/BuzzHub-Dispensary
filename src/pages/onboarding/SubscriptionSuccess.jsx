@@ -17,10 +17,9 @@ const SubscriptionSuccess = () => {
         .replace(/^ +/, "")
         .replace(/=.*/, `=;expires=${new Date(0).toUTCString()};path=/`);
     });
-
     // Optionally, redirect to login or home page after logout
-    navigate("/login"); // or you can redirect to your home page like navigate("/")
-  };
+    navigate("/"); // or you can redirect to your home page like navigate("/")
+  };                                                                                                                        
 
   return (
     <div className="flex flex-col justify-center items-center w-screen h-screen text-center gap-4 relative">

@@ -49,20 +49,29 @@ const UserProfile = ({
   };
 
   const onSubmit = () => {
-    const missingImages = !fileNames.profile;
-    if (missingImages) {
-      setImgError(() => ({
-        profile: "Profile picture is required",
-      }));
-      return;
-    }
+  const missingImages = !fileNames.profile;
+  if (missingImages) {
+    setImgError(() => ({
+      profile: "Profile picture is required",
+    }));
+    return;
+  }
 
-    if (!pickupType) {
-      setError("Please select a delivery option");
-      return;
-    }
-    handleNext();
-  };
+  if (!pickupType) {
+    setError("Please select a delivery option");
+    return;
+  }
+
+  // Add validation for dispensaryType
+  if (!dispensaryType) {
+    setError("Please select a dispensary type");
+    return;
+  }
+
+  handleNext();
+};
+
+  
 
   const handleCheckboxChange = (type) => {
     if (pickupType === type) {
@@ -73,6 +82,8 @@ const UserProfile = ({
     setError("");
   };
 
+
+  
   return (
     <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
       <p className="text-center text-[24px] font-[600] text-primary leading-[22px] mt-0">
@@ -330,6 +341,8 @@ const UserProfile = ({
             {dispensaryType === "MED" ? "Medical" : "Recreational"}
           </p>
         )}
+          {!dispensaryType && <p className="text-red-500 text-[13px] mt-2">Dispensary type is required</p>}
+
       </div>
 
       <div className="mt-8">

@@ -127,6 +127,24 @@ const {stateNames} = useContext(GlobalContext)
     }
   };
 
+
+  const handleLogout = () => {
+    // Clear localStorage
+    localStorage.clear();
+
+    // Clear sessionStorage
+    sessionStorage.clear();
+
+    // Clear cookies (you can use a helper function to remove cookies)
+    document.cookie.split(";").forEach((cookie) => {
+      document.cookie = cookie
+        .replace(/^ +/, "")
+        .replace(/=.*/, `=;expires=${new Date(0).toUTCString()};path=/`);
+    });
+    navigate("/"); 
+    document.location.reload(); // Reload the page to reflect the logout
+  }; 
+
   return (
     <div className="flex flex-col justify-center bg-[#1d7c42] items-center h-full w-full  ">
       <div className="flex items-center space-x-4 mt-4">
@@ -139,6 +157,7 @@ const {stateNames} = useContext(GlobalContext)
           <h3 className="text-lg font-medium text-white">Buzzhub Dispensary</h3>
           <p className="text-sm text-white">Fill the form below to continue</p>
         </div>
+        <button onClick={handleLogout} className="bg-red-500 text-white py-2 px-4 rounded-md">Logout</button>
       </div>
 
       <div className="flex pt-5 gap-10">
