@@ -25,6 +25,7 @@ import PageNotFound from "../pages/onboarding/PageNotFound";
 import { Navigate } from "react-router-dom";
 import ManageSubscripiton from "../pages/subscription/ManageSubscripiton";
 import VerifyOtp from "../pages/onboarding/VerifyOtp";
+import SubscriptionSuccess from "../pages/onboarding/SubscriptionSuccess";
 
 export const normalRoutes = [
   {
@@ -36,6 +37,12 @@ export const normalRoutes = [
     title: "Request Success",
     url: "/req-success",
     page: <RequestSuccessScreen />,
+  },
+
+   {
+    title: "Subscription Success",
+    url: "/subscription-success",
+    page: <SubscriptionSuccess />,
   },
 
  
