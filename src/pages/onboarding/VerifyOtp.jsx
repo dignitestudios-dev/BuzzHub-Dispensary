@@ -55,30 +55,36 @@ const VerifyOtp = () => {
   const isOtpFilled = otp.every((digit) => digit !== "");
 
   const handleVerifyOtp = async (e) => {
-    e.preventDefault()
-    if (!isOtpFilled) return;
+  e.preventDefault();
+  if (!isOtpFilled) return;
 
-    setLoading(true);
-    try {
-      let obj = { email: otpEmail, code: getOtpValue() };
+  setLoading(true);
+  try {
+    let obj = { email: otpEmail, code: getOtpValue() };
 
-      const response = await axios.post("/auth/validate-otp", obj);
-      if (response?.status === 200) {
-        console.log(response.data)
-        sessionStorage.setItem("token", response?.data?.token);
-        localStorage.setItem('token', response?.data?.token);
-        setToken(response?.data?.token);
-        setLoading(false);
-        // navigate("/verify-success");
-        navigate("/profile-completion");
-      }
-    } catch (err) {
-      console.log("🚀 ~ createAccount ~ err:", err);
-      ErrorToast(err?.response?.data?.message);
-    } finally {
+    const response = await axios.post("/auth/validate-otp", obj);
+    if (response?.status === 200) {
+      sessionStorage.setItem("token", response?.data?.token);
+      localStorage.setItem('token', response?.data?.token);
+      setToken(response?.data?.token);
+
       setLoading(false);
+
+      // Only navigate to profile-completion if it's the first time
+      if (!localStorage.getItem("profileCompleted")) {
+        navigate("/profile-completion");
+      } else {
+        navigate("/dashboard");
+      }
     }
-  };
+  } catch (err) {
+    console.log("🚀 ~ createAccount ~ err:", err);
+    ErrorToast(err?.response?.data?.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const handleResendOtp = async () => {
     try {
