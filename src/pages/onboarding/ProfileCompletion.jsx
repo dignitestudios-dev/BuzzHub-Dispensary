@@ -149,19 +149,27 @@ const {stateNames} = useContext(GlobalContext)
 
   return (
     <div className="flex flex-col justify-center bg-[#1d7c42] items-center h-full w-full  ">
-      <div className="flex items-center space-x-4 mt-4">
-        <img
-          src={Logo}
-          alt="pill"
-          className="w-[60px] bg-green-600 rounded-full border-2"
-        />
-        <div className="flex flex-col items-start">
-          <h3 className="text-lg font-medium text-white">Buzzhub Dispensary</h3>
-          <p className="text-sm text-white">Fill the form below to continue</p>
-        </div>
-        <button onClick={handleLogout} className=" text-white text-3xl"><GiExitDoor />
-</button>
-      </div>
+     <div className="flex items-center justify-between w-full mt-4 px-4">
+  {/* Logo and Heading centered */}
+  <div className="flex items-center mx-auto space-x-4">
+    <img
+      src={Logo}
+      alt="pill"
+      className="w-[60px] bg-green-600 rounded-full border-2"
+    />
+    <div className="flex flex-col items-left">
+      <h3 className="text-lg font-medium  text-white">Buzzhub Dispensary</h3>
+      <p className="text-sm text-white">Fill the form below to continue</p>
+    </div>
+  </div>
+
+  {/* Logout Button on the far right */}
+  <button 
+    onClick={handleLogout} 
+    className="text-white bg-red-500 rounded-full p-2 text-2xl">
+    <GiExitDoor />
+  </button>
+</div>
 
       <div className="flex pt-5 gap-10">
         {sections.map((value, index) => (
