@@ -10,6 +10,22 @@ const Packages = () => {
     navigate("/add-card", { state: plan });
   };
 
+const handleLogout = () => {
+    // Clear localStorage and sessionStorage
+    localStorage.clear();
+    sessionStorage.clear();
+
+    // Clear all cookies set by this domain
+    document.cookie.split(";").forEach((cookie) => {
+      const name = cookie.split("=")[0].trim();
+      document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+    });
+
+    // Redirect to login or home page
+    navigate("/login"); // Change to your desired route
+  };
+
+
   return (
     <div className="flex flex-col items-center w-full min-h-screen bg-gray-100 py-4">
       <div className="flex items-center space-x-4 mb-12">
@@ -26,6 +42,12 @@ const Packages = () => {
             Select A Subscription Package to Continue
           </p>
         </div>
+         <button
+          onClick={handleLogout}
+          className="px-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition"
+        >
+          Logout
+        </button>
       </div>
 
       <p className="text-center font-semibold text-2xl mb-12 text-gray-800">
