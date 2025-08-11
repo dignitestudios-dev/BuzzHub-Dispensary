@@ -67,6 +67,9 @@ const VerifyOtp = () => {
       sessionStorage.setItem("token", response?.data?.token);
       localStorage.setItem('token', response?.data?.token);
       setToken(response?.data?.token);
+       const userData = { ...response.data.data };
+
+        localStorage.setItem("userData", JSON.stringify(userData)); // Save to localStorage
 
       setLoading(false);
 

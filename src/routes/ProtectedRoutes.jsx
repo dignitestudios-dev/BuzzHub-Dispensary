@@ -12,6 +12,7 @@ export const ProtectedRoute = ({ token }) => {
 };
 
 export const PublicRoute = ({ token, userData }) => {
+  console.log(userData,"userData publibroute")
   
   if (token) {
     if (!userData?.isSessionComplete) {

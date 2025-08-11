@@ -139,7 +139,7 @@ const {stateNames} = useContext(GlobalContext)
 
     // Clear cookies (you can use a helper function to remove cookies)
     document.cookie.split(";").forEach((cookie) => {
-      document.cookie = cookie
+     document.cookie = cookie
         .replace(/^ +/, "")
         .replace(/=.*/, `=;expires=${new Date(0).toUTCString()};path=/`);
     });
