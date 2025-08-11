@@ -28,6 +28,7 @@ const AuthProvider = ({ children }) => {
     setToken(null);
     setIsAuthenticated(false);
     localStorage.clear();
+    sessionStorage.clear();
     navigate("/");
   };
 
