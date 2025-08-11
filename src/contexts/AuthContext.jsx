@@ -26,6 +26,7 @@ const AuthProvider = ({ children }) => {
 
   const signOut = () => {
     setToken(null);
+    setUserData(null)
     setIsAuthenticated(false);
     localStorage.clear();
     sessionStorage.clear();
