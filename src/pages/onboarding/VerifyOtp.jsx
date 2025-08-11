@@ -74,7 +74,7 @@ const VerifyOtp = () => {
       if (!localStorage.getItem("profileCompleted")) {
         navigate("/profile-completion");
       } else {
-        navigate("/dashboard");
+        navigate("/profile-completion");
       }
     }
   } catch (err) {

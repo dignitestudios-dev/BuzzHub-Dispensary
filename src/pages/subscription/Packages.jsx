@@ -23,6 +23,7 @@ const handleLogout = () => {
 
     // Redirect to login or home page
     navigate("/login"); // Change to your desired route
+    document.location.reload(); // Reload the page to reflect the logout
   };
 
 
