@@ -179,7 +179,7 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
   const MAX_IMAGES = 4;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 overflow-auto z-10">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4 overflow-auto ">
       <div className="bg-white text-black p-6 rounded-lg shadow-lg w-full max-w-2xl relative">
         <button
           onClick={onClose}

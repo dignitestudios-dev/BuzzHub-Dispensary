@@ -305,7 +305,7 @@ console.log("00--> checkedState",checkedState)
   };
 
   return (
-    <div className="w-full text-black mx-auto p-6 bg-white shadow-lg overflow-auto">
+    <div className="w-full text-black mx-auto p-6 pb-20 lg:pb-4 bg-white shadow-lg overflow-auto">
       <h1 className="text-black text-3xl font-bold mb-8 border-b pb-2">
         Edit Profile
       </h1>

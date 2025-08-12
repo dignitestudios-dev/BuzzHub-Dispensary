@@ -423,9 +423,9 @@ const OrderDetailsPage = () => {
 
 
           {orderDetails.orderStatus === "Rejected" && (
-            <span className="max-w-[300px] border border-red-300 p-2 rounded-lg text-black sm:max-w-[400px] md:max-w-full">
+            <span className="max-w-[300px] text-xs border border-red-300 p-2 rounded-lg text-black sm:max-w-[400px] md:max-w-full">
               Rejection Reason:
-              <span className="text-red-500 ml-1">
+              <span className="text-red-500 text-xs ml-1">
                 {order?.rejectionReason || "No rejection reason provided"}
               </span>
             </span>
@@ -467,22 +467,23 @@ const OrderDetailsPage = () => {
               </div>
             ) : null}
             {order.orderStatus === "Pending" ? (
-              <div className="flex justify-between space-x-4">
-                <button
-                  onClick={() => setShowAcceptModal(true)}
-                  className="w-1/2 py-3 bg-green-600 text-white rounded-lg font-medium"
-                  disabled={loading}
-                >
-                  {loading ? "Updating..." : "Accept Order"}
-                </button>
-                <button
-                  onClick={() => setShowRejectModal(true)}
-                  className="w-1/2 py-3 bg-red-600 text-white rounded-lg font-medium"
-                  disabled={loading}
-                >
-                  {loading ? "Updating..." : "Reject Order"}
-                </button>
-              </div>
+              <div className="flex flex-row gap-4">
+  <button
+    onClick={() => setShowAcceptModal(true)}
+    className="flex-1 px-6 py-3 bg-green-600 text-white rounded-lg font-medium"
+    disabled={loading}
+  >
+    {loading ? "Updating..." : "Accept "}
+  </button>
+  <button
+    onClick={() => setShowRejectModal(true)}
+    className="flex-1 px-6 py-3 bg-red-600 text-white rounded-lg font-medium"
+    disabled={loading}
+  >
+    {loading ? "Updating..." : "Reject "}
+  </button>
+</div>
+
             ) : null}
             {error && <p className="text-red-600">{error}</p>}
           </div>

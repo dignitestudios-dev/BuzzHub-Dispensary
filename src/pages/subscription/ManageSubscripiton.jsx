@@ -83,8 +83,29 @@ const ManageSubscription = () => {
 
   return (
     <div className="flex flex-col w-full justify-start h-full bg-gray-100 px-4 py-10">
+     
       <div className="w-full bg-white rounded-2xl shadow-lg p-8 space-y-6 border border-gray-200">
+        <div className="flex justify-start">
+  <div
+    className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium
+      ${subscriptionPlan?.status === "active" 
+        ? "bg-green-100 text-green-700" 
+        : "bg-red-100 text-red-700"}
+    `}
+  >
+    {subscriptionPlan?.status === "active" ? (
+      <MdCheckCircle size={18} />
+    ) : (
+      <MdCancel size={18} />
+    )}
+    <span>
+      {subscriptionPlan?.status === "active" ? "Active" : "Inactive"}
+    </span>
+  </div>
+</div>
+
         <div className="flex items-center justify-between mb-6 border-b pb-4">
+          
           <div className="flex items-center space-x-4 ">
             <img
               src={Logo}
@@ -99,16 +120,7 @@ const ManageSubscription = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            {subscriptionPlan?.status === "active" ? (
-              <MdCheckCircle size={20} color="green" />
-            ) : (
-              <MdCancel size={20} color="red" />
-            )}
-            <span className="text-md font-semibold text-gray-800">
-              {subscriptionPlan?.status === "active" ? "Active" : "Inactive"}
-            </span>
-          </div>
+          
         </div>
 
         <div className="space-y-4 ">
