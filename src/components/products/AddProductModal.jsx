@@ -11,6 +11,12 @@ const typesAndSubtypes = {
   // Other: ["Indica Strains", "Sativa Strains", "Hybrid Strains"],
 };
 
+const fulfillmentEnumMap = {
+  "Deliver at home": "Deliever at home",
+  "Self Pickup": "Self Pickup",
+  "Both": "Both",
+};
+
 const AddProductModal = ({ onClose }) => {
   const navigate = useNavigate();
 
@@ -120,7 +126,7 @@ const AddProductModal = ({ onClose }) => {
     }
     formData.append("weightQuantity", weightQuantity);
     formData.append("weightType", "grams"); // Force weightType to grams
-    formData.append("fullfillmentMethod", fullfillmentMethod);
+    formData.append("fullfillmentMethod", fulfillmentEnumMap[fullfillmentMethod]);
 
     images.forEach((image) => {
       formData.append("productImage", image);
