@@ -2313,7 +2313,7 @@ const  stateCityData = {
         "Kittery",
         "Lewiston",
         "Lisbon",
-        "Old Orchard Beach",
+        "Norridgewock",
         "Old Orchard Beach",
         "Old Town",
         "Orono",

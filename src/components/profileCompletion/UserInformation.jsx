@@ -161,7 +161,7 @@ const UserInformation = ({
       name="city"
       options={cities}
       error={errors.city?.message}
-      disabled={true}
+      // disabled={true}
     />
   </div>
 </div>
