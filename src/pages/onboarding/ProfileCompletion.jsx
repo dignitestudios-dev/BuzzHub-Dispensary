@@ -65,6 +65,7 @@ const {stateNames} = useContext(GlobalContext)
   const handlePrev = () => {
     setStep(step - 1);
   };
+  // console.log(formData,"formData")
 
   const handleApiCall = async (formData) => {
     setLoading(true);
@@ -85,9 +86,11 @@ const {stateNames} = useContext(GlobalContext)
       data.append("streetAddress", formData.streetAddress);
       data.append("zipCode", formData.zipCode);
       data.append(
-        "location[coordinates]",
-        JSON.stringify([-74.0059413, 40.7127837])
-      );
+  "location[coordinates]",
+  JSON.stringify([coordinates.lng, coordinates.lat])
+);
+
+
       // data.append("location[type]", "Point");
 
       // Append file data (if exists)
