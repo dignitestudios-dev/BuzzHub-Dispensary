@@ -104,7 +104,7 @@ const EditProductModal = ({ onClose, productData, orderId }) => {
     formData.append("weightQuantity", weightQuantity);
     formData.append("weightType", weightType);
     formData.append(
-      "fullfillmentMethod",
+      "fulfillmentMethod",
       fullfillmentMethod == "Pickup" ? "Self Pickup" : fullfillmentMethod
     ); // Use stored fulfillment method
 
