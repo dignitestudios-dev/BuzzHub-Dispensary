@@ -83,7 +83,6 @@ const SignUp = () => {
   };
 
   const sendDataToBackend = async (formData) => {
-    console.log("formData00-?", formData);
     if (formData) {
       setLoading(true);
       try {
@@ -249,7 +248,7 @@ const SignUp = () => {
                   },
                   pattern: {
                     value:
-                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/,
                     message:
                       "Password must be at least 8 characters, including uppercase, lowercase, number, and special character.",
                   },
