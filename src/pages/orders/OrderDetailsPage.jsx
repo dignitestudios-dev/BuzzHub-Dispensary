@@ -21,7 +21,7 @@ import { SuccessToast } from "../../components/global/Toaster";
 const OrderDetailsPage = () => {
   const location = useLocation();
   const { order } = location.state; // Extract the order from state
-  console.log("order is --? ", order);
+
   const navigate = useNavigate();
 
   // State to manage the clicked image
@@ -104,6 +104,7 @@ const OrderDetailsPage = () => {
         {
           orderId: orderDetails._id, // Using _id to update status
           status: "Rejected",
+          reason: reason,
         }
       );
 
@@ -314,6 +315,7 @@ const OrderDetailsPage = () => {
               <div className="flex flex-col overflow-hidden mt-3">
                 <h3 className="text-xl font-semibold text-gray-800 truncate">
                   {order.OrderBy.Username}
+                  {console.log(order,"orderorder")}
                 </h3>
 
                 <div className="flex items-center text-sm text-gray-600 mt-1 truncate">
@@ -385,42 +387,43 @@ const OrderDetailsPage = () => {
           <div className="border-b border-gray-200 "></div>
 
           <div className="">
-  <h2 className="text-2xl font-semibold mb-4 ">Product Details</h2>
-  {order.products.map((product) => (
-    <div
-      key={product.productId}
-      className="flex flex-col sm:flex-row items-start sm:items-center mb-6 border-b pb-4 sm:pb-0"
-    >
-      <img
-        src={product.productImage[0]} // First product image
-        alt={product.name}
-        className="w-24 h-24 sm:w-36 sm:h-36 rounded-lg mb-4 sm:mb-0 sm:mr-6"
-      />
-      <div>
-        <p className="text-lg font-semibold mb-1">{product.name}</p>
-        <p className="text-sm text-gray-600 mb-1">
-          Type: {product.productType}
-        </p>
-        <p className="text-sm text-gray-600 mb-1">
-          Sub-Types: {product.subTypes.join(", ")}
-        </p>
-        <p className="text-sm text-gray-600 mb-1">
-          Total Grams: {product.weightQuantity} {product.weightType}
-        </p>
-        <p className="text-sm text-gray-600 mb-1">
-          Ordered Grams: {product.gram} grams
-        </p>
-        <p className="text-sm text-gray-600 mb-1">
-          Price: ${product.price}
-        </p>
-        {product.warningDescription && (
-          <p className="text-sm text-red-500 mt-2 mb-4">{product.warningDescription}</p>
-        )}
-      </div>
-    </div>
-  ))}
-</div>
-
+            <h2 className="text-2xl font-semibold mb-4 ">Product Details</h2>
+            {order.products.map((product) => (
+              <div
+                key={product.productId}
+                className="flex flex-col sm:flex-row items-start sm:items-center mb-6 border-b pb-4 sm:pb-0"
+              >
+                <img
+                  src={product.productImage[0]} // First product image
+                  alt={product.name}
+                  className="w-24 h-24 sm:w-36 sm:h-36 rounded-lg mb-4 sm:mb-0 sm:mr-6"
+                />
+                <div>
+                  <p className="text-lg font-semibold mb-1">{product.name}</p>
+                  <p className="text-sm text-gray-600 mb-1">
+                    Type: {product.productType}
+                  </p>
+                  <p className="text-sm text-gray-600 mb-1">
+                    Sub-Types: {product.subTypes.join(", ")}
+                  </p>
+                  <p className="text-sm text-gray-600 mb-1">
+                    Total Grams: {product.weightQuantity} {product.weightType}
+                  </p>
+                  <p className="text-sm text-gray-600 mb-1">
+                    Ordered Grams: {product.gram} grams
+                  </p>
+                  <p className="text-sm text-gray-600 mb-1">
+                    Price: ${product.price}
+                  </p>
+                  {product.warningDescription && (
+                    <p className="text-sm text-red-500 mt-2 mb-4">
+                      {product.warningDescription}
+                    </p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
 
           {orderDetails.orderStatus === "Rejected" && (
             <span className="max-w-[300px] text-xs border border-red-300 p-2 rounded-lg text-black sm:max-w-[400px] md:max-w-full">
@@ -468,22 +471,21 @@ const OrderDetailsPage = () => {
             ) : null}
             {order.orderStatus === "Pending" ? (
               <div className="flex flex-row gap-4">
-  <button
-    onClick={() => setShowAcceptModal(true)}
-    className="flex-1 px-6 py-3 bg-green-600 text-white rounded-lg font-medium"
-    disabled={loading}
-  >
-    {loading ? "Updating..." : "Accept "}
-  </button>
-  <button
-    onClick={() => setShowRejectModal(true)}
-    className="flex-1 px-6 py-3 bg-red-600 text-white rounded-lg font-medium"
-    disabled={loading}
-  >
-    {loading ? "Updating..." : "Reject "}
-  </button>
-</div>
-
+                <button
+                  onClick={() => setShowAcceptModal(true)}
+                  className="flex-1 px-6 py-3 bg-green-600 text-white rounded-lg font-medium"
+                  disabled={loading}
+                >
+                  {loading ? "Updating..." : "Accept "}
+                </button>
+                <button
+                  onClick={() => setShowRejectModal(true)}
+                  className="flex-1 px-6 py-3 bg-red-600 text-white rounded-lg font-medium"
+                  disabled={loading}
+                >
+                  {loading ? "Updating..." : "Reject "}
+                </button>
+              </div>
             ) : null}
             {error && <p className="text-red-600">{error}</p>}
           </div>

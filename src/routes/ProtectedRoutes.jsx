@@ -12,8 +12,6 @@ export const ProtectedRoute = ({ token }) => {
 };
 
 export const PublicRoute = ({ token, userData }) => {
-  console.log(userData,"userData publibroute")
-  
   if (token) {
     if (!userData?.isSessionComplete) {
       return <Navigate to="/profile-completion" replace />;
@@ -22,16 +20,16 @@ export const PublicRoute = ({ token, userData }) => {
     if (userData?.status === "Approved") {
       if (!userData?.isSubscribed) {
         return <Navigate to="/packages" replace />;
-      } else {
-        return <Navigate to="/dashboard" replace />;
       }
+      if (userData?.stripeAccountId === null) {
+        return <Navigate to="/req-success" replace />;
+      }
+      return <Navigate to="/dashboard" replace />;
     } else if (
       userData?.status === "Rejected" ||
       userData?.status === "Pending"
     ) {
       const { status, rejectionReason } = userData;
-      console.log(rejectionReason, "rejectReason from request success screen");
-      console.log(userData, "userData screen userData");
       return (
         <Navigate
           to="/req-success"
@@ -43,7 +41,6 @@ export const PublicRoute = ({ token, userData }) => {
         />
       );
     }
-    // return <Navigate to="/dashboard" replace />;
   }
   return <Outlet />;
 };
