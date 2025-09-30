@@ -72,48 +72,50 @@ const OrderTrackingTable = () => {
   return (
     <div className="w-full mb-16">
       {/* Filter Buttons */}
-    <div className="flex justify-start mb-6 space-x-4 overflow-x-auto">
-  <button
-    onClick={() => setFilter("All")}
-    className={`px-2 py-1 text-xs sm:px-4 sm:py-3 rounded-md font-semibold ${
-      filter === "All" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-    }`}
-  >
-    All Orders
-  </button>
-  <button
-    onClick={() => setFilter("Completed")}
-    className={`px-2 py-1 text-xs sm:px-4 sm:py-3 rounded-md font-semibold ${
-      filter === "Completed" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-    }`}
-  >
-    Completed
-  </button>
-  <button
-    onClick={() => setFilter("InProcess")}
-    className={`px-2 py-1 text-xs sm:px-4 sm:py-3 rounded-md font-semibold ${
-      filter === "InProcess" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-    }`}
-  >
-    In Process
-  </button>
-  <button
-    onClick={() => setFilter("OutForDelivery")}
-    className={`px-2 py-1 text-xs sm:px-4 sm:py-3 rounded-md font-semibold ${
-      filter === "OutForDelivery" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-    }`}
-  >
-    Out for Delivery
-  </button>
-  <button
-    onClick={() => setFilter("Ready")}
-    className={`px-2 py-1 text-xs sm:px-4 sm:py-3 rounded-md font-semibold ${
-      filter === "Ready" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
-    }`}
-  >
-    Ready
-  </button>
-</div>
+      <div className="flex justify-start mb-6 space-x-4 overflow-x-auto">
+        <button
+          onClick={() => setFilter("All")}
+          className={`px-2 py-1 text-xs sm:px-4 sm:py-3 rounded-md font-semibold ${
+            filter === "All" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+          }`}
+        >
+          All Orders
+        </button>
+        <button
+          onClick={() => setFilter("Completed")}
+          className={`px-2 py-1 text-xs sm:px-4 sm:py-3 rounded-md font-semibold ${
+            filter === "Completed" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+          }`}
+        >
+          Completed
+        </button>
+        <button
+          onClick={() => setFilter("InProcess")}
+          className={`px-2 py-1 text-xs sm:px-4 sm:py-3 rounded-md font-semibold ${
+            filter === "InProcess" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+          }`}
+        >
+          In Process
+        </button>
+        <button
+          onClick={() => setFilter("OutForDelivery")}
+          className={`px-2 py-1 text-xs sm:px-4 sm:py-3 rounded-md font-semibold ${
+            filter === "OutForDelivery"
+              ? "bg-[#1D7C42] text-white"
+              : "bg-gray-300"
+          }`}
+        >
+          Out for Delivery
+        </button>
+        <button
+          onClick={() => setFilter("Ready")}
+          className={`px-2 py-1 text-xs sm:px-4 sm:py-3 rounded-md font-semibold ${
+            filter === "Ready" ? "bg-[#1D7C42] text-white" : "bg-gray-300"
+          }`}
+        >
+          Ready
+        </button>
+      </div>
 
       {/* Orders Table */}
       {loading ? (
@@ -139,9 +141,10 @@ const OrderTrackingTable = () => {
                   <th className="p-5 text-sm font-medium">Date</th>
                   <th className="p-5 text-sm font-medium">Amount</th>
                   <th className="p-5 text-sm font-medium">Status</th>
-                  <th className="p-5 text-sm font-medium hidden lg:block">Actions</th>
-                                    <th className="p-5 text-sm font-medium block lg:hidden"></th>
-
+                  <th className="p-5 text-sm font-medium hidden lg:block">
+                    Actions
+                  </th>
+                  <th className="p-5 text-sm font-medium block lg:hidden"></th>
                 </tr>
               </thead>
               <tbody>
@@ -162,32 +165,46 @@ const OrderTrackingTable = () => {
                     )}
                   </td> */}
                     {/* <td className="p-4 text-sm">{order?.OrderBy?.Username}</td> */}
-                    <td className="p-4 flex items-center space-x-3"                         onClick={() => handleViewDetails(order)}
->
+                    <td
+                      className="p-4 flex items-center space-x-3"
+                      onClick={() => handleViewDetails(order)}
+                    >
                       <>
                         <img
                           src={order?.OrderBy?.profilePicture} // First image of the first product
                           alt={order?.products[0]?.name}
                           className="w-20 h-20 object-cover rounded-md"
                         />
-                        <span className="text-sm font-medium"                         onClick={() => handleViewDetails(order)}
->
+                        <span
+                          className="text-sm font-medium"
+                          onClick={() => handleViewDetails(order)}
+                        >
                           {order?.OrderBy?.Username}
                         </span>
                       </>
                     </td>
-                    <td className="p-4 text-sm pl-12"                         onClick={() => handleViewDetails(order)}
->{order?.orderUvid}</td>
-                    <td className="p-4 text-sm "                         onClick={() => handleViewDetails(order)}
->
+                    <td
+                      className="p-4 text-sm pl-12"
+                      onClick={() => handleViewDetails(order)}
+                    >
+                      {order?.orderUvid}
+                    </td>
+                    <td
+                      className="p-4 text-sm "
+                      onClick={() => handleViewDetails(order)}
+                    >
                       {new Date(order?.createdAt).toLocaleDateString()}
                     </td>
-                    <td className="p-4 text-sm font-medium"                         onClick={() => handleViewDetails(order)}
->
+                    <td
+                      className="p-4 text-sm font-medium"
+                      onClick={() => handleViewDetails(order)}
+                    >
                       ${order?.totalAmount?.toFixed(1)}
                     </td>
-                    <td className="p-4"                         onClick={() => handleViewDetails(order)}
->
+                    <td
+                      className="p-4"
+                      onClick={() => handleViewDetails(order)}
+                    >
                       <span
                         className={`px-3 py-1 text-white rounded-full ${getStatusColor(
                           order?.orderStatus

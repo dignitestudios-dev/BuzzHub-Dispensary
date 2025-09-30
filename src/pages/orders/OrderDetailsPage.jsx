@@ -315,7 +315,7 @@ const OrderDetailsPage = () => {
               <div className="flex flex-col overflow-hidden mt-3">
                 <h3 className="text-xl font-semibold text-gray-800 truncate">
                   {order.OrderBy.Username}
-                  {console.log(order,"orderorder")}
+                  {console.log(order, "orderorder")}
                 </h3>
 
                 <div className="flex items-center text-sm text-gray-600 mt-1 truncate">
@@ -433,9 +433,13 @@ const OrderDetailsPage = () => {
               </span>
             </span>
           )}
-
+          {console.log(order, "order...")}
           <div className="w-full grid grid-cols-2 justify-center space-x-2">
-            {order.orderStatus === "Approved" ? (
+            {order.orderStatus === "Approved" ||
+            order.orderStatus === "Rejected" ||
+            order.orderStatus === "In Process" ||
+            order.orderStatus === "Ready" || 
+             order.orderStatus === "Out for Delivery"  ? (
               <div>
                 <div className="w-full">
                   <button
