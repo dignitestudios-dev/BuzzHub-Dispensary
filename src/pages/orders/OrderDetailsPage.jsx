@@ -294,6 +294,22 @@ const OrderDetailsPage = () => {
                   {new Date(order.createdAt).toLocaleDateString()}
                 </span>
               </div>
+              <div className="flex justify-between py-4 px-6 rounded-lg shadow-md transition-all duration-300">
+                <span className="font-semibold text-gray-600">
+                  Shipping Address
+                </span>
+                <span className="font-bold text-teal-700">
+                  {order?.shippingAddress || "N/A"}
+                </span>
+              </div>
+              <div className="flex justify-between py-4 px-6 rounded-lg shadow-md transition-all duration-300">
+                <span className="font-semibold text-gray-600">
+                  Complete Address
+                </span>
+                <span className="font-bold text-teal-700">
+                  {order?.completeShippingAddress || "N/A"}
+                </span>
+              </div>
             </div>
           </div>
 
@@ -438,8 +454,8 @@ const OrderDetailsPage = () => {
             {order.orderStatus === "Approved" ||
             order.orderStatus === "Rejected" ||
             order.orderStatus === "In Process" ||
-            order.orderStatus === "Ready" || 
-             order.orderStatus === "Out for Delivery"  ? (
+            order.orderStatus === "Ready" ||
+            order.orderStatus === "Out for Delivery" ? (
               <div>
                 <div className="w-full">
                   <button
