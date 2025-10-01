@@ -92,7 +92,7 @@ const Wallet = () => {
 
   const { walletAmount } = walletData?.wallet || {};
   const transactions = walletData?.transactions;
-console.log(transactions,"transactions")
+  console.log(transactions, "transactions");
   return (
     <div className="p-6 pb-20 lg:pb-2 w-full mx-auto bg-white h-full overflow-auto">
       <h1 className="text-black text-3xl font-bold mb-4">Wallet Management</h1>
@@ -164,7 +164,11 @@ console.log(transactions,"transactions")
                           : "text-green-500"
                       }`}
                     >
-                      {item?.type}
+                      {item?.type === "payout"
+                        ? "Withdrawn"
+                        : item?.type || item?.type === "charge"
+                        ? "Deposit"
+                        : item?.type}
                     </td>
                     <td className="font-semibold py-2 px-4">${item?.amount}</td>
                   </tr>

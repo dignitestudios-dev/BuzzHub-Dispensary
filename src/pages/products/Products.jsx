@@ -91,14 +91,17 @@ const Products = () => {
                   key={product._id}
                   className="bg-white border rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl"
                 >
-                  <div className="relative w-full h-64">
+                  <div className="relative w-full h-40">
+                    {" "}
+                  
                     <img
-                      src={product.productImage[0] || Logo} // Use product image or fallback to Logo
+                      src={product.productImage[0] || Logo}
                       alt={product.productName}
                       className="w-full h-full object-cover bg-[#1D7C42] rounded-t-lg transition-transform transform hover:scale-110"
                     />
                   </div>
-                  <div className="p-6 flex flex-col h-full">
+
+                  <div className="px-2 py-2 flex flex-col h-full">
                     <h3 className="text-2xl font-semibold text-gray-800 mb-2">
                       {product.productName}
                     </h3>
