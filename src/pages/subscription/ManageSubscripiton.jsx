@@ -83,29 +83,29 @@ const ManageSubscription = () => {
 
   return (
     <div className="flex flex-col w-full justify-start h-full bg-gray-100 px-4 py-10">
-     
       <div className="w-full bg-white rounded-2xl shadow-lg p-8 space-y-6 border border-gray-200">
         <div className="flex justify-start">
-  <div
-    className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium
-      ${subscriptionPlan?.status === "active" 
-        ? "bg-green-100 text-green-700" 
-        : "bg-red-100 text-red-700"}
+          <div
+            className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium
+      ${
+        subscriptionPlan?.status === "active"
+          ? "bg-green-100 text-green-700"
+          : "bg-red-100 text-red-700"
+      }
     `}
-  >
-    {subscriptionPlan?.status === "active" ? (
-      <MdCheckCircle size={18} />
-    ) : (
-      <MdCancel size={18} />
-    )}
-    <span>
-      {subscriptionPlan?.status === "active" ? "Active" : "Inactive"}
-    </span>
-  </div>
-</div>
+          >
+            {subscriptionPlan?.status === "active" ? (
+              <MdCheckCircle size={18} />
+            ) : (
+              <MdCancel size={18} />
+            )}
+            <span>
+              {subscriptionPlan?.status === "active" ? "Active" : "Inactive"}
+            </span>
+          </div>
+        </div>
 
         <div className="flex items-center justify-between mb-6 border-b pb-4">
-          
           <div className="flex items-center space-x-4 ">
             <img
               src={Logo}
@@ -119,8 +119,6 @@ const ManageSubscription = () => {
               </p>
             </div>
           </div>
-
-          
         </div>
 
         <div className="space-y-4 ">
@@ -130,7 +128,7 @@ const ManageSubscription = () => {
               {subscriptionPlan?.SubscriptionPlan.toLowerCase()} Plan{" "}
             </p> */}
             <p className="text-md text-gray-500">
-              <strong>Plan : </strong> {planDescription}
+              <strong>Plan : </strong> {subscriptionPlan?.SubscriptionPlan}
             </p>
             <div className="flex items-center gap-2">
               <p className="text-gray-600">Amount : </p>

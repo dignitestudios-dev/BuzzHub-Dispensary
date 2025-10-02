@@ -192,52 +192,64 @@ const ChatScreen = ({ selectedChat, chatId, userId, update, setUpdate }) => {
       </div>
 
       {/* Messages Section */}
-      <div className="flex-1 px-6 py-4 space-y-6 overflow-y-auto">
-        {messages?.map((msg) => (
+       <div className="flex-1 px-3 sm:px-6 py-4 space-y-3 overflow-y-auto">
+        {messages?.map((msg) => {
+          const isOwnMessage = msg?.sender_id === user?.uid;
+          return (
           <div
-            key={msg?.id}
-            className={`flex ${
-              msg?.sender_id === user?.uid ? "justify-end" : "justify-start"
-            }`}
-          >
-            <div
-              className={`px-4 py-3 max-w-[50%] ${
-                msg?.sender_id === user?.uid
-                  ? "bg-[#1D7C42] rounded-l-xl rounded-br-xl text-white"
-                  : "bg-gray-200  rounded-r-xl rounded-bl-xl text-gray-800"
-              }`}
-            >
-              <p className="text-base">{msg?.content}</p>
-              <p className="text-xs text-gray-400 mt-1 text-right">
-                {convertFirebaseTimestamp(msg?.timestamp)}
-              </p>
-            </div>
-          </div>
-        ))}
+  key={msg?.id}
+  className={`flex ${isOwnMessage ? "justify-end" : "justify-start"}`}
+>
+  <div
+    className={`px-4 py-2 max-w-[75%] sm:max-w-[65%] rounded-2xl shadow-sm text-sm sm:text-base leading-snug
+      ${isOwnMessage
+        ? "bg-[#1D7C42] text-white rounded-br-none"
+        : "bg-white text-gray-800 border rounded-bl-none"
+      }`}
+  >
+    {/* Message Text */}
+    <p className="break-words">{msg?.content}</p>
+
+    {/* Time (always bottom, separate row) */}
+    <div className="flex justify-end mt-1">
+      <span
+        className={`text-[10px] sm:text-xs ${
+          isOwnMessage ? "text-gray-200" : "text-gray-400"
+        }`}
+      >
+        {convertFirebaseTimestamp(msg?.timestamp)}
+      </span>
+    </div>
+  </div>
+</div>
+
+          );
+        })}
       </div>
 
       {/* Message Input Section */}
-      {blockedIds?.length == 0 && (
-        <div className="flex items-center px-6 py-4 ">
+        {blockedIds?.length === 0 && (
+        <div className="flex items-center px-3 sm:px-6 py-3 border-t bg-white">
           <input
             type="text"
             value={messageText}
             onChange={(e) => setMessageText(e.target.value)}
             placeholder="Type a message"
-            className="flex-1 px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-green-600 placeholder-gray-400 text-gray-800"
+            className="flex-1 px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-green-600 text-sm sm:text-base"
           />
           <button
-            onClick={() => handleSend()}
-            className="ml-3 bg-[#1D7C42] p-4 rounded-full text-white hover:bg-green-600 transition duration-200"
+            onClick={handleSend}
+            className="ml-2 sm:ml-3 bg-[#1D7C42] p-3 sm:p-4 rounded-full text-white hover:bg-green-600 transition duration-200"
           >
             {loading ? (
-              <FiLoader className="text-xl animate-spin" />
+              <FiLoader className="text-lg sm:text-xl animate-spin" />
             ) : (
-              <FaPaperPlane className="text-xl " />
+              <FaPaperPlane className="text-lg sm:text-xl" />
             )}
           </button>
         </div>
       )}
+
 
       {blockedIds?.length > 0 && (
         <div className="flex items-center px-6 py-4 ">

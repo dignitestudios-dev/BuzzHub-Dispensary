@@ -41,9 +41,16 @@ const Chat = () => {
     : null;
 
   return (
-    <div className="w-full h-full p-6 mx-auto mb-16 bg-white rounded-2xl shadow-lg flex flex-col sm:flex-row space-y-6 sm:space-y-0 sm:space-x-6">
+    <div
+      className="w-full h-full p-6 mx-auto bg-white rounded-2xl shadow-lg flex flex-col sm:flex-row 
+pb-[100px] sm:pb-[10px]"
+    >
       {/* Left Side - Chat List (Always Visible on Web, Hidden on Mobile when Chat is selected) */}
-      <div className={`w-full sm:w-1/3 bg-white p-6 rounded-lg border ${selectedChat ? 'hidden sm:block' : ''}`}>
+      <div
+        className={`w-full sm:w-1/3 bg-white p-6 rounded-lg border ${
+          selectedChat ? "hidden sm:block" : ""
+        }`}
+      >
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 tracking-tight mb-6">
           Chats
         </h1>

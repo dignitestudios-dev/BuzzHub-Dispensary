@@ -14,7 +14,7 @@ const typesAndSubtypes = {
 const fulfillmentEnumMap = {
   "Deliver at home": "Deliever at home",
   "Self Pickup": "Self Pickup",
-  "Both": "Both",
+  Both: "Both",
 };
 
 const AddProductModal = ({ onClose }) => {
@@ -126,7 +126,10 @@ const AddProductModal = ({ onClose }) => {
     }
     formData.append("weightQuantity", weightQuantity);
     formData.append("weightType", "grams"); // Force weightType to grams
-    formData.append("fullfillmentMethod", fulfillmentEnumMap[fullfillmentMethod]);
+    formData.append(
+      "fullfillmentMethod",
+      fulfillmentEnumMap[fullfillmentMethod]
+    );
 
     images.forEach((image) => {
       formData.append("productImage", image);
@@ -180,7 +183,7 @@ const AddProductModal = ({ onClose }) => {
 
   return (
     <div className="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 overflow-auto">
-      <div className="bg-white text-black p-6 rounded-lg mt-20 shadow-lg w-full max-w-2xl relative">
+      <div className="bg-white h-[600px] overflow-y-auto text-black p-6 rounded-lg mt-20 shadow-lg w-full max-w-2xl relative">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-xl text-black hover:text-gray-800"
@@ -216,7 +219,7 @@ const AddProductModal = ({ onClose }) => {
               <FaPlus />
               <input
                 type="file"
-                accept="image/*"
+                accept="image/png, image/jpeg, image/jpg"
                 multiple
                 className="hidden"
                 onChange={handleImageUpload}
@@ -344,23 +347,25 @@ const AddProductModal = ({ onClose }) => {
           </div>
 
           {/* Product Details */}
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="space-y-2 mb-4">
             <textarea
               placeholder="Product Details"
               className="w-full p-2 border rounded"
               value={productDescription}
               required
+              rows={5}
               onChange={(e) => setProductDescription(e.target.value)}
             />
+
             <textarea
               placeholder="Warning & Additional Information"
               className="w-full p-2 border rounded"
               value={warningDescription}
               required
+              rows={5}
               onChange={(e) => setWarningDescription(e.target.value)}
             />
           </div>
-
           <div className="mb-4">
             {fullfillmentMethod ? (
               <p className="w-full p-2">
