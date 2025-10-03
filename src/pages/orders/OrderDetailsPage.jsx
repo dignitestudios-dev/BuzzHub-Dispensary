@@ -302,14 +302,14 @@ const OrderDetailsPage = () => {
                   {order?.shippingAddress || "N/A"}
                 </span>
               </div>
-              <div className="flex justify-between py-4 px-6 rounded-lg shadow-md transition-all duration-300">
+              {/* <div className="flex justify-between py-4 px-6 rounded-lg shadow-md transition-all duration-300">
                 <span className="font-semibold text-gray-600">
                   Complete Address
                 </span>
                 <span className="font-bold text-teal-700">
                   {order?.completeShippingAddress || "N/A"}
                 </span>
-              </div>
+              </div> */}
             </div>
           </div>
 
